@@ -118,7 +118,7 @@ GitHub README 会直接渲染仓库里的相对路径图片。下面这些预览
 
 ```text
 帮我安装 Lieflat HTML Design：
-https://github.com/lara23434/lieflat-html-design
+https://github.com/larashero3-dotcom/lieflat-html-design
 
 请把仓库里的 4 个 skills 安装到我的用户级 skills 目录，并验证这几个文件都存在：
 - lieflat-html-design/SKILL.md
@@ -131,7 +131,7 @@ https://github.com/lara23434/lieflat-html-design
 
 ```text
 帮我更新 Lieflat HTML Design：
-https://github.com/lara23434/lieflat-html-design
+https://github.com/larashero3-dotcom/lieflat-html-design
 
 请进入本地安装目录执行 git pull，或重新复制最新的 4 个 skills，然后告诉我当前 commit。
 ```
@@ -143,7 +143,7 @@ https://github.com/lara23434/lieflat-html-design
 安装到 Codex 用户级目录：
 
 ```bash
-git clone https://github.com/lara23434/lieflat-html-design
+git clone https://github.com/larashero3-dotcom/lieflat-html-design
 cd lieflat-html-design
 mkdir -p ~/.codex/skills
 cp -R skills/lieflat-html-design skills/lieflat-html-deck skills/lieflat-xhs-longform skills/lieflat-xhs-cover ~/.codex/skills/

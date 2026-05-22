@@ -116,7 +116,7 @@ The easiest path: give this repository link to Codex, Claude Code, Moxt, or anot
 
 ```text
 Install Lieflat HTML Design for me:
-https://github.com/lara23434/lieflat-html-design
+https://github.com/larashero3-dotcom/lieflat-html-design
 
 Please install the 4 skills from this repository into my user-level skills directory, then verify these files exist:
 - lieflat-html-design/SKILL.md
@@ -129,7 +129,7 @@ If you already installed it, ask your agent to update it:
 
 ```text
 Update Lieflat HTML Design for me:
-https://github.com/lara23434/lieflat-html-design
+https://github.com/larashero3-dotcom/lieflat-html-design
 
 Please run git pull in the local install directory, or copy the latest 4 skills again, then tell me the current commit.
 ```
@@ -141,7 +141,7 @@ If you prefer manual setup, clone once and copy all 4 skills.
 Codex user-level install:
 
 ```bash
-git clone https://github.com/lara23434/lieflat-html-design
+git clone https://github.com/larashero3-dotcom/lieflat-html-design
 cd lieflat-html-design
 mkdir -p ~/.codex/skills
 cp -R skills/lieflat-html-design skills/lieflat-html-deck skills/lieflat-xhs-longform skills/lieflat-xhs-cover ~/.codex/skills/
