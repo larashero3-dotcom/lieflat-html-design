@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GPT 5.5 — Execution System Analysis (EN)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --ink:        #2a1d14;
+  --ink-mid:    rgba(42,29,20,0.66);
+  --ink-faint:  rgba(42,29,20,0.46);
+  --ink-fainter:rgba(42,29,20,0.32);
+  --line:       rgba(42,29,20,0.18);
+  --gold:       #b48a4a;
+  --gold-soft:  rgba(180,138,74,0.55);
+  --paper:      #ece2d8;
+}
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--paper);
+  font-family: 'Cormorant Garamond', 'EB Garamond', Georgia, serif;
+  color: var(--ink);
+}
+
+#bg {
+  position: fixed;
+  inset: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+}
+
+.slide {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1);
+}
+
+.slide.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.frame {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 100;
+  mix-blend-mode: multiply;
+  opacity: 0.5;
+}
+
+/* ── Four-corner ornament (every slide) ── */
+.corner {
+  position: absolute;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 9px;
+  letter-spacing: 0.42em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  line-height: 1.6;
+  z-index: 5;
+}
+.corner.tl { top: 36px; left: 56px; }
+.corner.tr { top: 36px; right: 56px; text-align: right; }
+.corner.bl { bottom: 36px; left: 56px; }
+.corner.br { bottom: 36px; right: 56px; text-align: right; }
+
+/* ── Gold rule ── */
+.gold-rule {
+  width: 56px; height: 1px;
+  background: var(--gold);
+  margin: 22px auto;
+}
+.gold-rule.long { width: 96px; }
+.gold-rule.tiny { width: 28px; margin: 14px auto; }
+
+/* ── Nav ── */
+#nav {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  z-index: 10;
+}
+
+.nav-btn {
+  width: 32px; height: 32px;
+  border: 1px solid var(--gold-soft);
+  background: rgba(236,226,216,0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  color: var(--ink);
+  transition: background 0.3s, color 0.3s;
+}
+.nav-btn:hover { background: var(--gold); color: var(--paper); border-color: var(--gold); }
+
+.dots { display: flex; gap: 14px; align-items: center; }
+
+.dot {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--ink-fainter);
+  transition: all 0.4s;
+  cursor: pointer;
+}
+.dot.active { background: var(--gold); transform: scale(1.6); }
+
+#counter {
+  position: fixed;
+  top: 36px; left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 9px;
+  font-style: italic;
+  color: var(--ink-faint);
+  letter-spacing: 0.5em;
+  z-index: 10;
+}
+
+/* ── Entrance keyframes ── */
+@keyframes fadeUp   { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeDown { from{opacity:0;transform:translateY(-12px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeIn   { from{opacity:0} to{opacity:1} }
+@keyframes scaleIn  { from{opacity:0;transform:scale(.94)} to{opacity:1;transform:scale(1)} }
+@keyframes drawX    { from{transform:scaleX(0);transform-origin:center} to{transform:scaleX(1);transform-origin:center} }
+@keyframes drawXL   { from{transform:scaleX(0);transform-origin:left}   to{transform:scaleX(1);transform-origin:left} }
+
+.slide .a { opacity: 0; }
+.slide.active .a { animation-fill-mode: both; }
+
+/* ════════════════════════════════════════
+   SLIDE 1 — COVER (centered monogram)
+════════════════════════════════════════ */
+#s1 .frame {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 8%;
+}
+
+#s1 .maison {
+  font-size: clamp(8px, 0.9vw, 11px);
+  letter-spacing: 0.65em;
+  color: var(--gold);
+  margin-bottom: 26px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+#s1 .co-name {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.12em;
+  font-family: 'Cormorant Garamond', 'EB Garamond', 'Palatino Linotype', Palatino, 'Times New Roman', serif;
+  font-weight: 300;
+  font-style: normal;
+  font-size: clamp(72px, 11vw, 144px);
+  line-height: 0.9;
+  letter-spacing: 0.012em;
+  color: var(--ink);
+  font-synthesis: none;
+  font-variant-numeric: lining-nums tabular-nums;
+  font-feature-settings: "lnum" 1, "tnum" 1;
+}
+
+#s1 .co-name span {
+  display: inline-block;
+  line-height: 0.9;
+}
+
+#s1 .co-name .co-num {
+  position: relative;
+  top: -0.018em;
+  font-variant-numeric: lining-nums tabular-nums;
+  font-feature-settings: "lnum" 1, "tnum" 1;
+}
+
+#s1 .co-name .amp {
+  color: var(--gold);
+  font-style: italic;
+  font-weight: 400;
+}
+
+#s1 .tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(13px, 1.4vw, 17px);
+  font-style: italic;
+  color: var(--ink-mid);
+  line-height: 1.7;
+  max-width: 460px;
+  margin-top: 4px;
+}
+
+#s1 .est {
+  font-size: clamp(8px, 0.85vw, 10px);
+  letter-spacing: 0.5em;
+  color: var(--ink-faint);
+  margin-top: 36px;
+  text-transform: uppercase;
+}
+
+.slide#s1.active .corner    { animation: fadeIn 0.8s ease 0.1s both; }
+.slide#s1.active .maison    { animation: fadeDown 0.7s ease 0.3s both; }
+.slide#s1.active .co-name   { animation: scaleIn 1.1s cubic-bezier(.16,1,.3,1) 0.5s both; }
+.slide#s1.active .gold-rule { animation: drawX 0.8s ease 0.9s both; }
+.slide#s1.active .tagline   { animation: fadeUp 0.7s ease 1.0s both; }
+.slide#s1.active .est       { animation: fadeIn 0.7s ease 1.2s both; }
+
+/* ════════════════════════════════════════
+   SLIDE 2 — PROBLEM (split with gold rule)
+════════════════════════════════════════ */
+#s2 .frame {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 0 8%;
+}
+
+#s2 .left {
+  text-align: left;
+  padding-right: 6%;
+  border-right: 1px solid var(--line);
+}
+
+#s2 .roman-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(10px, 1vw, 12px);
+  font-style: italic;
+  letter-spacing: 0.4em;
+  color: var(--gold);
+  margin-bottom: 32px;
+  text-transform: uppercase;
+}
+
+#s2 .heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(40px, 6vw, 72px);
+  line-height: 1.05;
+  letter-spacing: 0.005em;
+  color: var(--ink);
+}
+#s2 .heading .em { font-style: italic; color: var(--gold); }
+
+#s2 .right {
+  padding-left: 7%;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+#s2 .stat {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 22px;
+}
+#s2 .stat:last-of-type { border-bottom: none; }
+
+#s2 .stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: clamp(40px, 5.5vw, 64px);
+  line-height: 1;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+#s2 .stat-num .unit {
+  font-size: 0.55em;
+  color: var(--gold);
+  font-style: italic;
+  margin-left: 4px;
+}
+
+#s2 .stat-label {
+  font-size: clamp(9px, 0.95vw, 11px);
+  letter-spacing: 0.32em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  margin-top: 10px;
+}
+
+#s2 .body-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(13px, 1.35vw, 16px);
+  font-style: italic;
+  color: var(--ink-mid);
+  line-height: 1.7;
+  margin-top: 8px;
+}
+
+.slide#s2.active .corner    { animation: fadeIn 0.8s ease 0.1s both; }
+.slide#s2.active .roman-num { animation: fadeDown 0.6s ease 0.25s both; }
+.slide#s2.active .heading   { animation: fadeUp 0.8s cubic-bezier(.16,1,.3,1) 0.4s both; }
+.slide#s2.active .stat:nth-of-type(1) { animation: fadeUp 0.6s ease 0.55s both; }
+.slide#s2.active .stat:nth-of-type(2) { animation: fadeUp 0.6s ease 0.7s both; }
+.slide#s2.active .body-text { animation: fadeUp 0.6s ease 0.85s both; }
+
+/* ════════════════════════════════════════
+   SLIDE 3 — SOLUTION (three pillars)
+════════════════════════════════════════ */
+#s3 .frame {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 9% 8%;
+}
+
+#s3 .roman-num {
+  font-size: clamp(10px, 1vw, 12px);
+  font-style: italic;
+  letter-spacing: 0.4em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+#s3 .section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(48px, 6.5vw, 80px);
+  line-height: 1;
+  text-align: center;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+#s3 .section-sub {
+  font-size: clamp(10px, 1vw, 12px);
+  letter-spacing: 0.42em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  margin-bottom: 60px;
+}
+
+#s3 .pillars {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7%;
+  width: 100%;
+  max-width: 1200px;
+}
+
+#s3 .pillar {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#s3 .p-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(28px, 3.2vw, 38px);
+  color: var(--gold);
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+
+#s3 .p-mini-rule {
+  width: 24px; height: 1px;
+  background: var(--gold);
+  margin-bottom: 20px;
+}
+
+#s3 .p-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: clamp(18px, 2vw, 24px);
+  line-height: 1.2;
+  color: var(--ink);
+  margin-bottom: 14px;
+  letter-spacing: 0.01em;
+}
+
+#s3 .p-body {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(12px, 1.2vw, 14px);
+  color: var(--ink-mid);
+  line-height: 1.65;
+  max-width: 240px;
+}
+
+.slide#s3.active .corner    { animation: fadeIn 0.8s ease 0.1s both; }
+.slide#s3.active .roman-num { animation: fadeDown 0.6s ease 0.25s both; }
+.slide#s3.active .section-title { animation: fadeUp 0.8s cubic-bezier(.16,1,.3,1) 0.4s both; }
+.slide#s3.active .section-sub  { animation: fadeUp 0.5s ease 0.6s both; }
+.slide#s3.active .pillar:nth-child(1){ animation: fadeUp 0.65s ease 0.75s both; }
+.slide#s3.active .pillar:nth-child(2){ animation: fadeUp 0.65s ease 0.9s both; }
+.slide#s3.active .pillar:nth-child(3){ animation: fadeUp 0.65s ease 1.05s both; }
+
+/* ════════════════════════════════════════
+   SLIDE 4 — TRACTION (centered metrics)
+════════════════════════════════════════ */
+#s4 .frame {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 8%;
+  text-align: center;
+}
+
+#s4 .roman-num {
+  font-size: clamp(10px, 1vw, 12px);
+  font-style: italic;
+  letter-spacing: 0.4em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+#s4 .section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(48px, 7vw, 88px);
+  line-height: 1;
+  margin-bottom: 64px;
+  letter-spacing: 0.01em;
+}
+
+#s4 .metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  width: 100%;
+  max-width: 1100px;
+}
+
+#s4 .metric {
+  position: relative;
+  padding: 0 4%;
+  text-align: center;
+}
+#s4 .metric + .metric::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 12%; bottom: 12%;
+  width: 1px;
+  background: var(--line);
+}
+
+#s4 .m-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: clamp(56px, 8vw, 96px);
+  line-height: 1;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+#s4 .m-num .unit {
+  font-size: 0.45em;
+  color: var(--gold);
+  font-style: italic;
+  margin-left: 4px;
+}
+
+#s4 .m-label {
+  font-size: clamp(9px, 0.95vw, 11px);
+  letter-spacing: 0.4em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  margin-top: 18px;
+}
+
+#s4 .m-foot {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(11px, 1.1vw, 13px);
+  color: var(--gold);
+  margin-top: 8px;
+}
+
+.slide#s4.active .corner    { animation: fadeIn 0.8s ease 0.1s both; }
+.slide#s4.active .roman-num { animation: fadeDown 0.6s ease 0.25s both; }
+.slide#s4.active .section-title { animation: fadeUp 0.8s cubic-bezier(.16,1,.3,1) 0.4s both; }
+.slide#s4.active .metric:nth-child(1){ animation: fadeUp 0.6s ease 0.6s both; }
+.slide#s4.active .metric:nth-child(2){ animation: fadeUp 0.6s ease 0.75s both; }
+.slide#s4.active .metric:nth-child(3){ animation: fadeUp 0.6s ease 0.9s both; }
+
+/* ════════════════════════════════════════
+   SLIDE 5 — MARKET (vertical hierarchy)
+════════════════════════════════════════ */
+#s5 .frame {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  align-items: center;
+  padding: 0 8%;
+}
+
+#s5 .left {
+  padding-right: 7%;
+  border-right: 1px solid var(--line);
+  text-align: left;
+}
+
+#s5 .market-label {
+  font-size: clamp(9px, 0.95vw, 11px);
+  letter-spacing: 0.45em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+#s5 .market-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: clamp(96px, 13vw, 168px);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+#s5 .market-num .currency { color: var(--gold); font-style: italic; font-weight: 400; }
+
+#s5 .market-desc {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(13px, 1.4vw, 16px);
+  color: var(--ink-mid);
+  line-height: 1.65;
+  margin-top: 28px;
+  max-width: 90%;
+}
+
+#s5 .right {
+  padding-left: 7%;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+#s5 .seg {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#s5 .seg-label {
+  font-size: clamp(8px, 0.85vw, 10px);
+  letter-spacing: 0.4em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+
+#s5 .seg-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+#s5 .seg-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: clamp(28px, 3.4vw, 42px);
+  color: var(--ink);
+  line-height: 1;
+}
+
+#s5 .seg-bar-wrap {
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+  position: relative;
+  margin-left: 12px;
+}
+
+#s5 .seg-bar {
+  height: 1px;
+  background: var(--gold);
+  transform-origin: left;
+}
+
+.slide#s5.active .corner       { animation: fadeIn 0.8s ease 0.1s both; }
+.slide#s5.active .market-label { animation: fadeDown 0.6s ease 0.25s both; }
+.slide#s5.active .market-num   { animation: scaleIn 0.9s cubic-bezier(.16,1,.3,1) 0.4s both; }
+.slide#s5.active .market-desc  { animation: fadeUp 0.6s ease 0.7s both; }
+.slide#s5.active .seg:nth-child(1){ animation: fadeUp 0.55s ease 0.6s both; }
+.slide#s5.active .seg:nth-child(2){ animation: fadeUp 0.55s ease 0.75s both; }
+.slide#s5.active .seg:nth-child(3){ animation: fadeUp 0.55s ease 0.9s both; }
+.slide#s5.active .seg:nth-child(1) .seg-bar { animation: drawXL 0.8s ease 0.7s both; }
+.slide#s5.active .seg:nth-child(2) .seg-bar { animation: drawXL 0.8s ease 0.85s both; }
+.slide#s5.active .seg:nth-child(3) .seg-bar { animation: drawXL 0.8s ease 1.0s both; }
+
+/* ════════════════════════════════════════
+   SLIDE 6 — TEAM (atelier)
+════════════════════════════════════════ */
+#s6 .frame {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 8%;
+  text-align: center;
+}
+
+#s6 .roman-num {
+  font-size: clamp(10px, 1vw, 12px);
+  font-style: italic;
+  letter-spacing: 0.4em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+#s6 .section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(48px, 7vw, 88px);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+#s6 .section-sub {
+  font-size: clamp(10px, 1vw, 12px);
+  letter-spacing: 0.42em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  margin-bottom: 56px;
+}
+
+#s6 .team-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5%;
+  width: 100%;
+  max-width: 1100px;
+}
+
+#s6 .member {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+}
+
+#s6 .avatar {
+  width: 78px; height: 78px;
+  border-radius: 50%;
+  border: 1px solid var(--gold-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(236,226,216,0.4);
+}
+
+#s6 .avatar-initials {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 26px;
+  color: var(--gold);
+  letter-spacing: -0.02em;
+}
+
+#s6 .member-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+  font-size: clamp(13px, 1.3vw, 16px);
+  color: var(--ink);
+  margin-top: 4px;
+  letter-spacing: 0.01em;
+}
+
+#s6 .member-role {
+  font-size: clamp(8px, 0.85vw, 10px);
+  letter-spacing: 0.36em;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+#s6 .member-bg {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(11px, 1.1vw, 13px);
+  color: var(--ink-mid);
+  line-height: 1.55;
+  max-width: 200px;
+  margin-top: 2px;
+}
+
+.slide#s6.active .corner       { animation: fadeIn 0.8s ease 0.1s both; }
+.slide#s6.active .roman-num    { animation: fadeDown 0.6s ease 0.25s both; }
+.slide#s6.active .section-title{ animation: fadeUp 0.8s cubic-bezier(.16,1,.3,1) 0.4s both; }
+.slide#s6.active .section-sub  { animation: fadeUp 0.5s ease 0.6s both; }
+.slide#s6.active .member:nth-child(1){ animation: fadeUp 0.55s ease 0.7s both; }
+.slide#s6.active .member:nth-child(2){ animation: fadeUp 0.55s ease 0.83s both; }
+.slide#s6.active .member:nth-child(3){ animation: fadeUp 0.55s ease 0.96s both; }
+.slide#s6.active .member:nth-child(4){ animation: fadeUp 0.55s ease 1.09s both; }
+
+/* ════════════════════════════════════════
+   SLIDE 7 — THE ASK (closer)
+════════════════════════════════════════ */
+#s7 .frame {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 8%;
+  text-align: center;
+}
+
+#s7 .ask-label {
+  font-size: clamp(10px, 1vw, 12px);
+  letter-spacing: 0.55em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  font-style: italic;
+}
+
+#s7 .ask-amount {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: clamp(96px, 14vw, 184px);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+#s7 .ask-amount .currency { color: var(--gold); font-style: italic; font-weight: 400; }
+
+#s7 .ask-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(13px, 1.4vw, 17px);
+  color: var(--ink-mid);
+  line-height: 1.7;
+  max-width: 560px;
+  margin-top: 10px;
+  margin-bottom: 56px;
+}
+
+#s7 .use-grid {
+  display: flex;
+  gap: 7%;
+  align-items: flex-start;
+}
+
+#s7 .use-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+#s7 .use-pct {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: clamp(28px, 3.2vw, 38px);
+  color: var(--ink);
+}
+
+#s7 .use-label {
+  font-size: clamp(8px, 0.85vw, 10px);
+  letter-spacing: 0.4em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.6;
+}
+
+#s7 .signature {
+  margin-top: 56px;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(11px, 1.15vw, 13px);
+  color: var(--ink-faint);
+  letter-spacing: 0.04em;
+}
+
+.slide#s7.active .corner     { animation: fadeIn 0.8s ease 0.1s both; }
+.slide#s7.active .ask-label  { animation: fadeDown 0.6s ease 0.25s both; }
+.slide#s7.active .ask-amount { animation: scaleIn 1.0s cubic-bezier(.16,1,.3,1) 0.4s both; }
+.slide#s7.active .ask-sub    { animation: fadeUp 0.6s ease 0.85s both; }
+.slide#s7.active .use-item:nth-child(1){ animation: fadeUp 0.5s ease 1.0s both; }
+.slide#s7.active .use-item:nth-child(2){ animation: fadeUp 0.5s ease 1.13s both; }
+.slide#s7.active .use-item:nth-child(3){ animation: fadeUp 0.5s ease 1.26s both; }
+.slide#s7.active .signature  { animation: fadeIn 0.7s ease 1.4s both; }
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+<div id="counter">— Ⅰ · Ⅻ —</div>
+
+<!-- ═══ SLIDE 1 — COVER ═══ -->
+<div class="slide active" id="s1">
+  <div class="frame">
+    <div class="corner tl a">OpenAI<br>GPT 5.5</div>
+    <div class="corner tr a">2026<br>Analysis</div>
+    <div class="corner bl a">Capability · Workflow</div>
+    <div class="corner br a">Execution System</div>
+
+    <div class="maison a">— GPT 5.5 Analysis —</div>
+    <div class="co-name a"><span>GPT</span><span class="co-num">5.5</span></div>
+    <div class="gold-rule a"></div>
+    <div class="tagline a">From answer model to execution system:<br>less process management, more completed work.</div>
+    <div class="est a">OpenAI · Capability &amp; Operating Model</div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 2 — PROBLEM ═══ -->
+<div class="slide" id="s2">
+  <div class="frame">
+    <div class="corner tl a">Ⅱ · Thesis</div>
+    <div class="corner tr a">OpenAI<br>GPT 5.5</div>
+    <div class="corner bl a">Core Shift</div>
+    <div class="corner br a">02 · 12</div>
+
+    <div class="left">
+      <div class="roman-num a">Ⅱ — The Core Shift</div>
+      <div class="heading a">The model<br>starts carrying<br><span class="em">process</span>.</div>
+    </div>
+    <div class="right">
+      <div class="stat a">
+        <div class="stat-num" data-target="4" data-suffix="">4<span class="unit">zones</span></div>
+        <div class="stat-label">Coding · tools · knowledge · prompts</div>
+      </div>
+      <div class="stat a">
+        <div class="stat-num" data-target="1" data-suffix="">1<span class="unit">line</span></div>
+        <div class="stat-label">From answers to execution</div>
+      </div>
+      <div class="body-text a">Previous models behaved more like high-quality function calls: you decomposed tasks, controlled steps, and checked results. GPT 5.5 understands goals earlier, plans more steadily, uses tools, checks, and continues.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 3 — SOLUTION ═══ -->
+<div class="slide" id="s3">
+  <div class="frame">
+    <div class="corner tl a">Ⅲ · Capability</div>
+    <div class="corner tr a">OpenAI<br>GPT 5.5</div>
+    <div class="corner bl a">Capability Map</div>
+    <div class="corner br a">03 · 12</div>
+
+    <div class="roman-num a">Ⅲ — Capability Map</div>
+    <div class="section-title a">Four zones define the practical boundary.</div>
+    <div class="section-sub a">— Coding · Computer Use · Knowledge Work —</div>
+
+    <div class="pillars">
+      <div class="pillar a">
+        <div class="p-num">Ⅰ</div>
+        <div class="p-mini-rule"></div>
+        <div class="p-title">Coding</div>
+        <div class="p-body">From completion to agentic repair: cross-file understanding, command-line loops, and recovery after failure.</div>
+      </div>
+      <div class="pillar a">
+        <div class="p-num">Ⅱ</div>
+        <div class="p-mini-rule"></div>
+        <div class="p-title">Tools</div>
+        <div class="p-body">Maintain goal coherence across pages, documents, spreadsheets, and tool calls so humans manage less process.</div>
+      </div>
+      <div class="pillar a">
+        <div class="p-num">Ⅲ</div>
+        <div class="p-mini-rule"></div>
+        <div class="p-title">Knowledge Work</div>
+        <div class="p-body">Translate specs, research, data interpretation, and customer scenarios into plans, evidence, and artifacts.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 4 — TRACTION ═══ -->
+<div class="slide" id="s4">
+  <div class="frame">
+    <div class="corner tl a">Ⅳ · Prompting</div>
+    <div class="corner tr a">OpenAI<br>GPT 5.5</div>
+    <div class="corner bl a">Prompt Migration</div>
+    <div class="corner br a">04 · 12</div>
+
+    <div class="roman-num a">Ⅳ — Prompting Shift</div>
+    <div class="section-title a">Old prompts need subtraction, not more layers.</div>
+
+    <div class="metrics">
+      <div class="metric a">
+        <div class="m-num" data-target="1">Keep</div>
+        <div class="m-label">Product contracts, success criteria, and evidence rules</div>
+        <div class="m-foot">— output shape —</div>
+      </div>
+      <div class="metric a">
+        <div class="m-num" data-target="2">Drop</div>
+        <div class="m-label">Over-procedural micromanagement prompts</div>
+        <div class="m-foot">— let the model route —</div>
+      </div>
+      <div class="metric a">
+        <div class="m-num" data-target="3">Tune</div>
+        <div class="m-label">Start from medium reasoning and prove the lift</div>
+        <div class="m-foot">— then raise high / xhigh —</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 5 — MARKET ═══ -->
+<div class="slide" id="s5">
+  <div class="frame">
+    <div class="corner tl a">Ⅴ · Routing</div>
+    <div class="corner tr a">OpenAI<br>GPT 5.5</div>
+    <div class="corner bl a">Product Operations</div>
+    <div class="corner br a">05 · 12</div>
+
+    <div class="left">
+      <div class="market-label a">Model Routing Policy</div>
+      <div class="market-num a">Eval</div>
+      <div class="market-desc a">GPT 5.5 turns model choice into an operations question: route with evals instead of making the strongest model the default.</div>
+    </div>
+    <div class="right">
+      <div class="seg a">
+        <div class="seg-label">INSTANT / LOW — lightweight queries</div>
+        <div class="seg-row">
+          <div class="seg-num">Throughput</div>
+          <div class="seg-bar-wrap"><div class="seg-bar" style="width:100%"></div></div>
+        </div>
+      </div>
+      <div class="seg a">
+        <div class="seg-label">DEFAULT / MEDIUM — production start</div>
+        <div class="seg-row">
+          <div class="seg-num">Balance</div>
+          <div class="seg-bar-wrap"><div class="seg-bar" style="width:64%"></div></div>
+        </div>
+      </div>
+      <div class="seg a">
+        <div class="seg-label">THINKING / HIGH — complex planning</div>
+        <div class="seg-row">
+          <div class="seg-num">Converge</div>
+          <div class="seg-bar-wrap"><div class="seg-bar" style="width:42%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 6 — TEAM ═══ -->
+<div class="slide" id="s6">
+  <div class="frame">
+    <div class="corner tl a">Ⅵ · Economics</div>
+    <div class="corner tr a">OpenAI<br>GPT 5.5</div>
+    <div class="corner bl a">Total Cost</div>
+    <div class="corner br a">06 · 12</div>
+
+    <div class="roman-num a">Ⅵ — Economics</div>
+    <div class="section-title a">The real cost is total task completion cost.</div>
+    <div class="section-sub a">— Latency · Tokens · Ops · Evals —</div>
+
+    <div class="team-grid">
+      <div class="member a">
+        <div class="avatar"><div class="avatar-initials">LT</div></div>
+        <div class="member-name">Latency</div>
+        <div class="member-role">Beyond per-token speed</div>
+        <div class="member-bg">The experience is shaped by time from task start to accepted result.</div>
+      </div>
+      <div class="member a">
+        <div class="avatar"><div class="avatar-initials">TK</div></div>
+        <div class="member-name">Tokens</div>
+        <div class="member-role">Savings compound in tool loops</div>
+        <div class="member-bg">Fewer retries and less context drift can matter more than the unit price.</div>
+      </div>
+      <div class="member a">
+        <div class="avatar"><div class="avatar-initials">OP</div></div>
+        <div class="member-name">Ops</div>
+        <div class="member-role">Fewer patch prompts</div>
+        <div class="member-bg">Invest in task evals, tool permissions, and recovery design instead.</div>
+      </div>
+      <div class="member a">
+        <div class="avatar"><div class="avatar-initials">EV</div></div>
+        <div class="member-name">Evals</div>
+        <div class="member-role">The routing basis</div>
+        <div class="member-bg">Completion rate, takeover rate, tool errors, and total time should decide routing.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 7 — PHILOSOPHY (large quote) ═══ -->
+<div class="slide" id="s7">
+  <div class="frame" style="display:flex; flex-direction:column; justify-content:center; align-items:center; padding:8% 12%; text-align:center;">
+    <div class="corner tl a">Ⅶ · Prompt</div>
+    <div class="corner tr a">OpenAI<br>GPT 5.5</div>
+    <div class="corner bl a">— Prompt stance —</div>
+    <div class="corner br a">07 · 12</div>
+
+    <div class="roman-num a" style="font-family:'Cormorant Garamond',serif; font-size:clamp(10px,1vw,12px); font-style:italic; letter-spacing:0.4em; color:var(--gold); text-transform:uppercase; margin-bottom:32px; animation: fadeDown 0.6s ease 0.25s both;">Ⅶ — Stance</div>
+    <blockquote class="a" style="font-family:'Cormorant Garamond',serif; font-weight:300; font-style:italic; font-size:clamp(34px,4.6vw,62px); line-height:1.25; max-width:900px; color:var(--ink); animation: fadeUp 0.9s cubic-bezier(.16,1,.3,1) 0.4s both;">
+      Move from step obedience<br>to outcome responsibility.
+    </blockquote>
+    <div class="gold-rule a" style="margin:36px auto 18px; animation: drawX 0.7s ease 0.95s both;"></div>
+    <div class="a" style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:clamp(11px,1.1vw,13px); color:var(--ink-faint); letter-spacing:0.04em; animation: fadeUp 0.5s ease 1.05s both;">— One reading of GPT 5.5 prompt migration</div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 8 — DIFFERENTIATION (three columns, like solution) ═══ -->
+<div class="slide" id="s8">
+  <div class="frame" style="display:flex; flex-direction:column; justify-content:center; align-items:center; padding:9% 8%;">
+    <div class="corner tl a">Ⅷ · Control</div>
+    <div class="corner tr a">OpenAI<br>GPT 5.5</div>
+    <div class="corner bl a">Three Controls</div>
+    <div class="corner br a">08 · 12</div>
+
+    <div class="a" style="font-size:clamp(10px,1vw,12px); font-style:italic; letter-spacing:0.4em; color:var(--gold); text-transform:uppercase; margin-bottom:18px; animation: fadeDown 0.6s ease 0.25s both;">Ⅷ — Safety / Control</div>
+    <div class="a" style="font-family:'Cormorant Garamond',serif; font-weight:300; font-style:italic; font-size:clamp(40px,5.5vw,68px); line-height:1; text-align:center; color:var(--ink); margin-bottom:8px; animation: fadeUp 0.8s cubic-bezier(.16,1,.3,1) 0.4s both;">Governance as systems engineering.</div>
+    <div class="a" style="font-size:clamp(10px,1vw,12px); letter-spacing:0.42em; color:var(--ink-faint); text-transform:uppercase; margin-bottom:50px; animation: fadeUp 0.5s ease 0.6s both;">— Three control points —</div>
+
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:7%; width:100%; max-width:1200px;">
+      <div class="a" style="text-align:center; display:flex; flex-direction:column; align-items:center; animation: fadeUp 0.65s ease 0.75s both;">
+        <div style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:clamp(28px,3.2vw,38px); color:var(--gold); font-weight:400; margin-bottom:8px;">Ⅰ</div>
+        <div style="width:24px; height:1px; background:var(--gold); margin-bottom:20px;"></div>
+        <div style="font-family:'Cormorant Garamond',serif; font-weight:400; font-size:clamp(18px,2vw,24px); line-height:1.2; margin-bottom:14px; letter-spacing:0.01em;">Pre-deploy</div>
+        <div style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:clamp(12px,1.2vw,14px); color:var(--ink-mid); line-height:1.65; max-width:240px;">Safety evaluation, red teaming, and risk frameworks should come before release.</div>
+      </div>
+      <div class="a" style="text-align:center; display:flex; flex-direction:column; align-items:center; animation: fadeUp 0.65s ease 0.9s both;">
+        <div style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:clamp(28px,3.2vw,38px); color:var(--gold); font-weight:400; margin-bottom:8px;">Ⅱ</div>
+        <div style="width:24px; height:1px; background:var(--gold); margin-bottom:20px;"></div>
+        <div style="font-family:'Cormorant Garamond',serif; font-weight:400; font-size:clamp(18px,2vw,24px); line-height:1.2; margin-bottom:14px; letter-spacing:0.01em;">Run-time</div>
+        <div style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:clamp(12px,1.2vw,14px); color:var(--ink-mid); line-height:1.65; max-width:240px;">Tool descriptions, parameter limits, evidence rules, confirmations, and audit logs must be designed together.</div>
+      </div>
+      <div class="a" style="text-align:center; display:flex; flex-direction:column; align-items:center; animation: fadeUp 0.65s ease 1.05s both;">
+        <div style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:clamp(28px,3.2vw,38px); color:var(--gold); font-weight:400; margin-bottom:8px;">Ⅲ</div>
+        <div style="width:24px; height:1px; background:var(--gold); margin-bottom:20px;"></div>
+        <div style="font-family:'Cormorant Garamond',serif; font-weight:400; font-size:clamp(18px,2vw,24px); line-height:1.2; margin-bottom:14px; letter-spacing:0.01em;">Human</div>
+        <div style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:clamp(12px,1.2vw,14px); color:var(--ink-mid); line-height:1.65; max-width:240px;">Humans define goals, boundaries, and acceptance criteria; high-risk actions still need confirmation.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 9 — CLIENTELE (centered metrics) ═══ -->
+<div class="slide" id="s9">
+  <div class="frame" style="display:flex; flex-direction:column; justify-content:center; align-items:center; padding:8%; text-align:center;">
+    <div class="corner tl a">Ⅸ · Workflow</div>
+    <div class="corner tr a">OpenAI<br>GPT 5.5</div>
+    <div class="corner bl a">Workflow Ledger</div>
+    <div class="corner br a">09 · 12</div>
+
+    <div class="a" style="font-size:clamp(10px,1vw,12px); font-style:italic; letter-spacing:0.4em; color:var(--gold); text-transform:uppercase; margin-bottom:18px; animation: fadeDown 0.6s ease 0.25s both;">Ⅸ — Workflow Ledger</div>
+    <div class="a" style="font-family:'Cormorant Garamond',serif; font-weight:300; font-style:italic; font-size:clamp(44px,6vw,76px); line-height:1; margin-bottom:64px; letter-spacing:0.01em; animation: fadeUp 0.8s cubic-bezier(.16,1,.3,1) 0.4s both;">Competing on workflow completion.</div>
+
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:0; width:100%; max-width:1100px;">
+      <div class="a" style="position:relative; padding:0 4%; text-align:center; animation: fadeUp 0.6s ease 0.6s both;">
+        <div style="font-family:'Cormorant Garamond',serif; font-weight:400; font-size:clamp(56px,8vw,96px); line-height:1; color:var(--ink); letter-spacing:-0.01em;">P</div>
+        <div style="font-size:clamp(9px,0.95vw,11px); letter-spacing:0.4em; color:var(--ink-faint); text-transform:uppercase; margin-top:18px;">Plan</div>
+        <div style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:clamp(11px,1.1vw,13px); color:var(--gold); margin-top:8px;">— understand goals —</div>
+      </div>
+      <div class="a" style="position:relative; padding:0 4%; text-align:center; animation: fadeUp 0.6s ease 0.75s both;">
+        <div style="position:absolute; left:0; top:12%; bottom:12%; width:1px; background:var(--line);"></div>
+        <div style="font-family:'Cormorant Garamond',serif; font-weight:400; font-size:clamp(56px,8vw,96px); line-height:1; color:var(--ink); letter-spacing:-0.01em;">A</div>
+        <div style="font-size:clamp(9px,0.95vw,11px); letter-spacing:0.4em; color:var(--ink-faint); text-transform:uppercase; margin-top:18px;">Act</div>
+        <div style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:clamp(11px,1.1vw,13px); color:var(--gold); margin-top:8px;">— move across tools —</div>
+      </div>
+      <div class="a" style="position:relative; padding:0 4%; text-align:center; animation: fadeUp 0.6s ease 0.9s both;">
+        <div style="position:absolute; left:0; top:12%; bottom:12%; width:1px; background:var(--line);"></div>
+        <div style="font-family:'Cormorant Garamond',serif; font-weight:400; font-size:clamp(56px,8vw,96px); line-height:1; color:var(--ink); letter-spacing:-0.01em;">V</div>
+        <div style="font-size:clamp(9px,0.95vw,11px); letter-spacing:0.4em; color:var(--ink-faint); text-transform:uppercase; margin-top:18px;">Verify</div>
+        <div style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:clamp(11px,1.1vw,13px); color:var(--gold); margin-top:8px;">— check and converge —</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 10 — TIMELINE (horizontal axis) ═══ -->
+<div class="slide" id="s10">
+  <div class="frame" style="display:flex; flex-direction:column; justify-content:center; align-items:center; padding:8% 10%;">
+    <div class="corner tl a">Ⅹ · Adoption</div>
+    <div class="corner tr a">OpenAI<br>GPT 5.5</div>
+    <div class="corner bl a">Adoption Loop</div>
+    <div class="corner br a">10 · 12</div>
+
+    <div class="a" style="font-size:clamp(10px,1vw,12px); font-style:italic; letter-spacing:0.4em; color:var(--gold); text-transform:uppercase; margin-bottom:18px; animation: fadeDown 0.6s ease 0.25s both;">Ⅹ — Adoption Loop</div>
+    <div class="a" style="font-family:'Cormorant Garamond',serif; font-weight:300; font-style:italic; font-size:clamp(40px,5.5vw,72px); line-height:1; margin-bottom:60px; text-align:center; animation: fadeUp 0.8s cubic-bezier(.16,1,.3,1) 0.4s both;">Start with high-friction, verifiable work.</div>
+
+    <div style="position:relative; width:100%; max-width:1000px; height:130px;">
+      <div class="a" style="position:absolute; left:4%; right:4%; top:50%; height:1px; background:var(--gold); transform-origin:left; animation: drawXL 1s ease 0.55s both;"></div>
+      <div class="a" style="position:absolute; left:6%; top:50%; transform:translate(-50%,-50%); animation: scaleIn 0.5s ease 0.7s both;">
+        <div style="position:absolute; bottom:22px; left:50%; transform:translateX(-50%); font-family:'Cormorant Garamond',serif; font-style:italic; font-size:clamp(13px,1.4vw,17px); white-space:nowrap; color:var(--ink);">Select<span style="display:block; font-style:normal; font-size:11px; color:var(--ink-faint); margin-top:6px; letter-spacing:0.05em;">multi-step work</span></div>
+        <div style="width:9px; height:9px; background:var(--gold); border-radius:50%; margin:0 auto;"></div>
+        <div style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:10px; letter-spacing:0.3em; color:var(--ink-fainter); margin-top:18px; text-align:center;">I</div>
+      </div>
+      <div class="a" style="position:absolute; left:30%; top:50%; transform:translate(-50%,-50%); animation: scaleIn 0.5s ease 0.85s both;">
+        <div style="position:absolute; bottom:22px; left:50%; transform:translateX(-50%); font-family:'Cormorant Garamond',serif; font-style:italic; font-size:clamp(13px,1.4vw,17px); white-space:nowrap; color:var(--ink);">Evaluate<span style="display:block; font-style:normal; font-size:11px; color:var(--ink-faint); margin-top:6px; letter-spacing:0.05em;">completion rate</span></div>
+        <div style="width:9px; height:9px; background:var(--gold); border-radius:50%; margin:0 auto;"></div>
+        <div style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:10px; letter-spacing:0.3em; color:var(--ink-fainter); margin-top:18px; text-align:center;">II</div>
+      </div>
+      <div class="a" style="position:absolute; left:54%; top:50%; transform:translate(-50%,-50%); animation: scaleIn 0.5s ease 1.0s both;">
+        <div style="position:absolute; bottom:22px; left:50%; transform:translateX(-50%); font-family:'Cormorant Garamond',serif; font-style:italic; font-size:clamp(13px,1.4vw,17px); white-space:nowrap; color:var(--ink);">Route<span style="display:block; font-style:normal; font-size:11px; color:var(--ink-faint); margin-top:6px; letter-spacing:0.05em;">model tiers</span></div>
+        <div style="width:9px; height:9px; background:var(--gold); border-radius:50%; margin:0 auto;"></div>
+        <div style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:10px; letter-spacing:0.3em; color:var(--ink-fainter); margin-top:18px; text-align:center;">III</div>
+      </div>
+      <div class="a" style="position:absolute; left:78%; top:50%; transform:translate(-50%,-50%); animation: scaleIn 0.5s ease 1.15s both;">
+        <div style="position:absolute; bottom:22px; left:50%; transform:translateX(-50%); font-family:'Cormorant Garamond',serif; font-style:italic; font-size:clamp(13px,1.4vw,17px); white-space:nowrap; color:var(--ink);">Guard<span style="display:block; font-style:normal; font-size:11px; color:var(--ink-faint); margin-top:6px; letter-spacing:0.05em;">permissions</span></div>
+        <div style="width:9px; height:9px; background:var(--gold); border-radius:50%; margin:0 auto;"></div>
+        <div style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:10px; letter-spacing:0.3em; color:var(--ink-fainter); margin-top:18px; text-align:center;">IV</div>
+      </div>
+      <div class="a" style="position:absolute; left:96%; top:50%; transform:translate(-50%,-50%); animation: scaleIn 0.5s ease 1.3s both;">
+        <div style="position:absolute; bottom:22px; left:50%; transform:translateX(-50%); font-family:'Cormorant Garamond',serif; font-style:italic; font-size:clamp(13px,1.4vw,17px); white-space:nowrap; color:var(--ink);">Learn<span style="display:block; font-style:normal; font-size:11px; color:var(--ink-faint); margin-top:6px; letter-spacing:0.05em;">update routing</span></div>
+        <div style="width:9px; height:9px; background:var(--gold); border-radius:50%; margin:0 auto;"></div>
+        <div style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:10px; letter-spacing:0.3em; color:var(--ink-fainter); margin-top:18px; text-align:center;">V</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 11 — INVITATION (closing quote) ═══ -->
+<div class="slide" id="s11">
+  <div class="frame" style="display:flex; flex-direction:column; justify-content:center; align-items:center; padding:9% 12%; text-align:center;">
+    <div class="corner tl a">Ⅺ · Closing</div>
+    <div class="corner tr a">OpenAI<br>GPT 5.5</div>
+    <div class="corner bl a">— Closing —</div>
+    <div class="corner br a">11 · 12</div>
+
+    <div class="a" style="font-size:clamp(10px,1vw,12px); font-style:italic; letter-spacing:0.4em; color:var(--gold); text-transform:uppercase; margin-bottom:32px; animation: fadeDown 0.6s ease 0.25s both;">Ⅺ — Closing</div>
+    <div class="a" style="font-family:'Cormorant Garamond',serif; font-weight:300; font-style:italic; font-size:clamp(28px,3.6vw,46px); line-height:1.4; max-width:820px; color:var(--ink); animation: fadeUp 0.9s cubic-bezier(.16,1,.3,1) 0.4s both;">
+      GPT 5.5's product question is not<br>
+      whether it can answer, but whether it can move<br>
+      complex work to acceptance with less supervision.
+    </div>
+    <div class="gold-rule a" style="margin:40px auto 18px; animation: drawX 0.7s ease 1s both;"></div>
+    <div class="a" style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:clamp(11px,1.15vw,13px); color:var(--ink-faint); letter-spacing:0.04em; animation: fadeUp 0.5s ease 1.1s both;">— A migration memo for product and engineering teams</div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 12 — THE ASK ═══ -->
+<div class="slide" id="s12">
+  <div class="frame">
+    <div class="corner tl a">Ⅻ · Playbook</div>
+    <div class="corner tr a">OpenAI<br>GPT 5.5</div>
+    <div class="corner bl a">Adoption Playbook</div>
+    <div class="corner br a">12 · 12</div>
+
+    <div class="ask-label a">— Adoption Playbook —</div>
+    <div class="ask-amount a">Build<span class="unit" style="font-size:0.32em;color:var(--gold);font-style:italic;margin-left:8px">with evals</span></div>
+    <div class="gold-rule long a"></div>
+    <div class="ask-sub a">Do not migrate every prompt first. Pick a workflow humans keep rescuing, then route by completion rate, takeover rate, tool error rate, and total time.</div>
+
+    <div class="use-grid">
+      <div class="use-item a">
+        <div class="use-pct">40%</div>
+        <div class="gold-rule tiny"></div>
+        <div class="use-label">Code<br>Repair</div>
+      </div>
+      <div class="use-item a">
+        <div class="use-pct">35%</div>
+        <div class="gold-rule tiny"></div>
+        <div class="use-label">Research<br>Workflows</div>
+      </div>
+      <div class="use-item a">
+        <div class="use-pct">25%</div>
+        <div class="gold-rule tiny"></div>
+        <div class="use-label">Document<br>Generation</div>
+      </div>
+    </div>
+
+    <div class="signature a">OpenAI · GPT 5.5 · plan · act · verify</div>
+  </div>
+</div>
+
+<!-- ═══ NAV ═══ -->
+<div id="nav">
+  <button class="nav-btn" id="prev">‹</button>
+  <div class="dots" id="dots"></div>
+  <button class="nav-btn" id="next">›</button>
+</div>
+
+<script>
+/* ─────────────────────────────────
+   WebGL — Sunrise palette, desaturated
+───────────────────────────────── */
+(function(){
+  const canvas = document.getElementById('bg');
+  const gl = canvas.getContext('webgl', { antialias:true, alpha:false })
+         || canvas.getContext('experimental-webgl', { antialias:true, alpha:false });
+  if (!gl) {
+    canvas.style.background =
+      'radial-gradient(ellipse at 15% 25%, rgba(232,178,140,0.42) 0%, transparent 55%),' +
+      'radial-gradient(ellipse at 82% 72%, rgba(206,148,158,0.38) 0%, transparent 55%),' +
+      'rgb(236,226,216)';
+    return;
+  }
+
+  const VS = `
+    attribute vec2 a_pos;
+    void main() { gl_Position = vec4(a_pos, 0.0, 1.0); }
+  `;
+
+  const FS = `
+    precision highp float;
+    uniform vec2  u_res;
+    uniform float u_time;
+    uniform vec3  u_c1, u_c2, u_bg;
+
+    vec3 _m3(vec3 x){return x-floor(x*(1./289.))*289.;}
+    vec4 _m4(vec4 x){return x-floor(x*(1./289.))*289.;}
+    vec4 _p(vec4 x){return _m4(((x*34.)+1.)*x);}
+    vec4 _ti(vec4 r){return 1.79284291400159-0.85373472095314*r;}
+
+    float snoise(vec3 v){
+      const vec2 C=vec2(1./6.,1./3.);
+      const vec4 D=vec4(0.,.5,1.,2.);
+      vec3 i=floor(v+dot(v,C.yyy));
+      vec3 x0=v-i+dot(i,C.xxx);
+      vec3 g=step(x0.yzx,x0.xyz),l=1.-g;
+      vec3 i1=min(g.xyz,l.zxy),i2=max(g.xyz,l.zxy);
+      vec3 x1=x0-i1+C.x,x2=x0-i2+C.y,x3=x0-D.y;
+      i=_m3(i);
+      vec4 p=_p(_p(_p(i.z+vec4(0.,i1.z,i2.z,1.))+i.y+vec4(0.,i1.y,i2.y,1.))+i.x+vec4(0.,i1.x,i2.x,1.));
+      float n_=.142857142857;
+      vec3 ns=n_*D.wyz-D.xzx;
+      vec4 j=p-49.*floor(p*ns.z*ns.z);
+      vec4 x_=floor(j*ns.z),y_=floor(j-7.*x_);
+      vec4 x=x_*ns.x+ns.yyyy,y=y_*ns.x+ns.yyyy;
+      vec4 h=1.-abs(x)-abs(y);
+      vec4 b0=vec4(x.xy,y.xy),b1=vec4(x.zw,y.zw);
+      vec4 s0=floor(b0)*2.+1.,s1=floor(b1)*2.+1.;
+      vec4 sh=-step(h,vec4(0.));
+      vec4 a0=b0.xzyw+s0.xzyw*sh.xxyy,a1=b1.xzyw+s1.xzyw*sh.zzww;
+      vec3 p0=vec3(a0.xy,h.x),p1=vec3(a0.zw,h.y),p2=vec3(a1.xy,h.z),p3=vec3(a1.zw,h.w);
+      vec4 nr=_ti(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3)));
+      p0*=nr.x;p1*=nr.y;p2*=nr.z;p3*=nr.w;
+      vec4 m=max(.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.);
+      m=m*m;
+      return 42.*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));
+    }
+
+    void main(){
+      vec2 uv=gl_FragCoord.xy/u_res; uv.y=1.-uv.y;
+      float n1=snoise(vec3(uv*1.7,       u_time*.16));
+      float n2=snoise(vec3(uv*3.3+1.7,   u_time*.11+4.5));
+      float n3=snoise(vec3(uv*6.8+3.2,   u_time*.06+9.0));
+      float b=clamp(n1*.55+n2*.28+n3*.17,-.99,.99)*.5+.5;
+      float alpha=smoothstep(.32,.58,b);
+      vec3 nc=mix(u_c1/255.,u_c2/255.,smoothstep(.30,.70,b));
+      vec3 col=mix(u_bg/255.,nc,alpha*.30+.04);
+      // Vignette
+      float vg=1.-.12*length((uv-.5)*vec2(1.4,.9));
+      col*=vg;
+      gl_FragColor=vec4(col,1.);
+    }
+  `;
+
+  function sh(type,src){
+    const s=gl.createShader(type);
+    gl.shaderSource(s,src); gl.compileShader(s);
+    if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)) console.error(gl.getShaderInfoLog(s));
+    return s;
+  }
+  const prog=gl.createProgram();
+  gl.attachShader(prog,sh(gl.VERTEX_SHADER,VS));
+  gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,FS));
+  gl.linkProgram(prog); gl.useProgram(prog);
+
+  const buf=gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+  const loc=gl.getAttribLocation(prog,'a_pos');
+  gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+
+  const U = {
+    res:  gl.getUniformLocation(prog,'u_res'),
+    time: gl.getUniformLocation(prog,'u_time'),
+    c1:   gl.getUniformLocation(prog,'u_c1'),
+    c2:   gl.getUniformLocation(prog,'u_c2'),
+    bg:   gl.getUniformLocation(prog,'u_bg'),
+  };
+
+  // Sunrise palette — luxury-tuned (further desaturated for serif typography)
+  const C1 = [228, 175, 138];
+  const C2 = [200, 152, 158];
+  const BG = [236, 226, 216];
+
+  function resize(){
+    canvas.width=innerWidth; canvas.height=innerHeight;
+    gl.viewport(0,0,canvas.width,canvas.height);
+  }
+  resize(); addEventListener('resize',resize);
+
+  const t0 = performance.now();
+  function draw(){
+    const t = (performance.now()-t0)/1000;
+    gl.uniform2f(U.res, canvas.width, canvas.height);
+    gl.uniform1f(U.time, t);
+    gl.uniform3fv(U.c1, C1);
+    gl.uniform3fv(U.c2, C2);
+    gl.uniform3fv(U.bg, BG);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+
+/* ─────────────────────────────────
+   Slideshow logic
+───────────────────────────────── */
+const slides = Array.from(document.querySelectorAll('.slide'));
+const total  = slides.length;
+let cur = 0;
+
+const ROMAN = ['Ⅰ','Ⅱ','Ⅲ','Ⅳ','Ⅴ','Ⅵ','Ⅶ','Ⅷ','Ⅸ','Ⅹ','Ⅺ','Ⅻ'];
+
+const dotsEl = document.getElementById('dots');
+slides.forEach((_,i)=>{
+  const d = document.createElement('div');
+  d.className = 'dot' + (i===0?' active':'');
+  d.addEventListener('click', ()=>goTo(i));
+  dotsEl.appendChild(d);
+});
+
+function goTo(idx){
+  if(idx===cur) return;
+  const prev = cur;
+  cur = idx;
+  slides[prev].classList.remove('active');
+  slides[cur].classList.add('active');
+  dotsEl.querySelectorAll('.dot').forEach((d,i)=>{
+    d.classList.toggle('active', i===cur);
+  });
+  document.getElementById('counter').textContent =
+    '— ' + ROMAN[cur] + ' · ' + ROMAN[total-1] + ' —';
+  triggerCountUp(slides[cur]);
+}
+
+document.getElementById('prev').addEventListener('click', ()=> goTo((cur-1+total)%total));
+document.getElementById('next').addEventListener('click', ()=> goTo((cur+1)%total));
+
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' ') goTo((cur+1)%total);
+  if(e.key==='ArrowLeft' ||e.key==='ArrowUp') goTo((cur-1+total)%total);
+});
+
+const counted = new Set();
+function triggerCountUp(slide){
+  if(counted.has(slide.id)) return;
+  counted.add(slide.id);
+  slide.querySelectorAll('[data-target]').forEach(el=>{
+    const target = parseFloat(el.dataset.target);
+    const isFloat = !Number.isInteger(target);
+    // Preserve any HTML inside (e.g. <span class="unit">) by capturing template
+    const html = el.innerHTML;
+    // Find the leading numeric chunk
+    const match = html.match(/^(\$?)(\d+(\.\d+)?)/);
+    if(!match) return;
+    const prefix = match[1] || '';
+    const tail = html.slice(match[0].length);
+    setTimeout(()=>{
+      const t0 = performance.now();
+      function step(now){
+        const p = Math.min((now-t0)/1300, 1);
+        const e = 1-Math.pow(1-p,3);
+        const v = target*e;
+        const display = isFloat ? v.toFixed(1) : Math.round(v);
+        el.innerHTML = prefix + display + tail;
+        if(p<1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }, 800);
+  });
+}
+triggerCountUp(slides[0]);
+</script>
+</body>
+</html>

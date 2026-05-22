@@ -1,0 +1,726 @@
+[
+  {
+    "id": "y2k-brand",
+    "name": "Y2K Brand Manual",
+    "languages": [
+      "en",
+      "zh"
+    ],
+    "files": {
+      "en": "assets/templates/y2k-brand/en.html",
+      "zh": "assets/templates/y2k-brand/zh.html"
+    },
+    "best_for": [
+      "creator brand",
+      "social account",
+      "internet culture",
+      "meme-native brand manual",
+      "playful identity system"
+    ],
+    "avoid_for": [
+      "board deck",
+      "finance report",
+      "serious legal or compliance presentation"
+    ],
+    "style_tags": [
+      "y2k",
+      "millennium web",
+      "chrome balloon text",
+      "sparkles",
+      "pixel windows",
+      "polka dots",
+      "halftone wallpaper",
+      "webgl glimmer"
+    ],
+    "audience": [
+      "fans",
+      "community",
+      "social media followers",
+      "creative teams"
+    ],
+    "density": "medium",
+    "motion": "high",
+    "image_intensity": "low",
+    "image_slots": [],
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "original-template",
+      "attribution": "Designed and iterated with agent-assisted HTML design workflows."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "geek-report",
+    "name": "Geek Report",
+    "languages": [
+      "en",
+      "zh"
+    ],
+    "files": {
+      "en": "assets/templates/geek-report/en.html",
+      "zh": "assets/templates/geek-report/zh.html"
+    },
+    "best_for": [
+      "technical analysis",
+      "developer education",
+      "AI systems",
+      "geek narrative",
+      "terminal-style report"
+    ],
+    "avoid_for": [
+      "warm lifestyle pitch",
+      "photo portfolio",
+      "luxury campaign"
+    ],
+    "style_tags": [
+      "geek",
+      "terminal",
+      "paper",
+      "monochrome",
+      "technical",
+      "developer report"
+    ],
+    "audience": [
+      "engineers",
+      "technical leaders",
+      "AI builders",
+      "product teams"
+    ],
+    "density": "high",
+    "motion": "medium",
+    "image_intensity": "low",
+    "image_slots": [],
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "original-template",
+      "attribution": "Designed and iterated with agent-assisted HTML design workflows."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "shiny-tiles",
+    "name": "Shiny Tiles",
+    "languages": [
+      "en",
+      "zh"
+    ],
+    "files": {
+      "en": "assets/templates/shiny-tiles/en.html",
+      "zh": "assets/templates/shiny-tiles/zh.html"
+    },
+    "best_for": [
+      "technical analysis",
+      "visual system",
+      "shiny WebGL presentation",
+      "creative technology",
+      "dark polished report"
+    ],
+    "avoid_for": [
+      "low-motion compliance deck",
+      "dense appendix",
+      "plain conservative memo"
+    ],
+    "style_tags": [
+      "webgl",
+      "black tiles",
+      "iridescent highlights",
+      "motion",
+      "technical analysis",
+      "polished"
+    ],
+    "audience": [
+      "technical teams",
+      "design teams",
+      "creative technologists",
+      "brand teams"
+    ],
+    "density": "medium",
+    "motion": "high",
+    "image_intensity": "low",
+    "image_slots": [],
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "original-template",
+      "attribution": "Designed and iterated with agent-assisted HTML design workflows."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "pixel-report",
+    "name": "Pixel Report",
+    "languages": [
+      "en",
+      "zh"
+    ],
+    "files": {
+      "en": "assets/templates/pixel-report/en.html",
+      "zh": "assets/templates/pixel-report/zh.html"
+    },
+    "best_for": [
+      "technical analysis",
+      "developer education",
+      "retro game UI",
+      "step-by-step explainer",
+      "pixel-style report"
+    ],
+    "avoid_for": [
+      "luxury visual essay",
+      "serious investor memo"
+    ],
+    "style_tags": [
+      "pixel UI",
+      "retro game",
+      "technical",
+      "structured analysis",
+      "HUD"
+    ],
+    "audience": [
+      "developers",
+      "AI users",
+      "technical content readers"
+    ],
+    "density": "high",
+    "motion": "medium",
+    "image_intensity": "low",
+    "image_slots": [],
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "original-template",
+      "attribution": "Designed and iterated with agent-assisted HTML design workflows."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "dot-matrix-light",
+    "name": "Dot Matrix Light",
+    "languages": [
+      "en",
+      "zh"
+    ],
+    "files": {
+      "en": "assets/templates/dot-matrix-light/en.html",
+      "zh": "assets/templates/dot-matrix-light/zh.html"
+    },
+    "best_for": [
+      "technical analysis",
+      "AI systems",
+      "model briefings",
+      "signal narrative",
+      "benchmark reads",
+      "light editorial technical deck",
+      "data-field metaphor"
+    ],
+    "avoid_for": [
+      "warm human story",
+      "photo-led brand portfolio",
+      "luxury lifestyle campaign"
+    ],
+    "style_tags": [
+      "dot matrix",
+      "light mode",
+      "canvas field",
+      "technical analysis",
+      "signal",
+      "data visual"
+    ],
+    "audience": [
+      "AI teams",
+      "systems thinkers",
+      "technical executives",
+      "product teams"
+    ],
+    "density": "medium-high",
+    "motion": "high",
+    "image_intensity": "low",
+    "image_slots": [],
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "original-template",
+      "attribution": "Designed and iterated with agent-assisted HTML design workflows."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "dot-matrix-dark",
+    "name": "Dot Matrix Dark",
+    "languages": [
+      "en",
+      "zh"
+    ],
+    "files": {
+      "en": "assets/templates/dot-matrix-dark/en.html",
+      "zh": "assets/templates/dot-matrix-dark/zh.html"
+    },
+    "best_for": [
+      "technical analysis",
+      "AI systems",
+      "model briefings",
+      "signal narrative",
+      "benchmark reads",
+      "dark technical deck",
+      "data-field metaphor"
+    ],
+    "avoid_for": [
+      "warm human story",
+      "photo-led brand portfolio",
+      "luxury lifestyle campaign",
+      "print-like light report"
+    ],
+    "style_tags": [
+      "dot matrix",
+      "dark mode",
+      "canvas field",
+      "technical analysis",
+      "signal",
+      "data visual"
+    ],
+    "audience": [
+      "AI teams",
+      "systems thinkers",
+      "technical executives",
+      "product teams"
+    ],
+    "density": "medium-high",
+    "motion": "high",
+    "image_intensity": "low",
+    "image_slots": [],
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "original-template",
+      "attribution": "Split from the original Dot Matrix dual-theme template to enforce a fixed dark deck theme."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "editorial",
+    "name": "Editorial",
+    "languages": [
+      "en",
+      "zh"
+    ],
+    "files": {
+      "en": "assets/templates/editorial/en.html",
+      "zh": "assets/templates/editorial/zh.html"
+    },
+    "best_for": [
+      "thought leadership",
+      "media kit",
+      "brand essay",
+      "magazine-like strategy",
+      "creator thesis"
+    ],
+    "avoid_for": [
+      "arcade retro UI",
+      "dense technical appendix"
+    ],
+    "style_tags": [
+      "editorial",
+      "magazine",
+      "serif",
+      "essay",
+      "refined",
+      "white space"
+    ],
+    "audience": [
+      "founders",
+      "creative teams",
+      "readers",
+      "brand strategists"
+    ],
+    "density": "medium",
+    "motion": "low",
+    "image_intensity": "medium",
+    "image_slots": [
+      {
+        "slot": "cover-visual",
+        "ratio": "16:9",
+        "required": false
+      },
+      {
+        "slot": "chapter-visual",
+        "ratio": "4:3",
+        "required": false
+      }
+    ],
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "original-template",
+      "attribution": "Designed and iterated with agent-assisted HTML design workflows."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "consulting-report",
+    "name": "Consulting Report",
+    "languages": [
+      "en",
+      "zh"
+    ],
+    "files": {
+      "en": "assets/templates/consulting-report/en.html",
+      "zh": "assets/templates/consulting-report/zh.html"
+    },
+    "best_for": [
+      "consulting report",
+      "industry research",
+      "strategy narrative",
+      "institutional presentation",
+      "investor-facing story"
+    ],
+    "avoid_for": [
+      "playful meme culture",
+      "retro phone theme",
+      "Y2K creator identity"
+    ],
+    "style_tags": [
+      "consulting",
+      "industry research",
+      "serious",
+      "premium",
+      "dark",
+      "high trust"
+    ],
+    "audience": [
+      "leadership",
+      "investors",
+      "enterprise buyers",
+      "strategy teams"
+    ],
+    "density": "medium-high",
+    "motion": "low",
+    "image_intensity": "low",
+    "image_slots": [],
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "original-template",
+      "attribution": "Designed and iterated with agent-assisted HTML design workflows."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "clean-review",
+    "name": "Clean Review",
+    "languages": [
+      "en",
+      "zh"
+    ],
+    "files": {
+      "en": "assets/templates/clean-review/en.html",
+      "zh": "assets/templates/clean-review/zh.html"
+    },
+    "preview_slide": 5,
+    "best_for": [
+      "serious analysis",
+      "technical evaluation",
+      "precise comparison",
+      "clean review",
+      "trust narrative"
+    ],
+    "avoid_for": [
+      "maximal Y2K style",
+      "photo-heavy lifestyle deck",
+      "warm campaign story"
+    ],
+    "style_tags": [
+      "minimal",
+      "precise",
+      "clear contrast",
+      "serious analysis",
+      "clean"
+    ],
+    "audience": [
+      "technical teams",
+      "analysts",
+      "product teams",
+      "decision makers"
+    ],
+    "density": "medium",
+    "motion": "low",
+    "image_intensity": "low",
+    "image_slots": [],
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "original-template",
+      "attribution": "Designed and iterated with agent-assisted HTML design workflows."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "sunrise",
+    "name": "Sunrise",
+    "languages": [
+      "en",
+      "zh"
+    ],
+    "files": {
+      "en": "assets/templates/sunrise/en.html",
+      "zh": "assets/templates/sunrise/zh.html"
+    },
+    "best_for": [
+      "premium brand",
+      "luxury campaign",
+      "hospitality",
+      "beauty",
+      "fashion",
+      "warm visual story"
+    ],
+    "avoid_for": [
+      "terminal cyberpunk",
+      "dense AI benchmark",
+      "hardware nostalgia"
+    ],
+    "style_tags": [
+      "luxury",
+      "sunrise",
+      "warm",
+      "premium",
+      "elegant",
+      "campaign"
+    ],
+    "audience": [
+      "brand teams",
+      "clients",
+      "creative directors",
+      "premium consumers"
+    ],
+    "density": "low-medium",
+    "motion": "low",
+    "image_intensity": "high",
+    "image_slots": [
+      {
+        "slot": "cover-hero",
+        "ratio": "16:9",
+        "required": true
+      },
+      {
+        "slot": "mood-detail",
+        "ratio": "1:1",
+        "required": false
+      }
+    ],
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "original-template",
+      "attribution": "Designed and iterated with agent-assisted HTML design workflows."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "rain-notes",
+    "name": "Rain Notes",
+    "languages": [
+      "en",
+      "zh"
+    ],
+    "files": {
+      "en": "assets/templates/rain-notes/en.html",
+      "zh": "assets/templates/rain-notes/zh.html"
+    },
+    "best_for": [
+      "GPT-5.5 review notes",
+      "AI model reflection",
+      "quiet product story",
+      "rainy mood",
+      "calm workshop"
+    ],
+    "avoid_for": [
+      "high-energy game UI",
+      "dense enterprise security deck"
+    ],
+    "style_tags": [
+      "minimal",
+      "rain",
+      "paper",
+      "soft",
+      "quiet",
+      "AI review"
+    ],
+    "audience": [
+      "AI users",
+      "design teams",
+      "technical creators",
+      "workshop participants"
+    ],
+    "density": "low",
+    "motion": "low",
+    "image_intensity": "medium",
+    "image_slots": [
+      {
+        "slot": "quiet-hero",
+        "ratio": "4:3",
+        "required": false
+      }
+    ],
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "original-template",
+      "attribution": "Designed and iterated with agent-assisted HTML design workflows."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "studio-photo",
+    "name": "Studio Photo",
+    "languages": [
+      "en",
+      "zh"
+    ],
+    "files": {
+      "en": "assets/templates/studio-photo/en.html",
+      "zh": "assets/templates/studio-photo/zh.html"
+    },
+    "best_for": [
+      "product photography",
+      "portfolio",
+      "creator studio",
+      "visual identity",
+      "object-focused brand"
+    ],
+    "avoid_for": [
+      "text-heavy AI analysis",
+      "board memo without imagery"
+    ],
+    "style_tags": [
+      "photographic",
+      "studio",
+      "gallery",
+      "premium",
+      "portfolio",
+      "object-led"
+    ],
+    "audience": [
+      "clients",
+      "creative directors",
+      "portfolio reviewers",
+      "brand teams"
+    ],
+    "density": "low-medium",
+    "motion": "low",
+    "image_intensity": "high",
+    "image_slots": [
+      {
+        "slot": "cover-hero",
+        "ratio": "16:9",
+        "required": true
+      },
+      {
+        "slot": "detail-grid",
+        "ratio": "1:1",
+        "required": false
+      },
+      {
+        "slot": "process-image",
+        "ratio": "4:3",
+        "required": false
+      }
+    ],
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "original-template",
+      "attribution": "Designed and iterated with agent-assisted HTML design workflows."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "story-field",
+    "name": "Story Field",
+    "languages": [
+      "en",
+      "zh"
+    ],
+    "files": {
+      "en": "assets/templates/story-field/en.html",
+      "zh": "assets/templates/story-field/zh.html"
+    },
+    "best_for": [
+      "image-led story deck",
+      "cinematic field report",
+      "place narrative",
+      "project dossier",
+      "editorial presentation",
+      "mission-style storytelling"
+    ],
+    "avoid_for": [
+      "text-only pre-read",
+      "dense financial appendix",
+      "deck without strong images or approved imagery"
+    ],
+    "style_tags": [
+      "cinematic",
+      "photo-led",
+      "field report",
+      "archival",
+      "quiet luxury",
+      "horizontal narrative",
+      "grain"
+    ],
+    "audience": [
+      "clients",
+      "creative directors",
+      "brand teams",
+      "editorial teams",
+      "project stakeholders"
+    ],
+    "density": "low-medium",
+    "motion": "medium",
+    "image_intensity": "high",
+    "image_slots": [
+      {
+        "slot": "cover-hero",
+        "ratio": "16:9",
+        "required": true
+      },
+      {
+        "slot": "chapter-image",
+        "ratio": "4:3",
+        "required": true
+      },
+      {
+        "slot": "split-panel",
+        "ratio": "1:1 or 4:5",
+        "required": true
+      },
+      {
+        "slot": "gallery-mosaic",
+        "ratio": "mixed",
+        "required": true
+      }
+    ],
+    "bundled_assets": [
+      "NASA-origin public/reference imagery",
+      "No bundled commercial fonts; uses system fonts and Google Fonts fallbacks"
+    ],
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "template-adaptation",
+      "attribution": "Adapted from the Asterion/Sondaven-style image-led presentation workflow."
+    },
+    "agent_ready": true
+  }
+]

@@ -1,0 +1,1282 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GPT-5.5 Manifesto Review Deck</title>
+  <style>
+    :root {
+      --frame: #252525;
+      --paper: #e2deda;
+      --ink: #292929;
+      --soft: rgba(41, 41, 41, 0.58);
+      --line: rgba(41, 41, 41, 0.18);
+      --line-strong: rgba(41, 41, 41, 0.36);
+      --red: #eb4e3d;
+      --blue: #8ba5ba;
+      --acid: #c9f044;
+      --green: #7d9c77;
+      --terminal: #202020;
+      --terminal-text: #e2deda;
+      --sans: "PP Neue Montreal", "Inter", "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+      --mono: Consolas, "SFMono-Regular", Menlo, Monaco, "Courier New", monospace;
+      --ease: cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: var(--frame);
+      color: var(--terminal-text);
+      font-family: var(--mono);
+      letter-spacing: 0;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    body {
+      user-select: none;
+    }
+
+    button {
+      appearance: none;
+      border: 0;
+      padding: 0;
+      margin: 0;
+      color: inherit;
+      background: transparent;
+      font: inherit;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .frame {
+      position: fixed;
+      inset: 0;
+      padding: 9vh 7.5vw;
+      background:
+        radial-gradient(circle at 50% 48%, rgba(226, 222, 218, 0.09), transparent 48%),
+        repeating-linear-gradient(45deg, rgba(226, 222, 218, 0.05) 0 1px, transparent 1px 4px),
+        repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.12) 0 1px, transparent 1px 5px),
+        #262625;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .frame::before,
+    .frame::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+      inset: 0;
+      opacity: 0.25;
+      background:
+        radial-gradient(circle at 12% 22%, rgba(226, 222, 218, 0.08), transparent 24%),
+        radial-gradient(circle at 87% 74%, rgba(0, 0, 0, 0.22), transparent 26%);
+    }
+
+    .frame::after {
+      opacity: 0.08;
+      background:
+        repeating-linear-gradient(45deg, rgba(226, 222, 218, 0.08) 0 1px, transparent 1px 5px),
+        repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.1) 0 1px, transparent 1px 6px);
+    }
+
+    .label {
+      font-size: 8px;
+      line-height: 1.25;
+      font-weight: 600;
+    }
+
+    .label-2 {
+      font-size: 13px;
+      line-height: 1.15;
+      font-weight: 600;
+    }
+
+    .slide-kicker {
+      font-family: var(--mono);
+      font-size: 22px;
+      line-height: 1.2;
+      font-weight: 700;
+      color: var(--local-ink);
+    }
+
+    .inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      border: 1px solid rgba(226, 222, 218, 0.12);
+      border-radius: 8px;
+      background:
+        linear-gradient(90deg, rgba(226, 222, 218, 0.035) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(226, 222, 218, 0.025) 1px, transparent 1px),
+        radial-gradient(circle at 50% 50%, transparent 52%, rgba(0, 0, 0, 0.24) 100%),
+        var(--terminal);
+      background-size: calc(100% / 17) 100%, 100% calc(100% / 9), auto;
+      box-shadow:
+        0 28px 80px rgba(0, 0, 0, 0.42),
+        0 0 0 1px rgba(0, 0, 0, 0.36),
+        inset 0 1px 0 rgba(226, 222, 218, 0.1),
+        inset 0 0 76px rgba(0, 0, 0, 0.3);
+      isolation: isolate;
+      contain: paint;
+    }
+
+    .slides {
+      position: absolute;
+      inset: 0;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: repeat(17, minmax(0, 1fr));
+      grid-template-rows: 1fr;
+      gap: 0 16px;
+      padding: 16px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(28px);
+      transition: opacity 420ms ease, transform 680ms var(--ease);
+      overflow: hidden;
+      contain: paint;
+      --local-ink: var(--terminal-text);
+      --local-muted: rgba(226, 222, 218, 0.64);
+      --local-line: rgba(226, 222, 218, 0.36);
+      --local-soft-line: rgba(226, 222, 218, 0.15);
+      background: transparent;
+      color: var(--local-ink);
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(0);
+    }
+
+    .slide.before {
+      transform: translateX(-28px);
+    }
+
+    .slide::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.28;
+      background:
+        repeating-linear-gradient(0deg, transparent 0, transparent 2px, rgba(226, 222, 218, 0.08) 3px),
+        linear-gradient(90deg, rgba(226, 222, 218, 0.06) 1px, transparent 1px);
+      background-size: 100% 5px, calc(100% / 17) 100%;
+    }
+
+    .slide.paper {
+      inset: clamp(14px, 2.2vw, 32px);
+      border: 1px solid rgba(41, 41, 41, 0.32);
+      border-radius: 8px;
+      --local-ink: var(--ink);
+      --local-muted: rgba(41, 41, 41, 0.58);
+      --local-line: rgba(41, 41, 41, 0.36);
+      --local-soft-line: rgba(41, 41, 41, 0.15);
+      color: var(--local-ink);
+      background-color: var(--paper);
+      background:
+        linear-gradient(90deg, rgba(41, 41, 41, 0.035) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(41, 41, 41, 0.03) 1px, transparent 1px),
+        radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.38), transparent 58%),
+        var(--paper);
+      background-size: calc(100% / 17) 100%, 100% calc(100% / 9), auto;
+      box-shadow:
+        0 20px 46px rgba(0, 0, 0, 0.34),
+        0 0 0 1px rgba(226, 222, 218, 0.16),
+        inset 0 0 54px rgba(0, 0, 0, 0.13),
+        inset 0 1px 1px rgba(255, 255, 255, 0.42);
+    }
+
+    .slide.paper::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.12;
+      background:
+        repeating-linear-gradient(0deg, rgba(41, 41, 41, 0.04) 0 1px, transparent 1px 4px),
+        repeating-linear-gradient(90deg, rgba(41, 41, 41, 0.025) 0 1px, transparent 1px 5px);
+    }
+
+    .slide.paper::after {
+      opacity: 0;
+    }
+
+    .slide > * {
+      position: relative;
+      z-index: 1;
+      min-width: 0;
+    }
+
+    .slide.active .reveal {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translate3d(0, 18px, 0);
+      transition: opacity 580ms ease, transform 820ms var(--ease);
+      transition-delay: calc(var(--step, 0) * 86ms);
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+      font-weight: 400;
+      letter-spacing: 0;
+    }
+
+    .heading-xl,
+    .heading-lg,
+    .copy-lg,
+    .copy,
+    .label-2,
+    .price,
+    .prompt-card strong {
+      font-family: var(--mono);
+      text-transform: uppercase;
+      text-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.24),
+        0 -1px 0 rgba(0, 0, 0, 0.18);
+    }
+
+    .heading-xl {
+      font-size: 72px;
+      line-height: 1.08;
+      font-weight: 400;
+    }
+
+    .terminal-cursor {
+      display: inline-block;
+      width: 0.42em;
+      height: 0.76em;
+      margin-left: 0.08em;
+      background: var(--local-ink);
+      vertical-align: -0.08em;
+      opacity: 0.72;
+      animation: cursor-blink 1.04s steps(1, end) infinite;
+    }
+
+    @keyframes cursor-blink {
+      0%,
+      47% {
+        opacity: 0.72;
+      }
+
+      48%,
+      100% {
+        opacity: 0;
+      }
+    }
+
+    .heading-lg {
+      font-size: 46px;
+      line-height: 1.14;
+      font-weight: 400;
+    }
+
+    .copy-lg {
+      font-size: 28px;
+      line-height: 1.35;
+      font-weight: 400;
+    }
+
+    .copy {
+      font-size: 18px;
+      line-height: 1.5;
+      font-weight: 400;
+    }
+
+    .muted {
+      color: var(--local-muted);
+    }
+
+    .console {
+      font-family: var(--mono);
+      font-size: 30px;
+      line-height: 1.25;
+      text-transform: uppercase;
+      text-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.18),
+        0 -1px 0 rgba(0, 0, 0, 0.22);
+    }
+
+    .mono {
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .source {
+      color: var(--local-muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+
+    .source a {
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 2px;
+    }
+
+    .fig {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 0 16px;
+      align-items: start;
+      color: var(--local-muted);
+    }
+
+    .fig-number {
+      grid-column: 1;
+    }
+
+    .fig-caption {
+      grid-column: 2 / 6;
+    }
+
+    .cover-title {
+      grid-column: 3 / 12;
+      align-self: end;
+      padding-bottom: 40px;
+    }
+
+    .cover-title .heading-lg {
+      margin-top: 10px;
+    }
+
+    .cover-continue {
+      position: absolute;
+      right: clamp(28px, 5.6vw, 92px);
+      bottom: clamp(54px, 8vh, 86px);
+      width: min(30ch, 34vw);
+      z-index: 3;
+    }
+
+    .cover-continue .label-2,
+    .cover-continue .source {
+      display: table;
+      background: var(--paper);
+      box-shadow: 8px 0 0 var(--paper), -8px 0 0 var(--paper);
+    }
+
+    .highlight {
+      display: inline-block;
+      margin-right: 4px;
+      padding: 1px 2px 1px 16px;
+      border-radius: 2px;
+      background: var(--local-ink);
+      color: var(--terminal);
+      text-transform: lowercase;
+    }
+
+    .paper .highlight {
+      color: var(--paper);
+    }
+
+    .terminal-text {
+      grid-column: 3 / 14;
+      align-self: center;
+      display: grid;
+      gap: 20px;
+    }
+
+    .terminal-meta {
+      position: absolute;
+      left: calc((100% / 17) * 2 + 16px);
+      bottom: 24px;
+      display: grid;
+      gap: 5px;
+      color: rgba(226, 222, 218, 0.7);
+    }
+
+    .bench-copy {
+      grid-column: 3 / 8;
+      align-self: center;
+      display: grid;
+      gap: 22px;
+    }
+
+    .bench-board {
+      grid-column: 10 / 17;
+      align-self: center;
+      display: grid;
+      gap: 10px;
+    }
+
+    .bar-row {
+      display: grid;
+      grid-template-columns: 130px 1fr 46px;
+      gap: 12px;
+      align-items: center;
+      min-height: 34px;
+    }
+
+    .bar-track {
+      height: 16px;
+      border: 1px solid var(--local-line);
+      background: rgba(226, 222, 218, 0.04);
+      overflow: hidden;
+    }
+
+    .bar {
+      height: 100%;
+      background: var(--local-ink);
+      transform-origin: left center;
+    }
+
+    .bar.alt {
+      background: var(--blue);
+    }
+
+    .bar-row:nth-child(3n) .bar {
+      background: var(--green);
+    }
+
+    .chapter {
+      grid-column: 3 / 10;
+      align-self: center;
+      display: grid;
+      gap: 26px;
+    }
+
+    .chapter-right {
+      grid-column: 11 / 17;
+      align-self: center;
+    }
+
+    .line-stack {
+      width: 100%;
+      height: 330px;
+      background:
+        linear-gradient(var(--local-ink), var(--local-ink)) 0 0 / 100% 1px no-repeat,
+        repeating-linear-gradient(180deg, transparent 0 7px, var(--local-ink) 7px 9px, transparent 9px 16px);
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      opacity: 0.96;
+    }
+
+    .scenario-panel {
+      grid-column: 3 / 11;
+      align-self: center;
+      display: grid;
+      border: 1px solid var(--local-line);
+      background:
+        linear-gradient(90deg, rgba(226, 222, 218, 0.055) 1px, transparent 1px),
+        rgba(226, 222, 218, 0.035);
+      background-size: 28px 100%;
+      box-shadow:
+        inset 0 1px 0 rgba(226, 222, 218, 0.1),
+        0 18px 46px rgba(0, 0, 0, 0.18);
+    }
+
+    .scenario-head,
+    .scenario-row {
+      display: grid;
+      grid-template-columns: 64px 1fr 1.35fr;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .scenario-head {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--local-line);
+      color: var(--local-muted);
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .scenario-row {
+      min-height: 68px;
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--local-soft-line);
+    }
+
+    .scenario-row:last-child {
+      border-bottom: 0;
+    }
+
+    .scenario-count {
+      font-family: var(--mono);
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--red);
+    }
+
+    .scenario-name {
+      font-family: var(--mono);
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--local-ink);
+      text-transform: uppercase;
+    }
+
+    .scenario-action {
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.45;
+      font-weight: 600;
+      color: var(--local-ink);
+    }
+
+    .use-copy {
+      grid-column: 12 / 17;
+      align-self: center;
+      display: grid;
+      gap: 20px;
+    }
+
+    .use-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .usecase-slide .use-copy {
+      gap: 16px;
+    }
+
+    .usecase-slide .heading-lg {
+      font-size: 42px;
+      line-height: 1.05;
+    }
+
+    .usecase-slide .use-item {
+      min-height: 46px;
+      padding-top: 10px;
+    }
+
+    .usecase-slide .use-item .copy {
+      font-size: 16px;
+      line-height: 1.32;
+    }
+
+    .use-item,
+    .price-row,
+    .risk-row,
+    .route-step {
+      border-top: 1px solid var(--local-line);
+      padding-top: 12px;
+      display: grid;
+      grid-template-columns: 84px 1fr;
+      gap: 18px;
+      min-height: 54px;
+    }
+
+    .pricing {
+      grid-column: 3 / 9;
+      align-self: center;
+      display: grid;
+      gap: 14px;
+    }
+
+    .pricing-side {
+      grid-column: 10 / 16;
+      align-self: center;
+      display: grid;
+      gap: 22px;
+    }
+
+    .price-row {
+      grid-template-columns: 112px 1fr 92px;
+      min-height: 48px;
+      padding-top: 9px;
+    }
+
+    .price-row .copy {
+      font-size: 15px;
+      line-height: 1.32;
+    }
+
+    .price {
+      font-family: var(--mono);
+      font-size: 18px;
+    }
+
+    .cost-slide .pricing,
+    .cost-slide .pricing-side {
+      transform: translateY(-16px);
+    }
+
+    .cost-slide .pricing {
+      gap: 10px;
+    }
+
+    .cost-slide .heading-lg {
+      font-size: 40px;
+      line-height: 1.1;
+    }
+
+    .cost-slide .price-row {
+      min-height: 42px;
+      padding-top: 8px;
+      gap: 14px;
+    }
+
+    .cost-slide .price-row .copy {
+      font-size: 14px;
+      line-height: 1.24;
+    }
+
+    .cost-slide .price {
+      font-size: 17px;
+    }
+
+    .migration {
+      grid-column: 3 / 16;
+      align-self: center;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .prompt-card {
+      min-height: 280px;
+      border: 1px solid var(--local-line);
+      border-radius: 8px;
+      padding: 16px;
+      display: grid;
+      align-content: space-between;
+      background: rgba(226, 222, 218, 0.08);
+    }
+
+    .prompt-card strong {
+      display: block;
+      margin-bottom: 12px;
+      font-size: 22px;
+      line-height: 1.16;
+      font-weight: 500;
+    }
+
+    .risk-title {
+      grid-column: 3 / 9;
+      align-self: center;
+      display: grid;
+      gap: 20px;
+    }
+
+    .risk-list {
+      grid-column: 10 / 16;
+      align-self: center;
+      display: grid;
+      gap: 18px;
+    }
+
+    .risk-row {
+      grid-template-columns: 48px 1fr;
+      color: var(--local-ink);
+      border-color: var(--local-line);
+    }
+
+    .verdict {
+      grid-column: 3 / 9;
+      align-self: center;
+      display: grid;
+      gap: 22px;
+    }
+
+    .routes {
+      grid-column: 10 / 16;
+      align-self: center;
+      display: grid;
+      gap: 14px;
+    }
+
+    .route-step {
+      grid-template-columns: 56px 1fr;
+      border-color: var(--local-line);
+    }
+
+    .final {
+      grid-column: 4 / 13;
+      align-self: center;
+      justify-self: start;
+      display: grid;
+      gap: 34px;
+      max-width: 760px;
+      padding: 3vh 0;
+    }
+
+    .final .heading-xl {
+      max-width: 12ch;
+    }
+
+    .final .copy-lg {
+      max-width: 34ch;
+    }
+
+    .nav {
+      position: absolute;
+      inset: 0;
+      z-index: 35;
+      pointer-events: none;
+    }
+
+    .nav button {
+      position: absolute;
+      top: 9vh;
+      bottom: 9vh;
+      width: 7.5vw;
+      min-width: 54px;
+      color: var(--paper);
+      pointer-events: auto;
+      cursor: pointer;
+      font-size: 38px;
+      line-height: 1;
+    }
+
+    .nav button:hover {
+      background: rgba(226, 222, 218, 0.08);
+    }
+
+    .prev {
+      left: 0;
+    }
+
+    .next {
+      right: 0;
+    }
+
+    .progress {
+      position: absolute;
+      left: 7.5vw;
+      right: 7.5vw;
+      bottom: calc(9vh - 1px);
+      z-index: 40;
+      height: 2px;
+      background: rgba(226, 222, 218, 0.2);
+    }
+
+    .progress span {
+      display: block;
+      height: 100%;
+      width: 10%;
+      background: var(--paper);
+      transition: width 420ms var(--ease);
+    }
+
+    .counter {
+      position: absolute;
+      right: 7.5vw;
+      bottom: 4.5vh;
+      z-index: 40;
+      transform: translateY(50%);
+      color: var(--paper);
+      font-family: var(--mono);
+      font-size: 11px;
+      pointer-events: none;
+    }
+
+    @media (max-width: 980px) {
+      .frame {
+        padding: 72px 24px;
+      }
+
+      .progress {
+        left: 24px;
+        right: 24px;
+      }
+
+      .progress {
+        bottom: 71px;
+      }
+
+      .label-2 {
+        font-size: 11px;
+      }
+
+      .slide-kicker {
+        font-size: 20px;
+      }
+
+      .slide {
+        grid-template-columns: repeat(9, minmax(0, 1fr));
+        gap: 0 12px;
+      }
+
+      .heading-xl {
+        font-size: 54px;
+      }
+
+      .heading-lg {
+        font-size: 38px;
+      }
+
+      .copy-lg {
+        font-size: 23px;
+      }
+
+      .copy {
+        font-size: 17px;
+      }
+
+      .console {
+        font-size: 23px;
+      }
+
+      .cover-title,
+      .terminal-text,
+      .bench-copy,
+      .chapter,
+      .pricing,
+      .risk-title,
+      .verdict {
+        grid-column: 1 / 10;
+      }
+
+      .final {
+        grid-column: 2 / 9;
+        gap: 26px;
+        max-width: 640px;
+        padding: 0;
+      }
+
+      .cover-continue,
+      .chapter-right,
+      .bench-board,
+      .scenario-panel,
+      .use-copy,
+      .pricing-side,
+      .risk-list,
+      .routes {
+        grid-column: 1 / 10;
+        align-self: end;
+      }
+
+      .bench-copy,
+      .chapter,
+      .pricing,
+      .risk-title,
+      .verdict {
+        align-self: start;
+        padding-top: 72px;
+      }
+
+      .bench-board,
+      .chapter-right,
+      .pricing-side,
+      .risk-list,
+      .routes {
+        align-self: end;
+        padding-bottom: 24px;
+      }
+
+      .line-stack {
+        height: 170px;
+      }
+
+      .scenario-panel {
+        align-self: start;
+        margin-top: 74px;
+      }
+
+      .scenario-head,
+      .scenario-row {
+        grid-template-columns: 52px 1fr;
+      }
+
+      .scenario-head span:last-child,
+      .scenario-action {
+        grid-column: 2;
+      }
+
+      .scenario-row {
+        min-height: 66px;
+        row-gap: 4px;
+      }
+
+      .scenario-name {
+        font-size: 16px;
+      }
+
+      .scenario-action {
+        font-size: 14px;
+        line-height: 1.4;
+      }
+
+      .use-copy {
+        padding-bottom: 26px;
+      }
+
+      .migration {
+        grid-column: 1 / 10;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-self: center;
+      }
+
+      .prompt-card {
+        min-height: 160px;
+      }
+
+      .nav button {
+        top: 72px;
+        bottom: 72px;
+        width: 24px;
+      }
+
+      .counter {
+        right: 24px;
+        bottom: 36px;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .frame {
+        padding: 58px 14px;
+      }
+
+      .progress {
+        bottom: 57px;
+      }
+
+      .progress {
+        left: 14px;
+        right: 14px;
+      }
+
+      .heading-xl {
+        font-size: 38px;
+      }
+
+      .heading-lg {
+        font-size: 31px;
+      }
+
+      .copy-lg {
+        font-size: 20px;
+      }
+
+      .copy {
+        font-size: 15px;
+      }
+
+      .slide-kicker {
+        font-size: 18px;
+      }
+
+      .console {
+        font-size: 18px;
+      }
+
+      .final {
+        grid-column: 1 / 10;
+        padding: 0 18px;
+        gap: 20px;
+      }
+
+      .slide {
+        padding: 12px;
+      }
+
+      .bar-row,
+      .price-row {
+        grid-template-columns: 92px 1fr 44px;
+        font-size: 12px;
+      }
+
+      .price {
+        font-size: 18px;
+      }
+
+      .migration {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .prompt-card {
+        min-height: 92px;
+        padding: 10px;
+      }
+
+      .prompt-card strong {
+        font-size: 16px;
+      }
+
+      .cover-continue .source {
+        max-width: 280px;
+      }
+
+      .use-item,
+      .risk-row,
+      .route-step {
+        grid-template-columns: 42px 1fr;
+      }
+
+      .nav button {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="frame" aria-label="GPT-5.5 review deck">
+    <div class="inner">
+      <section class="slides">
+        <article class="slide paper active" data-title="Cover">
+          <div class="cover-title reveal" style="--step: 1">
+            <p class="heading-lg">Once upon a time,<br>we prompted.</p>
+            <h2 class="heading-xl">Now the model<br>keeps working.<span class="terminal-cursor" aria-hidden="true"></span></h2>
+          </div>
+          <div class="cover-continue reveal" style="--step: 3">
+            <p class="label-2"><span class="highlight">Enter</span> to Continue</p>
+            <p class="source" style="margin-top: 14px">A manifesto-style field review of GPT-5.5: from answer model to execution system.</p>
+          </div>
+        </article>
+
+        <article class="slide" data-title="Core Thesis">
+          <div class="terminal-text">
+            <p class="console reveal" style="--step: 1">GPT-5.5 is not a bigger chat box.</p>
+            <p class="console reveal" style="--step: 2">It is an execution system: understand goals, act across tools, verify results.</p>
+            <p class="console reveal" style="--step: 3">The value is less human scheduling, fewer round trips, and fewer midstream failures.</p>
+          </div>
+          <div class="terminal-meta mono reveal" style="--step: 4">
+            <span>Last login: May 19 2026</span>
+            <span>mode: evaluation / reasoning medium</span>
+          </div>
+        </article>
+
+        <article class="slide paper" data-title="Public Benchmarks">
+          <div class="bench-copy">
+            <h2 class="heading-lg reveal" style="--step: 2">The lift is broad, but not flat.</h2>
+            <p class="copy reveal" style="--step: 3">OpenAI positions GPT-5.5 as strongest on complex real work. The public deltas are clearest in agentic coding, OS work, browsing, and harder math tiers.</p>
+            <p class="source reveal" style="--step: 4">Source: OpenAI GPT-5.5 release benchmarks, Apr 23 2026.</p>
+          </div>
+          <div class="bench-board">
+            <div class="bar-row reveal" style="--step: 2">
+              <span class="label-2">Terminal</span><span class="bar-track"><span class="bar" style="display:block;width:82.7%"></span></span><span class="mono">82.7</span>
+            </div>
+            <div class="bar-row reveal" style="--step: 3">
+              <span class="label-2">CyberGym</span><span class="bar-track"><span class="bar alt" style="display:block;width:81.8%"></span></span><span class="mono">81.8</span>
+            </div>
+            <div class="bar-row reveal" style="--step: 4">
+              <span class="label-2">OSWorld</span><span class="bar-track"><span class="bar" style="display:block;width:78.7%"></span></span><span class="mono">78.7</span>
+            </div>
+            <div class="bar-row reveal" style="--step: 5">
+              <span class="label-2">BrowseComp</span><span class="bar-track"><span class="bar alt" style="display:block;width:84.4%"></span></span><span class="mono">84.4</span>
+            </div>
+            <div class="bar-row reveal" style="--step: 6">
+              <span class="label-2">Frontier T4</span><span class="bar-track"><span class="bar" style="display:block;width:35.4%"></span></span><span class="mono">35.4</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="slide paper" data-title="Behavior Shift">
+          <div class="chapter">
+            <h2 class="heading-lg reveal" style="--step: 2">Old prompts need subtraction, not more layers.</h2>
+            <p class="copy reveal" style="--step: 3">Keep product contracts, success criteria, allowed side effects, evidence rules, and final output shape; remove procedural micromanagement.</p>
+          </div>
+          <div class="chapter-right reveal" style="--step: 4">
+            <div class="line-stack" aria-hidden="true"></div>
+            <div class="fig" style="margin-top: 18px">
+              <span class="fig-number label">01</span>
+              <span class="fig-caption label">Outcome-first prompts outperform procedural micromanagement when tools are involved.</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="slide usecase-slide" data-title="Use cases">
+          <div class="scenario-panel reveal" style="--step: 1">
+            <div class="scenario-head">
+              <span>Queue</span>
+              <span>Scenario</span>
+              <span>Best action</span>
+            </div>
+            <div class="scenario-row">
+              <span class="scenario-count">24</span>
+              <span class="scenario-name">Coding</span>
+              <span class="scenario-action">Inspect context, locate defects, patch, test, then explain.</span>
+            </div>
+            <div class="scenario-row">
+              <span class="scenario-count">12</span>
+              <span class="scenario-name">Research</span>
+              <span class="scenario-action">Search, synthesize, cross-check, and keep evidence attached.</span>
+            </div>
+            <div class="scenario-row">
+              <span class="scenario-count">08</span>
+              <span class="scenario-name">Sheets</span>
+              <span class="scenario-action">Clean fields, add formulas, chart the signal, summarize.</span>
+            </div>
+            <div class="scenario-row">
+              <span class="scenario-count">05</span>
+              <span class="scenario-name">Support</span>
+              <span class="scenario-action">Classify issues, draft replies, and decide when to escalate.</span>
+            </div>
+            <div class="scenario-row">
+              <span class="scenario-count">03</span>
+              <span class="scenario-name">Retrieval</span>
+              <span class="scenario-action">Find source evidence and return a compact, cited answer.</span>
+            </div>
+          </div>
+          <div class="use-copy">
+            <h2 class="heading-lg reveal" style="--step: 2">Start with multi-step, verifiable, high-friction work.</h2>
+            <div class="use-list">
+              <div class="use-item reveal" style="--step: 3"><span class="label">01</span><p class="copy">Messy coding: inspect, patch, test, explain.</p></div>
+              <div class="use-item reveal" style="--step: 4"><span class="label">02</span><p class="copy">Tool-heavy workflows with many valid next steps.</p></div>
+              <div class="use-item reveal" style="--step: 5"><span class="label">03</span><p class="copy">Docs, sheets, and deck production.</p></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="slide paper cost-slide" data-title="Cost">
+          <div class="pricing">
+            <h2 class="heading-lg reveal" style="--step: 2">It is a premium route, not the default route for everything.</h2>
+            <div class="price-row reveal" style="--step: 3"><span class="label-2">GPT-5.5</span><span class="copy">input / output per 1M tokens</span><span class="price">$5 / $30</span></div>
+            <div class="price-row reveal" style="--step: 4"><span class="label-2">Default / medium</span><span class="copy">input / output per 1M tokens</span><span class="price">$2.5 / $15</span></div>
+            <div class="price-row reveal" style="--step: 5"><span class="label-2">Pro / xhigh</span><span class="copy">deep route, slower, expensive</span><span class="price">$30 / $180</span></div>
+          </div>
+          <div class="pricing-side">
+            <p class="copy-lg reveal" style="--step: 3">Use it where one successful completion replaces a sequence of supervision, retries, and human cleanup.</p>
+            <p class="copy muted reveal" style="--step: 4">Watch long-context economics: prompts above 272K input tokens get special session pricing on GPT-5.5.</p>
+            <p class="source reveal" style="--step: 5">Source: OpenAI API model pages, retrieved May 2026.</p>
+          </div>
+        </article>
+
+        <article class="slide paper" data-title="Migration">
+          <div class="migration">
+            <div class="prompt-card reveal" style="--step: 1">
+              <strong>01. Fresh Baseline</strong>
+              <p class="copy">Remove inherited prompt padding. Keep only product contract and hard constraints.</p>
+              <span class="mono">prompt.reset()</span>
+            </div>
+            <div class="prompt-card reveal" style="--step: 2">
+              <strong>02. Evidence Rules</strong>
+              <p class="copy">Tell the model what must be verified, cited, tested, or left unknown.</p>
+              <span class="mono">evidence.required = true</span>
+            </div>
+            <div class="prompt-card reveal" style="--step: 3">
+              <strong>03. Tool Surface</strong>
+              <p class="copy">Describe tools by outcome and side effects, not by prose mythology.</p>
+              <span class="mono">allowed_tools.map()</span>
+            </div>
+            <div class="prompt-card reveal" style="--step: 4">
+              <strong>04. Eval Loop</strong>
+              <p class="copy">Tune reasoning effort only after representative runs show measurable gain.</p>
+              <span class="mono">eval.then(route)</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="slide" data-title="Risk">
+          <div class="risk-title">
+            <h2 class="heading-lg reveal" style="--step: 2">The failure mode changes shape.</h2>
+            <p class="copy reveal" style="--step: 3">A stronger agent can create stronger mistakes: more tool calls, more files touched, more persuasive conclusions. Governance has to move closer to the action.</p>
+          </div>
+          <div class="risk-list">
+            <div class="risk-row reveal" style="--step: 3"><span class="label">01</span><p class="copy">Higher effort can overthink weakly specified tasks.</p></div>
+            <div class="risk-row reveal" style="--step: 4"><span class="label">02</span><p class="copy">Autonomy needs boundaries: allowed side effects, approval gates, rollback path.</p></div>
+            <div class="risk-row reveal" style="--step: 5"><span class="label">03</span><p class="copy">Factuality improves, but critical answers still need source rules and checks.</p></div>
+          </div>
+        </article>
+
+        <article class="slide" data-title="Model Routing">
+          <div class="verdict">
+            <p class="slide-kicker reveal" style="--step: 1">Verdict</p>
+            <h2 class="heading-lg reveal" style="--step: 2">Route by work distance.</h2>
+            <p class="copy-lg reveal" style="--step: 3">Short answers go cheap. Long jobs go smart. Irreversible jobs go gated.</p>
+          </div>
+          <div class="routes">
+            <div class="route-step reveal" style="--step: 3"><span class="label">A</span><p class="copy">Instant / low for high-volume simple classification, rewrite, extraction.</p></div>
+            <div class="route-step reveal" style="--step: 4"><span class="label">B</span><p class="copy">Default / medium for everyday coding and assistant turns where cost matters.</p></div>
+            <div class="route-step reveal" style="--step: 5"><span class="label">C</span><p class="copy">GPT-5.5 for complex coding, research, retrieval, and multi-tool workflows.</p></div>
+            <div class="route-step reveal" style="--step: 6"><span class="label">D</span><p class="copy">Pro / xhigh for rare, deep, slow decisions with visible business value.</p></div>
+          </div>
+        </article>
+
+        <article class="slide paper" data-title="Close">
+          <div class="final">
+            <p class="slide-kicker reveal" style="--step: 1">Main finding</p>
+            <h2 class="heading-xl reveal" style="--step: 2">Not a bigger chat box, but a smaller management burden.</h2>
+            <p class="copy-lg reveal" style="--step: 3">The product question is whether GPT-5.5 can move complex work to an acceptable state while requiring less attention from you.</p>
+          </div>
+        </article>
+      </section>
+    </div>
+
+    <div class="nav" aria-label="slide navigation">
+      <button class="prev" type="button" aria-label="Previous slide" title="Previous slide">‹</button>
+      <button class="next" type="button" aria-label="Next slide" title="Next slide">›</button>
+    </div>
+    <div class="progress" aria-hidden="true"><span></span></div>
+    <div class="counter" aria-live="polite">01 / 10</div>
+  </main>
+
+  <script>
+    const slides = Array.from(document.querySelectorAll(".slide"));
+    const prev = document.querySelector(".prev");
+    const next = document.querySelector(".next");
+    const counter = document.querySelector(".counter");
+    const progress = document.querySelector(".progress span");
+    const params = new URLSearchParams(window.location.search);
+    let index = Number(params.get("slide"));
+
+    if (!Number.isFinite(index) || index < 0 || index >= slides.length) index = 0;
+
+    function setSlide(nextIndex) {
+      index = Math.max(0, Math.min(slides.length - 1, nextIndex));
+      slides.forEach((slide, slideIndex) => {
+        slide.classList.toggle("active", slideIndex === index);
+        slide.classList.toggle("before", slideIndex < index);
+      });
+      counter.textContent = `${String(index + 1).padStart(2, "0")} / ${String(slides.length).padStart(2, "0")}`;
+      progress.style.width = `${((index + 1) / slides.length) * 100}%`;
+      const url = new URL(window.location.href);
+      url.searchParams.set("slide", index);
+      window.history.replaceState({}, "", url);
+    }
+
+    prev.addEventListener("click", () => setSlide(index - 1));
+    next.addEventListener("click", () => setSlide(index + 1));
+
+    window.addEventListener("keydown", (event) => {
+      if (["ArrowRight", "PageDown", " ", "Enter"].includes(event.key)) {
+        event.preventDefault();
+        setSlide(index + 1);
+      }
+      if (["ArrowLeft", "PageUp"].includes(event.key)) {
+        event.preventDefault();
+        setSlide(index - 1);
+      }
+      if (event.key === "Home") setSlide(0);
+      if (event.key === "End") setSlide(slides.length - 1);
+    });
+
+    let touchStartX = 0;
+    window.addEventListener("touchstart", (event) => {
+      touchStartX = event.changedTouches[0].clientX;
+    }, { passive: true });
+    window.addEventListener("touchend", (event) => {
+      const delta = event.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(delta) > 46) setSlide(index + (delta < 0 ? 1 : -1));
+    }, { passive: true });
+
+    setSlide(index);
+  </script>
+</body>
+</html>

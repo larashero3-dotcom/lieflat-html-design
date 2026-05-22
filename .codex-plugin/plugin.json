@@ -1,0 +1,11 @@
+{
+  "name": "lieflat-html-design",
+  "version": "0.1.0",
+  "description": "agent-ready HTML design skill collection for decks, Xiaohongshu longform cards, and Xiaohongshu cover cards.",
+  "skills": [
+    "skills/lieflat-html-design",
+    "skills/lieflat-html-deck",
+    "skills/lieflat-xhs-longform",
+    "skills/lieflat-xhs-cover"
+  ]
+}

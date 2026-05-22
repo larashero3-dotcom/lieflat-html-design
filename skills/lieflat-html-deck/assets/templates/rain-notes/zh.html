@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>雨中笔记 — GPT-5.5 测评</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200;300;400;500;700&family=Noto+Sans+SC:wght@200;300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink: #2a2a28;
+    --ink-soft: #5a5854;
+    --ink-faint: #8a8782;
+    --rule: rgba(60,58,54,0.15);
+    --rain-accent: rgba(82,118,142,0.52);
+    --serif: 'Songti SC', 'STSong', 'Noto Serif SC', 'SimSun', serif;
+    --sans:  'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html, body{ height:100%; overflow:hidden; }
+
+  body{
+    font-family: var(--sans);
+    color: var(--ink);
+    background-color: #ddd3ba;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65 0.75' numOctaves='5' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='280' height='280' filter='url(%23n)' opacity='0.32'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.06 0.88' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23f)' opacity='0.09'/%3E%3C/svg%3E"),
+      linear-gradient(168deg, #e8dcc8 0%, #ddd0b8 40%, #d0c3a8 100%);
+    background-attachment: fixed;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  #rain{
+    position: fixed; inset:0;
+    width:100vw; height:100vh;
+    pointer-events:none;
+    z-index: 50;
+    mix-blend-mode: multiply;
+    opacity: 0.7;
+  }
+  .mist{
+    position: fixed; inset:0;
+    pointer-events:none;
+    z-index: 40;
+    background:
+      radial-gradient(120% 80% at 50% 0%, rgba(255,252,245,0.25), rgba(0,0,0,0) 60%),
+      radial-gradient(80% 60% at 50% 100%, rgba(140,120,90,0.10), rgba(0,0,0,0) 60%);
+  }
+
+  /* 左右滑动容器 */
+  .deck{
+    position: relative; z-index: 1;
+    display: flex;
+    flex-direction: row;
+    width: 100vw; height: 100vh;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .deck::-webkit-scrollbar{ display: none; }
+
+  .slide{
+    flex-shrink: 0;
+    width: 100vw; height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 7vh 9vw;
+    scroll-snap-align: start;
+  }
+
+  /* 卡片：宣纸质感，软边 */
+  .card{
+    background-color: rgba(248, 243, 230, 0.84);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.70' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23p)' opacity='0.20'/%3E%3C/svg%3E");
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    border: none;
+    box-shadow:
+      0 0 50px 24px rgba(210,195,162,0.52),
+      0 0 110px 60px rgba(200,183,148,0.22),
+      0 55px 120px rgba(75,60,35,0.10);
+    -webkit-mask-image: radial-gradient(ellipse 105% 102% at 50% 50%, black 78%, rgba(0,0,0,0.4) 90%, transparent 100%);
+    mask-image: radial-gradient(ellipse 105% 102% at 50% 50%, black 78%, rgba(0,0,0,0.4) 90%, transparent 100%);
+    width: 100%; max-width: 1080px;
+    height: min(720px, calc(100vh - 14vh));
+    padding: 72px 88px;
+    position: relative;
+  }
+
+  .corner{
+    position:absolute; width:12px; height:12px;
+    border: 1px solid rgba(42,42,40,0.22);
+  }
+  .corner.tl{ top:18px; left:18px; border-right:0; border-bottom:0; }
+  .corner.tr{ top:18px; right:18px; border-left:0; border-bottom:0; }
+  .corner.bl{ bottom:18px; left:18px; border-right:0; border-top:0; }
+  .corner.br{ bottom:18px; right:18px; border-left:0; border-top:0; }
+
+  .stamp{
+    position: absolute; top: 28px; right: 38px;
+    width: 52px; height: 52px;
+    border: 1px solid var(--rain-accent);
+    color: var(--rain-accent);
+    display:flex; align-items:center; justify-content:center;
+    font-family: var(--serif); font-weight: 400;
+    font-size: 13px; letter-spacing: 0.1em;
+    opacity: 0.9;
+  }
+
+  .meta{
+    display:flex; justify-content: space-between; align-items: baseline;
+    font-family: var(--sans); font-weight: 200;
+    font-size: 10px; letter-spacing: 0.32em;
+    color: var(--ink-faint);
+    margin-bottom: 52px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .meta .left{ display:flex; gap:16px; align-items:center; }
+  .meta .dot{ width:3px; height:3px; background: var(--ink-faint); border-radius:50%; }
+
+  /* 幽灵大字背景 */
+  .ghost{
+    position: absolute;
+    right: 40px; top: 50%; transform: translateY(-55%);
+    font-family: var(--serif); font-weight: 200;
+    font-size: clamp(160px, 22vw, 300px); line-height: 1;
+    color: rgba(42,42,40,0.04);
+    letter-spacing: -0.04em;
+    pointer-events: none; user-select: none;
+    z-index: 0;
+  }
+  .card-inner{ position: relative; z-index: 1; }
+
+  h1.t{
+    font-family: var(--serif); font-weight: 200;
+    font-size: clamp(48px, 6.5vw, 96px);
+    line-height: 1.22; letter-spacing: 0.03em;
+    color: var(--ink);
+    margin-bottom: 28px;
+  }
+  h1.t .ink{ font-weight: 700; color: #18293a; }
+
+  h2.t{
+    font-family: var(--serif); font-weight: 300;
+    font-size: clamp(28px, 3.2vw, 46px);
+    line-height: 1.38; color: var(--ink);
+    margin-bottom: 22px; letter-spacing: 0.03em;
+  }
+
+  p.lead{
+    font-family: var(--serif); font-weight: 300;
+    font-size: 19px; line-height: 2.0;
+    color: var(--ink-soft);
+    max-width: 660px;
+    margin-bottom: 32px;
+  }
+  p.body{
+    font-family: var(--sans); font-weight: 300;
+    font-size: 14px; line-height: 2.05;
+    color: var(--ink-soft);
+    max-width: 600px;
+    letter-spacing: 0.02em;
+  }
+
+  .rule{
+    width: 48px; height: 1px;
+    background: var(--ink-soft);
+    margin: 28px 0;
+    opacity: 0.5;
+  }
+
+  /* 章节大幽灵数字 */
+  .sec-ghost{
+    font-family: var(--serif); font-weight: 200;
+    font-size: 72px; line-height: 0.86;
+    color: rgba(42,42,40,0.08);
+    letter-spacing: -0.02em;
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+
+  /* 三栏 */
+  .cols{
+    display:grid; grid-template-columns: repeat(3, 1fr);
+    gap: 52px; margin-top: 20px;
+  }
+  .col .idx{
+    font-family: var(--serif); font-weight: 200;
+    font-size: 44px; line-height: 1;
+    color: rgba(42,42,40,0.08);
+    margin-bottom: 14px;
+    letter-spacing: -0.02em;
+  }
+  .col h3{
+    font-family: var(--serif); font-weight: 400;
+    font-size: 16px; color: var(--ink);
+    margin-bottom: 12px; letter-spacing: 0.06em;
+    border-top: 1px solid var(--rule);
+    padding-top: 10px;
+  }
+  .col p{
+    font-family: var(--sans); font-weight:300;
+    font-size: 13px; line-height: 2.0;
+    color: var(--ink-soft);
+  }
+
+  /* 双栏 */
+  .two{
+    display:grid; grid-template-columns: 1fr 1fr;
+    gap: 72px; align-items: start;
+  }
+  .two .num{
+    font-family: var(--serif); font-weight: 200;
+    font-size: 11px; color: var(--ink-faint);
+    letter-spacing: 0.28em;
+    margin-bottom: 14px;
+  }
+
+  /* 引文 */
+  blockquote{
+    font-family: var(--serif); font-weight: 300;
+    font-style: italic;
+    font-size: clamp(22px, 2.8vw, 38px);
+    line-height: 1.75; color: var(--ink);
+    border-left: 2px solid var(--rain-accent);
+    padding-left: 28px;
+    max-width: 700px;
+  }
+  blockquote cite{
+    display:block;
+    font-family: var(--sans); font-style: normal; font-weight: 200;
+    font-size: 10px; color: var(--rain-accent);
+    letter-spacing: 0.38em;
+    margin-top: 22px;
+  }
+
+  /* 目次 */
+  .index-list{ display:flex; flex-direction: column; gap:0; max-width: 660px; }
+  .index-list .row{
+    display:grid; grid-template-columns: 48px 1fr 48px;
+    gap: 24px; align-items: baseline;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--rule);
+    font-family: var(--serif); font-weight: 300;
+    font-size: 16px; color: var(--ink);
+    letter-spacing: 0.03em;
+  }
+  .index-list .row .n{ color: var(--ink-faint); font-size: 11px; letter-spacing: 0.2em; font-weight: 200; }
+  .index-list .row .pg{ color: var(--ink-faint); font-size: 11px; text-align:right; font-weight: 200; }
+
+  /* 页码 */
+  .pagenum{
+    position: absolute; bottom: 28px; right: 36px;
+    font-family: var(--serif); font-weight: 300;
+    font-size: 11px; color: var(--ink-faint);
+    letter-spacing: 0.3em;
+  }
+  .pagestamp{
+    position: absolute; bottom: 28px; left: 36px;
+    font-family: var(--sans); font-weight: 200;
+    font-size: 10px; color: var(--ink-faint);
+    letter-spacing: 0.32em;
+  }
+
+  /* 底部横向导航 */
+  .nav{
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+    z-index: 100;
+    display: flex; flex-direction: row; gap: 12px;
+    align-items: center;
+  }
+  .nav a{
+    width: 6px; height: 6px; border-radius: 50%;
+    border: 1px solid var(--ink-soft);
+    display: block; transition: all 0.3s;
+    opacity: 0.5;
+  }
+  .nav a:hover, .nav a.on{
+    background: var(--ink-soft);
+    opacity: 1;
+  }
+
+  /* 左右箭头 */
+  .arrow{
+    position: fixed; top: 50%; transform: translateY(-50%);
+    z-index: 100;
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    opacity: 0.3;
+    transition: opacity 0.2s;
+    font-family: var(--serif); font-size: 20px;
+    color: var(--ink);
+    user-select: none;
+  }
+  .arrow:hover{ opacity: 0.7; }
+  .arrow.left{ left: 16px; }
+  .arrow.right{ right: 16px; }
+</style>
+</head>
+<body>
+<canvas id="rain"></canvas>
+<div class="mist"></div>
+
+<nav class="nav">
+  <a href="#s1" class="on"></a>
+  <a href="#s2"></a>
+  <a href="#s3"></a>
+  <a href="#s4"></a>
+  <a href="#s5"></a>
+  <a href="#s6"></a>
+</nav>
+<div class="arrow left" id="arrowL">‹</div>
+<div class="arrow right" id="arrowR">›</div>
+
+<main class="deck" id="deck">
+
+  <!-- 页 1：封面 -->
+  <section class="slide" id="s1">
+    <div class="card">
+      <span class="corner tl"></span><span class="corner tr"></span>
+      <span class="corner bl"></span><span class="corner br"></span>
+      <div class="stamp">测<br>评</div>
+      <div class="card-inner">
+        <div class="meta">
+          <div class="left">
+            <span>第 05 期</span><span class="dot"></span><span>模型测评</span>
+          </div>
+          <div class="right">2026 · 五月</div>
+        </div>
+        <h1 class="t">
+          GPT-5.5，<br>
+          值不值得<span class="ink">升级</span>，<br>
+          和三个观察。
+        </h1>
+        <div class="rule"></div>
+        <p class="lead">
+          它不是突然变成万能，<br>
+          而是在复杂任务里少了一些摇晃。
+        </p>
+        <p class="body">
+          这份样张把 GPT-5.5 当作工作伙伴来测：<br>
+          它会不会规划、会不会验证、会不会把事情收完。
+        </p>
+      </div>
+      <div class="pagestamp">GPT-5.5 测评笔记 · 第五期</div>
+      <div class="pagenum">— 01 —</div>
+    </div>
+  </section>
+
+  <!-- 页 2：目次 -->
+  <section class="slide" id="s2">
+    <div class="card">
+      <span class="corner tl"></span><span class="corner tr"></span>
+      <span class="corner bl"></span><span class="corner br"></span>
+      <div class="card-inner">
+        <div class="meta">
+          <div class="left"><span>目次</span></div>
+          <div class="right">05 · 02</div>
+        </div>
+        <h2 class="t">目次</h2>
+        <div class="rule"></div>
+        <div class="index-list">
+          <div class="row"><span class="n">01</span><span>序 · 不是更会聊天</span><span class="pg">01</span></div>
+          <div class="row"><span class="n">02</span><span>目次</span><span class="pg">02</span></div>
+          <div class="row"><span class="n">03</span><span>三件实测观察</span><span class="pg">03</span></div>
+          <div class="row"><span class="n">04</span><span>引文 · 一个值得记下的判断</span><span class="pg">04</span></div>
+          <div class="row"><span class="n">05</span><span>笔记 · 稳定性与边界</span><span class="pg">05</span></div>
+          <div class="row"><span class="n">06</span><span>跋 · 怎么使用它</span><span class="pg">06</span></div>
+        </div>
+      </div>
+      <div class="pagestamp">目录</div>
+      <div class="pagenum">— 02 —</div>
+    </div>
+  </section>
+
+  <!-- 页 3：三栏 -->
+  <section class="slide" id="s3">
+    <div class="card">
+      <span class="corner tl"></span><span class="corner tr"></span>
+      <span class="corner bl"></span><span class="corner br"></span>
+      <div class="card-inner">
+        <div class="meta">
+          <div class="left"><span>章三</span><span class="dot"></span><span>三项观察</span></div>
+          <div class="right">05 · 03</div>
+        </div>
+        <h2 class="t">三件实测观察</h2>
+        <p class="lead">不是发布会复述，而是把它放进日常工作里看。</p>
+        <div class="rule"></div>
+        <div class="cols">
+          <div class="col">
+            <div class="idx">一</div>
+            <h3>更会拆任务</h3>
+            <p>面对模糊需求时，<br>GPT-5.5 更愿意先建立结构，<br>再进入执行。</p>
+          </div>
+          <div class="col">
+            <div class="idx">二</div>
+            <h3>更能收尾</h3>
+            <p>它不只给建议，<br>更常主动补上检查、修正、<br>和可交付结果。</p>
+          </div>
+          <div class="col">
+            <div class="idx">三</div>
+            <h3>仍需核查</h3>
+            <p>遇到最新信息、价格、政策，<br>它仍然需要来源、搜索、<br>和人工判断。</p>
+          </div>
+        </div>
+      </div>
+      <div class="pagestamp">第三章</div>
+      <div class="pagenum">— 03 —</div>
+    </div>
+  </section>
+
+  <!-- 页 4：引文 -->
+  <section class="slide" id="s4">
+    <div class="card">
+      <span class="corner tl"></span><span class="corner tr"></span>
+      <span class="corner bl"></span><span class="corner br"></span>
+      <div class="card-inner">
+        <div class="meta">
+          <div class="left"><span>引文</span></div>
+          <div class="right">05 · 04</div>
+        </div>
+        <blockquote>
+          「GPT-5.5 的提升，<br>
+          不只是答案更漂亮，<br>
+          而是更愿意把事情做完。」
+          <cite>测评笔记 · 2026 五月</cite>
+        </blockquote>
+      </div>
+      <div class="pagestamp">一个值得记下的判断</div>
+      <div class="pagenum">— 04 —</div>
+    </div>
+  </section>
+
+  <!-- 页 5：双栏笔记 -->
+  <section class="slide" id="s5">
+    <div class="card">
+      <span class="corner tl"></span><span class="corner tr"></span>
+      <span class="corner bl"></span><span class="corner br"></span>
+      <div class="card-inner">
+        <div class="meta">
+          <div class="left"><span>笔记</span><span class="dot"></span><span>两则</span></div>
+          <div class="right">05 · 05</div>
+        </div>
+        <h2 class="t">稳定性与边界</h2>
+        <div class="rule"></div>
+        <div class="two">
+          <div>
+            <div class="num">笔记 · 一</div>
+            <p class="body">
+              它最适合的不是单轮问答，<br>
+              而是有上下文、有验收标准的任务。<br><br>
+              给它目标、材料和限制，<br>
+              它会更像一个能推进的协作者。<br><br>
+              越具体，越稳定。<br>
+              越模糊，越需要人来定方向。
+            </p>
+          </div>
+          <div>
+            <div class="num">笔记 · 二</div>
+            <p class="body">
+              但它不是事实机器。<br>
+              任何涉及今天、价格、政策、法规、论文的判断，<br>
+              都必须回到来源。<br><br>
+              GPT-5.5 负责推进，<br>
+              人负责判断。<br>
+              这条线仍然不能省。
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="pagestamp">观察笔记</div>
+      <div class="pagenum">— 05 —</div>
+    </div>
+  </section>
+
+  <!-- 页 6：跋 -->
+  <section class="slide" id="s6">
+    <div class="card">
+      <span class="corner tl"></span><span class="corner tr"></span>
+      <span class="corner bl"></span><span class="corner br"></span>
+      <div class="card-inner">
+        <div class="meta">
+          <div class="left"><span>跋</span></div>
+          <div class="right">05 · 06</div>
+        </div>
+        <h1 class="t" style="font-size: clamp(40px, 5vw, 76px);">
+          最好的用法，<br>
+          不是问它<span class="ink">怎么看</span>，<br>
+          而是让它做完。
+        </h1>
+        <div class="rule"></div>
+        <p class="lead">给上下文，给标准，给它一个能被验收的终点。</p>
+        <p class="body" style="margin-top:48px; color: var(--ink-faint); letter-spacing: 0.08em;">
+          终<br>
+          GPT-5.5 测评笔记 · 2026 五月
+        </p>
+      </div>
+      <div class="pagestamp">终</div>
+      <div class="pagenum">— 06 —</div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+/* 细雨 Canvas */
+(function(){
+  const canvas = document.getElementById('rain');
+  const ctx = canvas.getContext('2d');
+  let W = 0, H = 0, dpr = 1;
+  function resize(){
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth; H = window.innerHeight;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+    ctx.setTransform(1,0,0,1,0,0); ctx.scale(dpr, dpr);
+  }
+  resize(); window.addEventListener('resize', resize);
+
+  const NUM = Math.min(360, Math.floor(160 + (W * H) / 14000));
+  const SLANT = 0.10;
+  const drops = [], ripples = [];
+
+  function makeDrop(seedY){
+    return {
+      x: Math.random() * (W + 240) - 120,
+      y: seedY ? Math.random() * H : -30 - Math.random() * 240,
+      len:   14 + Math.random() * 16,
+      speed: 3.2 + Math.random() * 2.8,
+      opacity: 0.28 + Math.random() * 0.38,
+      width: 0.5 + Math.random() * 0.5
+    };
+  }
+  for(let i = 0; i < NUM; i++) drops.push(makeDrop(true));
+
+  function spawnRipple(x){
+    ripples.push({ x, y: H - 6 - Math.random() * 36, age: 0, life: 95 + Math.random() * 70, maxR: 22 + Math.random() * 28 });
+  }
+
+  let lastT = performance.now();
+  function frame(){
+    const now = performance.now();
+    const dt = Math.min((now - lastT) / 16.66, 2.2);
+    lastT = now;
+    ctx.clearRect(0, 0, W, H);
+    ctx.lineCap = 'round';
+    const wl = H - 2;
+
+    for(let i = drops.length - 1; i >= 0; i--){
+      const d = drops[i];
+      d.y += d.speed * dt;
+      d.x += d.speed * SLANT * dt;
+      const topX = d.x - d.len * SLANT, topY = d.y - d.len;
+      const grad = ctx.createLinearGradient(topX, topY, d.x, d.y);
+      grad.addColorStop(0,    'rgba(100,120,148,' + (d.opacity * 0.3).toFixed(3) + ')');
+      grad.addColorStop(0.35, 'rgba(90,112,140,'  + d.opacity.toFixed(3) + ')');
+      grad.addColorStop(1,    'rgba(90,112,140,'  + (d.opacity * 0.45).toFixed(3) + ')');
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = d.width;
+      ctx.beginPath(); ctx.moveTo(topX, topY); ctx.lineTo(d.x, d.y); ctx.stroke();
+      if(d.y >= wl){ if(Math.random() < 0.34) spawnRipple(d.x); drops[i] = makeDrop(false); }
+    }
+
+    for(let i = ripples.length - 1; i >= 0; i--){
+      const r = ripples[i];
+      r.age += dt;
+      const t = r.age / r.life;
+      if(t >= 1){ ripples.splice(i, 1); continue; }
+      const rad = r.maxR * (1 - Math.pow(1 - t, 2));
+      const alpha = (1 - t) * (1 - t) * 0.7;
+      ctx.strokeStyle = 'rgba(80,108,136,' + alpha.toFixed(3) + ')';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.ellipse(r.x, r.y, rad, rad * 0.32, 0, 0, Math.PI * 2); ctx.stroke();
+      if(t > 0.18){
+        const t2 = (t - 0.18) / 0.82;
+        const rad2 = r.maxR * 0.7 * (1 - Math.pow(1 - t2, 2));
+        ctx.strokeStyle = 'rgba(80,108,136,' + ((1 - t2) * 0.45).toFixed(3) + ')';
+        ctx.beginPath(); ctx.ellipse(r.x, r.y, rad2, rad2 * 0.32, 0, 0, Math.PI * 2); ctx.stroke();
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+
+/* 横向导航 */
+(function(){
+  const deck  = document.getElementById('deck');
+  const dots  = document.querySelectorAll('.nav a');
+  const slides = document.querySelectorAll('.slide');
+
+  /* 点点高亮 */
+  deck.addEventListener('scroll', () => {
+    const x = deck.scrollLeft + window.innerWidth / 2;
+    let idx = 0;
+    slides.forEach((s, i) => { if(s.offsetLeft < x) idx = i; });
+    dots.forEach((d, i) => d.classList.toggle('on', i === idx));
+  });
+
+  /* 点点点击 */
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', e => {
+      e.preventDefault();
+      deck.scrollTo({ left: slides[i].offsetLeft, behavior: 'smooth' });
+    });
+  });
+
+  /* 箭头 */
+  document.getElementById('arrowL').addEventListener('click', () => {
+    const x = deck.scrollLeft + window.innerWidth / 2;
+    let idx = 0;
+    slides.forEach((s, i) => { if(s.offsetLeft < x) idx = i; });
+    if(idx > 0) deck.scrollTo({ left: slides[idx - 1].offsetLeft, behavior: 'smooth' });
+  });
+  document.getElementById('arrowR').addEventListener('click', () => {
+    const x = deck.scrollLeft + window.innerWidth / 2;
+    let idx = 0;
+    slides.forEach((s, i) => { if(s.offsetLeft < x) idx = i; });
+    if(idx < slides.length - 1) deck.scrollTo({ left: slides[idx + 1].offsetLeft, behavior: 'smooth' });
+  });
+
+  /* 键盘左右 */
+  document.addEventListener('keydown', e => {
+    if(e.key === 'ArrowRight' || e.key === 'ArrowDown'){
+      document.getElementById('arrowR').click();
+    } else if(e.key === 'ArrowLeft' || e.key === 'ArrowUp'){
+      document.getElementById('arrowL').click();
+    }
+  });
+})();
+</script>
+</body>
+</html>

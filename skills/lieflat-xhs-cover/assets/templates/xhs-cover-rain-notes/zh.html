@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content="Lieflat XHS Cover" />
+<meta name="template-origin" content="Lieflat XHS Cover template">
+<title>Rain Notes GPT-5.5 任务交付封面</title>
+<style>
+:root {
+  --ink: #282824;
+  --ink-soft: #5b574f;
+  --ink-faint: #8a8477;
+  --paper: #f4ecd8;
+  --paper-deep: #d8c7a7;
+  --rain: #52768e;
+  --seal: #8b4d45;
+  --rule: rgba(52, 50, 46, 0.16);
+  --serif: "Songti SC", "STSong", "Noto Serif SC", "SimSun", serif;
+  --sans: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  color: var(--ink);
+  font-family: var(--sans);
+  background:
+    radial-gradient(900px 680px at 50% -12%, rgba(247, 241, 226, 0.18), transparent 64%),
+    linear-gradient(135deg, #202831 0%, #2d3742 48%, #15191e 100%);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+p {
+  margin: 0;
+  letter-spacing: 0;
+}
+
+.card {
+  position: relative;
+  width: 600px;
+  height: 800px;
+  max-width: calc(100vw - 24px);
+  overflow: hidden;
+  border-radius: 14px;
+  background-color: var(--paper-deep);
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.42),
+    0 10px 30px rgba(0, 10, 20, 0.32),
+    0 5px 15px rgba(0, 5, 15, 0.24);
+  isolation: isolate;
+}
+
+#rain {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  opacity: 0.56;
+}
+
+.paper {
+  position: absolute;
+  inset: 34px;
+  z-index: 2;
+  padding: 44px 46px;
+  overflow: hidden;
+  background-color: rgba(248, 243, 230, 0.89);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23p)' opacity='0.18'/%3E%3C/svg%3E"),
+    linear-gradient(168deg, rgba(255, 250, 238, 0.9) 0%, rgba(237, 226, 205, 0.86) 52%, rgba(218, 204, 174, 0.84) 100%);
+  box-shadow:
+    0 0 52px 18px rgba(210, 195, 162, 0.36),
+    0 35px 80px rgba(63, 48, 25, 0.18);
+  -webkit-mask-image: radial-gradient(ellipse 106% 102% at 50% 50%, black 78%, rgba(0, 0, 0, 0.5) 91%, transparent 100%);
+  mask-image: radial-gradient(ellipse 106% 102% at 50% 50%, black 78%, rgba(0, 0, 0, 0.5) 91%, transparent 100%);
+}
+
+/* Keep the source deck's handmade-paper grammar inside a tighter cover crop. */
+.paper::before {
+  content: "";
+  position: absolute;
+  inset: 18px;
+  border: 1px solid rgba(42, 42, 40, 0.1);
+  pointer-events: none;
+}
+
+.mist {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  background:
+    radial-gradient(380px 260px at 58% 0%, rgba(255, 252, 244, 0.24), transparent 70%),
+    radial-gradient(430px 360px at 46% 100%, rgba(116, 94, 60, 0.12), transparent 64%);
+}
+
+.corner {
+  position: absolute;
+  z-index: 5;
+  width: 13px;
+  height: 13px;
+  border: 1px solid rgba(42, 42, 40, 0.24);
+}
+
+.corner.tl { top: 20px; left: 20px; border-right: 0; border-bottom: 0; }
+.corner.tr { top: 20px; right: 20px; border-left: 0; border-bottom: 0; }
+.corner.bl { bottom: 20px; left: 20px; border-right: 0; border-top: 0; }
+.corner.br { bottom: 20px; right: 20px; border-left: 0; border-top: 0; }
+
+.stamp {
+  position: absolute;
+  top: 36px;
+  right: 38px;
+  z-index: 5;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(82, 118, 142, 0.58);
+  color: var(--rain);
+  font-family: var(--serif);
+  font-size: 13px;
+  line-height: 1.25;
+  letter-spacing: 0.14em;
+}
+
+.meta {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink-faint);
+  font-size: 11px;
+  font-weight: 300;
+  line-height: 1.5;
+  letter-spacing: 0.24em;
+}
+
+.kicker {
+  position: relative;
+  z-index: 3;
+  margin-top: 54px;
+  color: var(--rain);
+  font-size: 13px;
+  font-weight: 300;
+  letter-spacing: 0.34em;
+}
+
+.title {
+  position: relative;
+  z-index: 3;
+  max-width: 420px;
+  margin-top: 20px;
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 56px;
+  font-weight: 300;
+  line-height: 1.22;
+  letter-spacing: 0.03em;
+}
+
+.title strong {
+  color: #15283a;
+  font-weight: 700;
+}
+
+.rule {
+  position: relative;
+  z-index: 3;
+  width: 54px;
+  height: 1px;
+  margin: 28px 0 26px;
+  background: var(--ink-soft);
+  opacity: 0.42;
+}
+
+.lead {
+  position: relative;
+  z-index: 3;
+  max-width: 420px;
+  color: var(--ink-soft);
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 300;
+  line-height: 1.75;
+}
+
+.notes {
+  position: absolute;
+  z-index: 3;
+  left: 46px;
+  right: 46px;
+  bottom: 44px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.note {
+  min-height: 76px;
+  padding: 13px 12px;
+  border-top: 1px solid var(--rule);
+}
+
+.note b {
+  display: block;
+  margin-bottom: 8px;
+  color: rgba(42, 42, 40, 0.42);
+  font-family: var(--serif);
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.note span {
+  display: block;
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.28;
+}
+
+.note small {
+  display: block;
+  margin-top: 7px;
+  color: var(--ink-faint);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+@media (max-width: 650px) {
+  body { padding: 10px; }
+  .card { width: 100%; height: auto; aspect-ratio: 3 / 4; }
+}
+</style>
+</head>
+<body>
+<main class="card" aria-label="Rain Notes GPT-5.5 任务交付封面">
+  <canvas id="rain" aria-hidden="true"></canvas>
+  <section class="paper">
+    <div class="mist"></div>
+    <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+    <div class="stamp">实测</div>
+    <div class="meta"><span>GPT-5.5 实测</span><span>2026.05</span></div>
+    <p class="kicker">真实任务 / 交付能力</p>
+    <h1 class="title"><strong>GPT-5.5</strong><br>到底强在哪？</h1>
+    <div class="rule"></div>
+    <p class="lead">不是更会说漂亮话，而是更能把真实任务推进到可交付。</p>
+    <section class="notes" aria-label="关键信号">
+      <div class="note"><b>01</b><span>读懂上下文</span><small>先摸清结构</small></div>
+      <div class="note"><b>02</b><span>做出文件</span><small>直接落产物</small></div>
+      <div class="note"><b>03</b><span>继续验收</span><small>预览后再修</small></div>
+    </section>
+  </section>
+</main>
+<script>
+(() => {
+  const canvas = document.getElementById("rain");
+  const ctx = canvas.getContext("2d");
+  const drops = Array.from({ length: 90 }, () => ({ x: 0, y: 0, l: 0, s: 0, o: 0 }));
+  function resize() {
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = Math.round(rect.width * dpr);
+    canvas.height = Math.round(rect.height * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    resetAll(rect.width, rect.height);
+  }
+  function reset(drop, w, h) {
+    drop.x = Math.random() * w;
+    drop.y = Math.random() * h;
+    drop.l = 22 + Math.random() * 54;
+    drop.s = 1.7 + Math.random() * 2.8;
+    drop.o = 0.12 + Math.random() * 0.3;
+  }
+  function resetAll(w, h) { drops.forEach((d) => reset(d, w, h)); }
+  function draw() {
+    const rect = canvas.getBoundingClientRect();
+    ctx.clearRect(0, 0, rect.width, rect.height);
+    ctx.strokeStyle = "rgba(44, 70, 87, 0.32)";
+    ctx.lineWidth = 1;
+    drops.forEach((drop) => {
+      ctx.globalAlpha = drop.o;
+      ctx.beginPath();
+      ctx.moveTo(drop.x, drop.y);
+      ctx.lineTo(drop.x - drop.l * 0.34, drop.y + drop.l);
+      ctx.stroke();
+      drop.x -= drop.s * 0.34;
+      drop.y += drop.s;
+      if (drop.y > rect.height + drop.l || drop.x < -drop.l) reset(drop, rect.width, rect.height);
+    });
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener("resize", resize);
+  resize();
+  draw();
+})();
+</script>
+</body>
+</html>

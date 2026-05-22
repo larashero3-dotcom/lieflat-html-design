@@ -1,0 +1,1137 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GPT-5.5 Dot Matrix Analysis Deck</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #080706;
+        --sand: #a89474;
+        --stone: #2c2824;
+        --light: #f4efe6;
+        --ink: #f0dfbf;
+        --muted: rgba(240, 223, 191, 0.62);
+        --quiet: rgba(226, 205, 165, 0.28);
+        --cyan: #e2cda5;
+        --green: #a89474;
+        --amber: #f0dfbf;
+        --rose: #6f614b;
+        --blue: #283747;
+        --line: rgba(226, 205, 165, 0.22);
+        --surface: rgba(8, 7, 6, 0.48);
+        --surface-soft: rgba(8, 7, 6, 0.38);
+        --stage-vignette: rgba(8, 7, 6, 0.64);
+        --stage-vignette-b: rgba(8, 7, 6, 0.56);
+        --stage-accent-primary: rgba(40, 55, 71, 0.22);
+        --stage-accent-secondary: rgba(168, 148, 116, 0.18);
+        --scanline-color: rgba(226, 205, 165, 0.02);
+        --scanline-vignette: rgba(0, 0, 0, 0.34);
+        --scanline-blend: screen;
+        --scanline-opacity: 0.42;
+        --control-bg: rgba(8, 7, 6, 0.58);
+        --control-fg: rgba(240, 223, 191, 0.68);
+        --control-border: rgba(226, 205, 165, 0.22);
+        --progress-bg: rgba(255, 255, 255, 0.08);
+        --body: "PingFang SC", "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif;
+        --display: "Songti SC", "Noto Serif CJK SC", "STSong", "SimSun", serif;
+        --number: "PingFang SC", "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif;
+      }
+
+      body[data-theme="light"] {
+        color-scheme: light;
+        --bg: #deded9;
+        --sand: #7d796f;
+        --stone: #22211f;
+        --light: #fbfaf6;
+        --ink: #24221f;
+        --muted: rgba(36, 34, 31, 0.66);
+        --quiet: rgba(36, 34, 31, 0.28);
+        --cyan: #3e4744;
+        --green: #716d62;
+        --amber: #1f1e1b;
+        --rose: #8b7c6b;
+        --blue: #8e9694;
+        --line: rgba(36, 34, 31, 0.18);
+        --surface: rgba(246, 244, 239, 0.58);
+        --surface-soft: rgba(246, 244, 239, 0.46);
+        --stage-vignette: rgba(251, 250, 246, 0.5);
+        --stage-vignette-b: rgba(222, 222, 217, 0.64);
+        --stage-accent-primary: rgba(142, 150, 148, 0.16);
+        --stage-accent-secondary: rgba(120, 115, 106, 0.13);
+        --scanline-color: rgba(36, 34, 31, 0.04);
+        --scanline-vignette: rgba(90, 86, 78, 0.09);
+        --scanline-blend: multiply;
+        --scanline-opacity: 0.32;
+        --control-bg: rgba(246, 244, 239, 0.74);
+        --control-fg: rgba(36, 34, 31, 0.72);
+        --control-border: rgba(36, 34, 31, 0.2);
+        --progress-bg: rgba(36, 34, 31, 0.1);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--body);
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+      }
+
+      body {
+        display: grid;
+        place-items: center;
+      }
+
+      .stage {
+        position: relative;
+        width: min(100vw, 177.7778vh);
+        height: min(56.25vw, 100vh);
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 72% 36%, var(--stage-accent-primary), transparent 18%),
+          radial-gradient(circle at 50% 112%, var(--stage-accent-secondary), transparent 34%),
+          linear-gradient(90deg, var(--stage-vignette), transparent 38%, var(--stage-vignette-b)),
+          var(--bg);
+        isolation: isolate;
+      }
+
+      #field {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+      }
+
+      .scanline {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+        background:
+          linear-gradient(var(--scanline-color) 1px, transparent 1px) 0 0 / 100% 0.8rem,
+          radial-gradient(circle at 50% 50%, transparent 0, var(--scanline-vignette) 78%);
+        mix-blend-mode: var(--scanline-blend);
+        opacity: var(--scanline-opacity);
+      }
+
+      .slides {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+      }
+
+      .slide {
+        position: absolute;
+        inset: 0;
+        padding: 6.1vh 6.25vw 6.4vh;
+        opacity: 0;
+        transform: translateY(1.4vh);
+        transition: opacity 360ms ease, transform 360ms ease;
+        pointer-events: none;
+      }
+
+      .slide.active {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      .kicker {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        color: var(--muted);
+        font-size: clamp(0.68rem, 1.1vw, 1.08rem);
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+      }
+
+      .kicker::before {
+        content: "";
+        width: clamp(2.1rem, 5vw, 5.8rem);
+        height: 1px;
+        background: currentColor;
+        opacity: 0.7;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        max-width: 13ch;
+        margin-top: 7.7vh;
+        color: var(--cyan);
+        font-size: clamp(3.9rem, 8.8vw, 10.5rem);
+        line-height: 0.98;
+        font-family: var(--display);
+        font-weight: 400;
+        letter-spacing: 0.02em;
+      }
+
+      .cover-title {
+        margin-top: 5.8vh;
+      }
+
+      .cover-title h1 {
+        margin-top: 0;
+        font-size: clamp(3.4rem, 7.8vw, 9.2rem);
+      }
+
+      .cover-thesis {
+        max-width: 15ch;
+        margin-top: 1.8vh;
+        color: var(--ink);
+        font-family: var(--display);
+        font-size: clamp(2.35rem, 4.85vw, 5.6rem);
+        font-weight: 400;
+        letter-spacing: 0.02em;
+        line-height: 1.06;
+      }
+
+      .cover-deckline {
+        max-width: 50ch;
+        margin-top: 2.6vh;
+        color: var(--muted);
+        font-size: clamp(0.98rem, 1.26vw, 1.34rem);
+        line-height: 1.52;
+        letter-spacing: 0.02em;
+      }
+
+      h2 {
+        max-width: 22ch;
+        margin-top: 3.5vh;
+        color: var(--ink);
+        font-size: clamp(2.2rem, 4.65vw, 5.35rem);
+        line-height: 1.08;
+        font-family: var(--display);
+        font-weight: 400;
+        letter-spacing: 0.02em;
+      }
+
+      h3 {
+        color: var(--ink);
+        font-size: clamp(1rem, 1.45vw, 1.56rem);
+        line-height: 1.14;
+        font-family: var(--display);
+        font-weight: 400;
+        letter-spacing: 0.02em;
+      }
+
+      .subtitle {
+        max-width: 48ch;
+        margin-top: 3.1vh;
+        color: var(--muted);
+        font-size: clamp(1.02rem, 1.5vw, 1.58rem);
+        line-height: 1.45;
+        letter-spacing: 0.02em;
+      }
+
+      .accent-cyan { color: var(--cyan); }
+      .accent-green { color: var(--green); }
+      .accent-amber { color: var(--amber); }
+      .accent-rose { color: var(--rose); }
+
+      .top-code {
+        position: absolute;
+        top: 6.1vh;
+        right: 6.25vw;
+        color: var(--quiet);
+        font-size: clamp(0.68rem, 0.92vw, 0.96rem);
+        text-align: right;
+        line-height: 1.6;
+        white-space: pre;
+      }
+
+      .bottom-note {
+        position: absolute;
+        left: 6.25vw;
+        bottom: 6.2vh;
+        max-width: 46ch;
+        color: var(--muted);
+        font-size: clamp(0.75rem, 1vw, 1.05rem);
+        line-height: 1.55;
+        letter-spacing: 0.02em;
+      }
+
+      .metric-strip {
+        position: absolute;
+        right: 6.25vw;
+        bottom: 6.2vh;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(9rem, 1fr));
+        gap: 1rem;
+        width: min(43vw, 44rem);
+      }
+
+      .metric {
+        min-height: 8.2vh;
+        padding: 1rem 1.05rem;
+        border: 1px solid var(--line);
+        background: var(--surface-soft);
+        backdrop-filter: blur(6px);
+      }
+
+      .metric b {
+        display: block;
+        color: var(--ink);
+        font-size: clamp(1.3rem, 2.3vw, 2.5rem);
+        line-height: 1;
+        font-family: var(--number);
+        font-weight: 500;
+      }
+
+      .metric span {
+        display: block;
+        margin-top: 0.65rem;
+        color: var(--muted);
+        font-size: clamp(0.68rem, 0.9vw, 0.96rem);
+        line-height: 1.25;
+      }
+
+      .panel-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.15rem;
+        margin-top: 7vh;
+      }
+
+      .panel {
+        min-height: 27vh;
+        padding: 1.15rem;
+        border: 1px solid var(--line);
+        background: var(--surface);
+        backdrop-filter: blur(6px);
+      }
+
+      .panel .index {
+        color: var(--quiet);
+        font-size: clamp(0.72rem, 0.95vw, 0.95rem);
+      }
+
+      .panel p {
+        margin-top: 1rem;
+        color: var(--muted);
+        font-size: clamp(0.82rem, 1.05vw, 1.12rem);
+        line-height: 1.55;
+      }
+
+      .spark {
+        margin-top: 1.25rem;
+        color: var(--quiet);
+        font-size: clamp(0.8rem, 1vw, 1.05rem);
+        white-space: nowrap;
+      }
+
+      .benchmark {
+        width: min(62vw, 68rem);
+        margin-top: 5.4vh;
+        border-top: 1px solid var(--line);
+      }
+
+      .row {
+        display: grid;
+        grid-template-columns: 1.35fr 0.7fr 0.7fr 1.2fr;
+        gap: 1rem;
+        align-items: center;
+        min-height: 6.7vh;
+        border-bottom: 1px solid var(--line);
+        color: var(--muted);
+        font-size: clamp(0.8rem, 1.08vw, 1.14rem);
+      }
+
+      .row.head {
+        min-height: 4.6vh;
+        color: var(--quiet);
+        font-size: clamp(0.66rem, 0.9vw, 0.9rem);
+        text-transform: uppercase;
+      }
+
+      .row strong {
+        color: var(--ink);
+        font-size: clamp(1.18rem, 2.05vw, 2.24rem);
+        font-family: var(--number);
+        font-weight: 500;
+      }
+
+      .bar {
+        position: relative;
+        height: 0.54rem;
+        border: 1px solid var(--line);
+      }
+
+      .bar::before {
+        content: "";
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: var(--w);
+        background: linear-gradient(90deg, var(--sand), var(--light));
+      }
+
+      .two-col {
+        display: grid;
+        grid-template-columns: 0.9fr 1.1fr;
+        gap: 5vw;
+        align-items: start;
+        margin-top: 5.6vh;
+      }
+
+      .quote {
+        color: var(--cyan);
+        font-size: clamp(1.35rem, 2.4vw, 2.8rem);
+        line-height: 1.18;
+        font-family: var(--display);
+        font-weight: 400;
+        letter-spacing: 0.02em;
+      }
+
+      .list {
+        display: grid;
+        gap: 1.1rem;
+      }
+
+      .item {
+        display: grid;
+        grid-template-columns: 5.3rem 1fr;
+        gap: 1.1rem;
+        align-items: baseline;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .item .tag {
+        color: var(--quiet);
+        font-size: clamp(0.7rem, 0.9vw, 0.94rem);
+      }
+
+      .item p {
+        color: var(--muted);
+        font-size: clamp(0.9rem, 1.18vw, 1.24rem);
+        line-height: 1.48;
+      }
+
+      .matrix {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1px;
+        margin-top: 5.8vh;
+        width: min(73vw, 81rem);
+        background: var(--line);
+        border: 1px solid var(--line);
+      }
+
+      .cell {
+        min-height: 19vh;
+        padding: 1rem;
+        background: var(--surface);
+        backdrop-filter: blur(6px);
+      }
+
+      .cell b {
+        display: block;
+        color: var(--ink);
+        font-size: clamp(0.98rem, 1.35vw, 1.42rem);
+        line-height: 1.2;
+      }
+
+      .cell p {
+        margin-top: 0.8rem;
+        color: var(--muted);
+        font-size: clamp(0.76rem, 0.98vw, 1rem);
+        line-height: 1.45;
+      }
+
+      .radar {
+        position: absolute;
+        right: 6.25vw;
+        top: 19vh;
+        width: min(28vw, 31rem);
+        display: grid;
+        gap: 1.05rem;
+      }
+
+      .signal {
+        display: grid;
+        grid-template-columns: 8.2rem 1fr 4rem;
+        gap: 1rem;
+        align-items: center;
+        color: var(--muted);
+        font-size: clamp(0.74rem, 0.95vw, 1rem);
+      }
+
+      .signal .line {
+        height: 1px;
+        background: linear-gradient(90deg, var(--muted), transparent);
+      }
+
+      .source-note {
+        position: absolute;
+        right: 6.25vw;
+        bottom: 6.2vh;
+        max-width: 45vw;
+        color: var(--quiet);
+        font-size: clamp(0.62rem, 0.78vw, 0.82rem);
+        line-height: 1.48;
+        text-align: right;
+      }
+
+      .progress {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 4;
+        height: 3px;
+        background: var(--progress-bg);
+      }
+
+      .progress i {
+        display: block;
+        height: 100%;
+        width: 0;
+        background: linear-gradient(90deg, var(--sand), var(--light), var(--sand));
+        transition: width 260ms ease;
+      }
+
+      .nav {
+        position: absolute;
+        right: 1.3vw;
+        bottom: 1.5vh;
+        z-index: 5;
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .nav button {
+        width: 2.25rem;
+        height: 2.25rem;
+        border: 1px solid var(--control-border);
+        border-radius: 999px;
+        background: var(--control-bg);
+        color: var(--control-fg);
+        font: 1.2rem/1 var(--body);
+        cursor: pointer;
+      }
+
+      .nav button:hover {
+        color: var(--ink);
+        border-color: var(--muted);
+      }
+
+      .counter {
+        position: absolute;
+        left: 1.3vw;
+        bottom: 1.55vh;
+        z-index: 5;
+        color: var(--quiet);
+        font-size: 0.78rem;
+      }
+
+      @media (max-width: 820px) {
+        .slide {
+          padding: 4.6vh 5.4vw 5vh;
+        }
+
+        h1 {
+          font-size: clamp(3rem, 17vw, 5.7rem);
+          margin-top: 8.5vh;
+        }
+
+        h2 {
+          max-width: 13ch;
+          font-size: clamp(2.2rem, 10.5vw, 4.3rem);
+        }
+
+        .top-code,
+        .radar {
+          display: none;
+        }
+
+        .metric-strip,
+        .panel-grid,
+        .matrix,
+        .two-col {
+          position: static;
+          width: 100%;
+          grid-template-columns: 1fr;
+        }
+
+        .metric-strip {
+          margin-top: 4vh;
+        }
+
+        .panel-grid,
+        .matrix,
+        .two-col,
+        .benchmark {
+          margin-top: 4vh;
+          width: 100%;
+        }
+
+        .panel,
+        .cell {
+          min-height: auto;
+        }
+
+        .row {
+          grid-template-columns: 1.2fr 0.7fr 0.7fr;
+        }
+
+        .row .bar {
+          display: none;
+        }
+
+        .source-note,
+        .bottom-note {
+          left: 5.4vw;
+          right: 5.4vw;
+          bottom: 5vh;
+          max-width: none;
+          text-align: left;
+        }
+      }
+    </style>
+  </head>
+  <body data-theme="dark">
+    <main class="stage" aria-label="GPT-5.5 analysis deck">
+      <canvas id="field"></canvas>
+      <div class="scanline"></div>
+
+      <section class="slides">
+        <article class="slide active" data-mode="solar" data-hue="cyan">
+          <div class="kicker">OpenAI / GPT-5.5 / 2026-04-23</div>
+          <div class="top-code">MODEL: GPT-5.5
+MODE: AGENTIC WORK
+LENS: CAPABILITY + OPERATING MODEL</div>
+          <div class="cover-title">
+            <h1>GPT-5.5</h1>
+            <p class="cover-thesis">从回答模型，到执行系统。</p>
+            <p class="cover-deckline">
+              这组 deck 分析 GPT-5.5 的真正变化：它不是单纯“更会说”，而是在编码、工具使用、复杂任务推进中，开始减少人类的流程管理负担。
+            </p>
+          </div>
+          <div class="metric-strip">
+            <div class="metric"><b>82.7%</b><span>Terminal-Bench 2.0</span></div>
+            <div class="metric"><b>84.9%</b><span>GDPval wins/ties</span></div>
+            <div class="metric"><b>81.8%</b><span>CyberGym</span></div>
+          </div>
+        </article>
+
+        <article class="slide" data-mode="globe" data-hue="green">
+          <div class="kicker">Thesis</div>
+          <h2>核心变化：模型开始承担“过程”。</h2>
+          <p class="subtitle">
+            过去的模型更像高质量函数调用：你拆任务、控步骤、校验结果。GPT-5.5 的差异在于它更早理解目标，更少请求引导，更稳定地规划、用工具、检查并继续。
+          </p>
+          <div class="radar">
+            <div class="signal"><span>intent lock</span><i class="line"></i><b>high</b></div>
+            <div class="signal"><span>tool precision</span><i class="line"></i><b>high</b></div>
+            <div class="signal"><span>self-check</span><i class="line"></i><b>rising</b></div>
+            <div class="signal"><span>prompt debt</span><i class="line"></i><b>down</b></div>
+          </div>
+          <div class="bottom-note">结论：价值不只来自“单次答案质量”，而来自更少的人工调度、更少的往返、更少的中途失控。</div>
+        </article>
+
+        <article class="slide" data-mode="horizon" data-hue="cyan">
+          <div class="kicker">Benchmark Surface</div>
+          <h2>领先最明显的地方，是需要连续行动的任务。</h2>
+          <div class="benchmark">
+            <div class="row head"><span>Eval</span><span>GPT-5.5</span><span>GPT-5.4</span><span>Signal</span></div>
+            <div class="row"><span>Terminal-Bench 2.0</span><strong class="accent-cyan">82.7%</strong><span>75.1%</span><i class="bar" style="--w:82.7%"></i></div>
+            <div class="row"><span>OSWorld-Verified</span><strong class="accent-green">78.7%</strong><span>75.0%</span><i class="bar" style="--w:78.7%"></i></div>
+            <div class="row"><span>FrontierMath T4</span><strong class="accent-amber">35.4%</strong><span>27.1%</span><i class="bar" style="--w:35.4%"></i></div>
+            <div class="row"><span>CyberGym</span><strong class="accent-rose">81.8%</strong><span>79.0%</span><i class="bar" style="--w:81.8%"></i></div>
+            <div class="row"><span>BrowseComp</span><strong class="accent-cyan">84.4%</strong><span>82.7%</span><i class="bar" style="--w:84.4%"></i></div>
+          </div>
+          <p class="source-note">Source: OpenAI, Introducing GPT-5.5, Apr 23 2026. Numbers are reported eval scores; they are not a universal product-quality guarantee.</p>
+        </article>
+
+        <article class="slide" data-mode="solar" data-hue="amber">
+          <div class="kicker">Capability Map</div>
+          <h2>四个能力区，构成 GPT-5.5 的实际边界。</h2>
+          <div class="panel-grid">
+            <div class="panel">
+              <span class="index">01 / CODING</span>
+              <h3>从补全到代理式修复</h3>
+              <p>更适合跨文件理解、命令行循环、失败后继续定位问题。Terminal-Bench 的跃升说明它在真实开发环境里的动作质量提高。</p>
+              <div class="spark">▂▄▅▆▇█▇▆▅▆▇█</div>
+            </div>
+            <div class="panel">
+              <span class="index">02 / COMPUTER USE</span>
+              <h3>在软件之间移动</h3>
+              <p>重点不是“能点击”，而是能在网页、文档、表格、工具调用之间保持目标一致，减少人类当流程管理员。</p>
+              <div class="spark">▁▃▄▅▆▆▇▇█▇▆▇</div>
+            </div>
+            <div class="panel">
+              <span class="index">03 / KNOWLEDGE WORK</span>
+              <h3>把模糊输入变成产物</h3>
+              <p>产品规格、研究报告、数据解读、客户场景，价值来自把“意图”翻译成计划、证据和可交付格式。</p>
+              <div class="spark">▃▃▄▅▅▆▆▇█▇█▇</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="slide" data-mode="globe" data-hue="rose">
+          <div class="kicker">Prompting Shift</div>
+          <h2>旧提示词需要瘦身，而不是继续堆叠。</h2>
+          <div class="two-col">
+            <p class="quote">从“按步骤服从”转向“按结果负责”。</p>
+            <div class="list">
+              <div class="item"><span class="tag">KEEP</span><p>保留产品契约、成功标准、允许的副作用、证据规则和最终输出形状。</p></div>
+              <div class="item"><span class="tag">DROP</span><p>删除过度流程化的微管理提示。除非路径本身很重要，否则让模型选择执行路线。</p></div>
+              <div class="item"><span class="tag">TUNE</span><p>从 medium reasoning 开始；只有评测证明有收益时才提升到 high 或 xhigh。</p></div>
+            </div>
+          </div>
+          <p class="source-note">Source: OpenAI API docs, Using GPT-5.5. Migration guidance recommends a fresh baseline and outcome-first prompts.</p>
+        </article>
+
+        <article class="slide" data-mode="horizon" data-hue="green">
+          <div class="kicker">Product Implication</div>
+          <h2>GPT-5.5 把“模型选择”变成运营问题。</h2>
+          <div class="matrix">
+            <div class="cell"><b>Instant / low</b><p>轻量问答、分类、短轮语音、低延迟查询。重点是吞吐和成本。</p></div>
+            <div class="cell"><b>Default / medium</b><p>多数生产工作流的起点：质量、可靠性、延迟、成本的平衡点。</p></div>
+            <div class="cell"><b>Thinking / high</b><p>复杂规划、工具密集、长上下文推理；需要明确停止条件。</p></div>
+            <div class="cell"><b>Pro / xhigh</b><p>高价值、低频、难验证任务。适合专家复核，而不是无脑全量替换。</p></div>
+          </div>
+          <div class="bottom-note">建议：用 eval 做路由，而不是用“最强模型”做默认答案。</div>
+        </article>
+
+        <article class="slide" data-mode="solar" data-hue="cyan">
+          <div class="kicker">Economics</div>
+          <h2>真正的成本项，是任务完成总成本。</h2>
+          <div class="two-col">
+            <p class="quote">单 token 价格不是最后账单；失败重试、人工接管、工具乱用、上下文漂移才是隐性成本。</p>
+            <div class="list">
+              <div class="item"><span class="tag">Latency</span><p>OpenAI 称 GPT-5.5 在真实服务中匹配 GPT-5.4 的 per-token latency。</p></div>
+              <div class="item"><span class="tag">Tokens</span><p>同类 Codex 任务使用更少 token，工具密集型流程里节省会被放大。</p></div>
+              <div class="item"><span class="tag">Ops</span><p>少写“补丁式提示词”，多做任务评测、工具权限和失败恢复设计。</p></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="slide" data-mode="globe" data-hue="amber">
+          <div class="kicker">Safety / Control</div>
+          <h2>能力越像执行者，治理就越要像系统工程。</h2>
+          <div class="panel-grid">
+            <div class="panel">
+              <span class="index">PRE-DEPLOY</span>
+              <h3>安全评估前置</h3>
+              <p>系统卡强调完整预部署评估、Preparedness Framework，以及针对网络安全和生物能力的红队测试。</p>
+            </div>
+            <div class="panel">
+              <span class="index">RUN-TIME</span>
+              <h3>权限面要收窄</h3>
+              <p>越会用工具，越需要清楚的工具描述、参数约束、证据规则、确认点和审计日志。</p>
+            </div>
+            <div class="panel">
+              <span class="index">HUMAN</span>
+              <h3>人类变成裁判</h3>
+              <p>人不再逐步指挥，而是定义目标、边界和验收标准；高风险动作仍应由人确认。</p>
+            </div>
+          </div>
+          <p class="source-note">Source: OpenAI GPT-5.5 System Card, Apr 23 2026; updated Apr 24 2026 for API safeguards.</p>
+        </article>
+
+        <article class="slide" data-mode="horizon" data-hue="rose">
+          <div class="kicker">Adoption Playbook</div>
+          <h2>优先切入“多步、可验证、高摩擦”的工作。</h2>
+          <div class="matrix">
+            <div class="cell"><b>Start here</b><p>代码修复、数据清理、资料研究、表格/文档生成、客服复杂工单。</p></div>
+            <div class="cell"><b>Avoid first</b><p>低价值闲聊、极低延迟分类、无验收标准的开放式探索。</p></div>
+            <div class="cell"><b>Measure</b><p>任务完成率、人工接管率、工具错误率、总 tokens、总耗时。</p></div>
+            <div class="cell"><b>Guard</b><p>权限最小化、操作确认、证据引用、回滚路径、敏感任务分级。</p></div>
+          </div>
+          <div class="bottom-note">一句话：不要先迁移所有 prompt；先选择一个“人类一直在补锅”的流程。</div>
+        </article>
+
+        <article class="slide" data-mode="solar" data-hue="green">
+          <div class="kicker">Strategic Read</div>
+          <h2>GPT-5.5 的竞争点，是工作流完成度。</h2>
+          <div class="two-col">
+            <p class="quote">模型正在从“聪明文本层”下沉到“操作系统层”。</p>
+            <div class="list">
+              <div class="item"><span class="tag">For apps</span><p>差异化会来自工具面、上下文记忆、评测数据和人机交接设计。</p></div>
+              <div class="item"><span class="tag">For teams</span><p>Prompt 工程变成 workflow engineering：谁定义目标，谁验证，谁授权。</p></div>
+              <div class="item"><span class="tag">For AI</span><p>下一阶段的体感进步，不是多会聊天，而是更少需要被管理。</p></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="slide" data-mode="globe" data-hue="cyan">
+          <div class="kicker">Closing</div>
+          <h2>不是更大的聊天框，而是更小的管理负担。</h2>
+          <p class="subtitle">
+            GPT-5.5 的产品问题不是“它能不能回答”，而是“它能不能在你少操心的情况下，把复杂工作推进到可验收状态”。
+          </p>
+          <div class="metric-strip">
+            <div class="metric"><b>plan</b><span>理解目标与约束</span></div>
+            <div class="metric"><b>act</b><span>跨工具推进任务</span></div>
+            <div class="metric"><b>verify</b><span>检查结果并收敛</span></div>
+          </div>
+        </article>
+      </section>
+
+      <div class="counter" id="counter">01 / 11</div>
+      <div class="nav">
+        <button id="prev" aria-label="Previous slide" title="Previous">‹</button>
+        <button id="next" aria-label="Next slide" title="Next">›</button>
+      </div>
+      <div class="progress"><i id="progress"></i></div>
+    </main>
+
+    <script>
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const counter = document.getElementById("counter");
+      const progress = document.getElementById("progress");
+      const canvas = document.getElementById("field");
+      const ctx = canvas.getContext("2d");
+      const params = new URLSearchParams(window.location.search);
+
+      function setTheme() {
+        document.body.dataset.theme = "dark";
+      }
+
+      let index = 0;
+      let raf = 0;
+      let w = 0;
+      let h = 0;
+      let dpr = 1;
+
+      const palettes = {
+        dark: {
+          base: [226, 205, 165],
+          secondary: [168, 148, 116],
+          tertiary: [40, 55, 71],
+          glow: [240, 223, 191],
+          cyan: [226, 205, 165],
+          green: [168, 148, 116],
+          amber: [240, 223, 191],
+          rose: [111, 97, 75],
+        },
+        light: {
+          base: [36, 34, 31],
+          secondary: [120, 115, 106],
+          tertiary: [142, 150, 148],
+          glow: [58, 56, 51],
+          cyan: [62, 71, 68],
+          green: [113, 109, 98],
+          amber: [31, 30, 27],
+          rose: [139, 124, 107],
+        },
+      };
+
+      function paletteSet() {
+        return palettes[document.body.dataset.theme] || palettes.dark;
+      }
+
+      function fitCanvas() {
+        const rect = canvas.getBoundingClientRect();
+        dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+        w = Math.round(rect.width);
+        h = Math.round(rect.height);
+        canvas.width = Math.round(w * dpr);
+        canvas.height = Math.round(h * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+
+      function setSlide(next) {
+        index = (next + slides.length) % slides.length;
+        slides.forEach((slide, i) => slide.classList.toggle("active", i === index));
+        counter.textContent = `${String(index + 1).padStart(2, "0")} / ${String(slides.length).padStart(2, "0")}`;
+        progress.style.width = `${((index + 1) / slides.length) * 100}%`;
+      }
+
+      document.getElementById("prev").addEventListener("click", () => setSlide(index - 1));
+      document.getElementById("next").addEventListener("click", () => setSlide(index + 1));
+      window.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowRight" || event.key === "PageDown" || event.key === " ") setSlide(index + 1);
+        if (event.key === "ArrowLeft" || event.key === "PageUp") setSlide(index - 1);
+      });
+      window.addEventListener("resize", fitCanvas);
+
+      function seeded(x, y) {
+        const n = Math.sin(x * 41.13 + y * 97.77) * 43758.5453;
+        return n - Math.floor(n);
+      }
+
+      function rgba(rgb, a) {
+        return `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${a})`;
+      }
+
+      function drawBackground(t, rgb) {
+        ctx.fillStyle = getComputedStyle(document.body).getPropertyValue("--bg").trim() || "#080706";
+        ctx.fillRect(0, 0, w, h);
+
+        ctx.font = `${Math.max(7, w * 0.006)}px "PingFang SC", "Microsoft YaHei", sans-serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        const chars = [".", "·", "+", "×", "%", "#"];
+        const step = Math.max(18, w * 0.017);
+        for (let y = step * 0.5; y < h; y += step) {
+          for (let x = step * 0.5; x < w; x += step) {
+            const r = seeded(Math.round(x), Math.round(y));
+            const pulse = 0.5 + 0.5 * Math.sin(t * 0.0012 + x * 0.008 + y * 0.005);
+            const a = (0.018 + r * 0.032) * pulse;
+            ctx.fillStyle = rgba(rgb, a);
+            ctx.fillText(chars[Math.floor(r * chars.length)], x, y);
+          }
+        }
+      }
+
+      function drawOrbitSystem(t, rgb, alpha = 1) {
+        const cx = w * 0.72;
+        const cy = h * 0.43;
+        const scale = Math.min(w, h);
+        ctx.save();
+        ctx.globalAlpha = alpha;
+
+        ctx.translate(cx, cy);
+        ctx.rotate(-0.28);
+
+        const lanes = [
+          { y: -scale * 0.18, width: scale * 0.54, bow: scale * 0.08 },
+          { y: -scale * 0.05, width: scale * 0.72, bow: -scale * 0.04 },
+          { y: scale * 0.09, width: scale * 0.64, bow: scale * 0.06 },
+          { y: scale * 0.22, width: scale * 0.42, bow: -scale * 0.03 },
+        ];
+
+        lanes.forEach((lane, i) => {
+          ctx.beginPath();
+          ctx.moveTo(-lane.width * 0.5, lane.y);
+          ctx.bezierCurveTo(
+            -lane.width * 0.18,
+            lane.y + lane.bow,
+            lane.width * 0.18,
+            lane.y - lane.bow,
+            lane.width * 0.5,
+            lane.y
+          );
+          ctx.strokeStyle = rgba(paletteSet().base, 0.08 + i * 0.018);
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        });
+
+        for (let i = 0; i < 52; i++) {
+          const lane = lanes[i % lanes.length];
+          const p = ((i * 0.618 + t * 0.000035) % 1);
+          const x = (p - 0.5) * lane.width;
+          const y =
+            lane.y +
+            Math.sin(p * Math.PI * 2 + i) * scale * 0.018 +
+            Math.sin(p * Math.PI) * lane.bow * 0.55;
+          const s = seeded(i * 11, Math.round(t * 0.02));
+          ctx.fillStyle = rgba(s > 0.55 ? rgb : paletteSet().secondary, 0.08 + s * 0.16);
+          ctx.fillRect(x, y, Math.max(1, scale * 0.003), Math.max(1, scale * 0.003));
+        }
+
+        ctx.rotate(0.28);
+        ctx.translate(-cx, -cy);
+
+        const anchor = [
+          [cx - scale * 0.18, cy - scale * 0.1, scale * 0.056, paletteSet().secondary],
+          [cx + scale * 0.03, cy - scale * 0.02, scale * 0.071, rgb],
+          [cx + scale * 0.24, cy + scale * 0.11, scale * 0.046, paletteSet().tertiary],
+          [cx - scale * 0.04, cy + scale * 0.22, scale * 0.038, paletteSet().glow],
+        ];
+
+        ctx.beginPath();
+        anchor.forEach((node, i) => {
+          if (i === 0) ctx.moveTo(node[0], node[1]);
+          else ctx.lineTo(node[0], node[1]);
+        });
+        ctx.strokeStyle = rgba(paletteSet().base, 0.11);
+        ctx.stroke();
+
+        anchor.forEach((node, i) => {
+          drawDotGlobe(node[0], node[1], node[2], node[3], t * 0.00032 * (i % 2 ? -1 : 1), 0.76);
+          ctx.beginPath();
+          ctx.arc(node[0], node[1], node[2] * 1.45, 0, Math.PI * 2);
+          ctx.strokeStyle = rgba(paletteSet().base, 0.08);
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        });
+
+        drawStar(cx - scale * 0.34, cy + scale * 0.04, scale * 0.032, t, paletteSet().glow);
+        ctx.restore();
+      }
+
+      function drawStar(cx, cy, r, t, rgb) {
+        const chars = ["✦", "*", "+", "★"];
+        ctx.font = `${Math.max(8, r * 0.18)}px "PingFang SC", "Microsoft YaHei", sans-serif`;
+        for (let x = -r; x <= r; x += r / 5) {
+          for (let y = -r; y <= r; y += r / 5) {
+            const d = Math.hypot(x, y) / r;
+            if (d > 1) continue;
+            const s = seeded(Math.round(x * 10), Math.round(y * 10));
+            const a = (1 - d * 0.45) * (0.45 + 0.35 * Math.sin(t * 0.004 + s * 8));
+            ctx.fillStyle = rgba(rgb, Math.max(0, a));
+            ctx.fillText(chars[Math.floor(s * chars.length)], cx + x, cy + y);
+          }
+        }
+        const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r * 2.4);
+        g.addColorStop(0, rgba(rgb, 0.13));
+        g.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(cx, cy, r * 2.4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      function pseudoLand(lat, lon) {
+        const v =
+          Math.sin(lon * 0.07 + Math.sin(lat * 0.11) * 2.2) +
+          Math.sin((lat + lon) * 0.043) * 0.72 +
+          Math.cos(lon * 0.031 - lat * 0.065) * 0.54;
+        return v > 0.42 || (lat > 44 && v > -0.05);
+      }
+
+      function drawDotGlobe(cx, cy, r, rgb, rot, alpha = 1, lower = false) {
+        const step = Math.max(6, r / 24);
+        const fontSize = Math.max(6, r / 22);
+        const land = ["#", "*", "×", "+"];
+        const sea = [".", "·", "%", "×"];
+        ctx.font = `${fontSize}px "PingFang SC", "Microsoft YaHei", sans-serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        for (let sx = -r; sx <= r; sx += step) {
+          for (let sy = -r; sy <= r; sy += step) {
+            if (sx * sx + sy * sy > r * r) continue;
+            if (lower && cy + sy < h * 0.41) continue;
+            const lat = Math.asin(-sy / r);
+            const cosLat = Math.cos(lat);
+            const sinLon = sx / (r * cosLat);
+            if (Math.abs(sinLon) > 1) continue;
+            let lon = Math.asin(sinLon) + rot;
+            const latDeg = (lat * 180) / Math.PI;
+            let lonDeg = ((lon * 180) / Math.PI) % 360;
+            if (lonDeg > 180) lonDeg -= 360;
+            if (lonDeg < -180) lonDeg += 360;
+            const l = pseudoLand(latDeg, lonDeg);
+            const s = seeded(Math.round(latDeg * 3), Math.round(lonDeg * 3));
+            ctx.fillStyle = rgba(rgb, (l ? 0.85 : 0.32) * alpha);
+            ctx.fillText((l ? land : sea)[Math.floor(s * 4)], cx + sx, cy + sy);
+          }
+        }
+      }
+
+      function drawDotTerrain(cx, baseY, width, height, rgb, t, alpha = 1) {
+        const step = Math.max(7, width / 108);
+        const fontSize = Math.max(7, width / 126);
+        const left = cx - width / 2;
+        const right = cx + width / 2;
+        const chars = ["×", "+", "#", "%", "·", "*"];
+        ctx.font = `${fontSize}px "PingFang SC", "Microsoft YaHei", sans-serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+        function ridge(nx) {
+          const mesa = 0.54 * Math.exp(-Math.pow((nx - 0.5) / 0.34, 4));
+          const leftRise = 0.24 * Math.exp(-Math.pow((nx - 0.24) / 0.13, 2));
+          const rightPeak = 0.3 * Math.exp(-Math.pow((nx - 0.76) / 0.14, 2));
+          const cut = nx < 0.11 || nx > 0.92 ? -0.22 : 0;
+          const wave = 0.055 * Math.sin(nx * 19 + t * 0.0007) + 0.035 * Math.sin(nx * 43 - t * 0.00045);
+          return baseY - height * (0.16 + mesa + leftRise + rightPeak + cut + wave);
+        }
+
+        for (let y = baseY - height; y <= baseY + height * 0.1; y += step) {
+          for (let x = left; x <= right; x += step) {
+            const nx = (x - left) / width;
+            if (nx < 0 || nx > 1) continue;
+            const top = ridge(nx);
+            if (y < top || y > baseY) continue;
+
+            const depth = (y - top) / Math.max(1, baseY - top);
+            const taper = Math.sin(nx * Math.PI);
+            const density = 0.34 + 0.85 * Math.pow(depth, 0.62) * taper;
+            const s = seeded(Math.round(x * 2), Math.round(y * 2));
+            if (s > density) continue;
+
+            const strata = 0.55 + 0.45 * Math.sin((y - top) * 0.12 + nx * 20 + t * 0.0004);
+            const edgeFade = Math.min(1, depth * 5) * Math.pow(taper, 0.35);
+            const a = (0.2 + 0.62 * strata) * edgeFade * alpha;
+            ctx.fillStyle = rgba(rgb, a);
+            ctx.fillText(chars[Math.floor(s * chars.length)], x, y);
+          }
+        }
+
+        for (let x = left; x <= right; x += step * 0.82) {
+          const nx = (x - left) / width;
+          if (nx < 0.08 || nx > 0.94) continue;
+          const top = ridge(nx);
+          const s = seeded(Math.round(x * 3), Math.round(top * 3));
+          ctx.fillStyle = rgba(rgb, (0.34 + 0.28 * s) * alpha);
+          ctx.fillText(chars[Math.floor(s * chars.length)], x, top);
+          if (s > 0.52) {
+            ctx.fillStyle = rgba(rgb, 0.2 * alpha);
+            ctx.fillText("·", x, top + step * 1.4);
+          }
+        }
+      }
+
+      function drawHorizon(t, rgb) {
+        drawDotTerrain(w * 0.5, h * 1.03, w * 0.9, h * 0.46, rgb, t, 0.78);
+        ctx.beginPath();
+        ctx.moveTo(w * 0.18, h * 0.68);
+        ctx.lineTo(w * 0.82, h * 0.68);
+        ctx.strokeStyle = rgba(rgb, 0.18);
+        ctx.stroke();
+      }
+
+      function drawSideData(t, rgb) {
+        const x = w * 0.87;
+        const x2 = w * 0.94;
+        const labels = ["TASK", "TOOLS", "VERIFY"];
+        ctx.font = `${Math.max(10, w * 0.008)}px "PingFang SC", "Microsoft YaHei", sans-serif`;
+        ctx.textBaseline = "middle";
+        labels.forEach((label, i) => {
+          const y = h * (0.34 + i * 0.105);
+          const v = 0.55 + 0.45 * Math.sin(t * 0.0015 + i * 1.6);
+          ctx.textAlign = "right";
+          ctx.fillStyle = rgba(rgb, 0.42);
+          ctx.fillText(label, x, y);
+          ctx.fillStyle = rgba(rgb, 0.72);
+          ctx.fillText("▁▂▃▄▅▆▇█".slice(0, 3 + Math.floor(v * 5)), x, y + h * 0.035);
+          ctx.textAlign = "right";
+          ctx.fillStyle = rgba(rgb, 0.34);
+          ctx.fillText(`${Math.round(v * 100)}%`, x2, y);
+        });
+      }
+
+      function draw(t) {
+        const active = slides[index];
+        const mode = active.dataset.mode || "solar";
+        const rgb = paletteSet()[active.dataset.hue] || paletteSet().cyan;
+        drawBackground(t, rgb);
+        if (mode === "solar") {
+          drawOrbitSystem(t, rgb, 0.98);
+        } else if (mode === "globe") {
+          drawDotTerrain(w * 0.5, h * 1.02, w * 0.92, h * 0.5, rgb, t, 0.86);
+        } else {
+          drawHorizon(t, rgb);
+        }
+        raf = requestAnimationFrame(draw);
+      }
+
+      const requestedSlide = Number(params.get("slide"));
+      setTheme();
+      fitCanvas();
+      setSlide(Number.isFinite(requestedSlide) ? requestedSlide : 0);
+      raf = requestAnimationFrame(draw);
+    </script>
+  </body>
+</html>

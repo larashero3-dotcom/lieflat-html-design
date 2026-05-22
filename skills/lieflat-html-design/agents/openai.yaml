@@ -1,0 +1,4 @@
+interface:
+  display_name: "Lieflat HTML Design"
+  short_description: "Route requests to Lieflat HTML deck, Xiaohongshu longform, or Xiaohongshu cover skills."
+  default_prompt: "Identify whether the user needs a horizontal HTML deck, a Xiaohongshu longform card, or a Xiaohongshu cover card, then use the matching Lieflat skill. If the user provides only a topic, ask at most one clarifying question or choose the most likely delivery surface."

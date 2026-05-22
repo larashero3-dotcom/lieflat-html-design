@@ -1,0 +1,1205 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GPT 5.5 - HTML Presentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=EB+Garamond:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sand: #a89474;
+      --stone: #2c2824;
+      --sand-50: rgba(168, 148, 116, .5);
+      --stone-50: rgba(44, 40, 36, .5);
+      --light: #f4efe6;
+      --white-soft: rgba(255, 255, 255, .72);
+      --dur: 900ms;
+      --ease: cubic-bezier(.76, 0, .24, 1);
+      --ease-out: cubic-bezier(.25, 1, .5, 1);
+      --body: Arial, sans-serif;
+      --display: "Cormorant Garamond", "EB Garamond", "Times New Roman", serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: var(--sand);
+      color: var(--stone);
+      font-family: var(--body);
+      line-height: 1;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+    }
+
+    body {
+      cursor: grab;
+      user-select: none;
+    }
+
+    body.dragging {
+      cursor: grabbing;
+    }
+
+    img,
+    svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .stage {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .deck {
+      height: 100%;
+      display: flex;
+      will-change: transform;
+      transition: transform var(--dur) var(--ease);
+    }
+
+    .slide {
+      position: relative;
+      flex: 0 0 100vw;
+      width: 100vw;
+      height: 100vh;
+      min-height: 100vh;
+      overflow: hidden;
+      padding: clamp(20px, 3.1vw, 48px);
+      background: var(--sand);
+      color: var(--stone);
+      isolation: isolate;
+    }
+
+    .slide.dark {
+      background: var(--stone);
+      color: var(--sand);
+    }
+
+    .slide.light {
+      background: var(--sand);
+      color: var(--stone);
+    }
+
+    .grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: clamp(12px, 2.2vw, 32px);
+      width: 100%;
+      height: 100%;
+    }
+
+    .v-center {
+      align-self: center;
+    }
+
+    .bottom {
+      align-self: end;
+    }
+
+    .right {
+      text-align: right;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .display,
+    .h1,
+    .h2,
+    .h3,
+    .h4,
+    .h5,
+    .h6 {
+      margin: 0;
+      font-family: var(--display);
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: -.064em;
+    }
+
+    .display {
+      font-size: clamp(88px, 12.2vw, 176px);
+      line-height: .84;
+    }
+
+    .h1 {
+      font-size: clamp(72px, 10vw, 144px);
+      line-height: .84;
+    }
+
+    .h2 {
+      font-size: clamp(52px, 6.7vw, 96px);
+      line-height: .92;
+    }
+
+    .h3 {
+      font-size: clamp(42px, 5vw, 72px);
+      line-height: .89;
+    }
+
+    .h4 {
+      font-size: clamp(32px, 3.9vw, 56px);
+      line-height: 1;
+    }
+
+    .h5 {
+      font-size: clamp(26px, 2.8vw, 40px);
+      line-height: 1;
+    }
+
+    .h6 {
+      font-size: clamp(20px, 1.7vw, 24px);
+      line-height: 1;
+    }
+
+    .p1,
+    .p2,
+    .p3,
+    .p4,
+    .p5,
+    .p6,
+    .eyebrow,
+    .metric-label,
+    .fraction {
+      margin: 0;
+      font-family: var(--body);
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .p1 {
+      font-size: clamp(20px, 2.25vw, 32px);
+      line-height: 1;
+    }
+
+    .p2 {
+      font-size: clamp(18px, 1.7vw, 24px);
+      line-height: 1.18;
+    }
+
+    .p3 {
+      font-size: clamp(15px, 1.4vw, 20px);
+      line-height: 1.2;
+    }
+
+    .p4 {
+      font-size: clamp(13px, 1.12vw, 16px);
+      line-height: 1.5;
+    }
+
+    .p5 {
+      font-size: clamp(11px, .84vw, 12px);
+      line-height: 1.67;
+    }
+
+    .p6,
+    .eyebrow,
+    .metric-label,
+    .fraction {
+      font-size: clamp(9px, .7vw, 10px);
+      line-height: 1.6;
+    }
+
+    .muted {
+      color: currentColor;
+      opacity: .52;
+    }
+
+    .line {
+      height: 1px;
+      width: 100%;
+      background: currentColor;
+      opacity: .42;
+      transform-origin: left;
+      transform: scaleX(0);
+      transition: transform 1.1s var(--ease-out) .18s;
+    }
+
+    .slide.active .line {
+      transform: scaleX(1);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(34px);
+      transition: opacity .9s var(--ease-out), transform .9s var(--ease-out);
+      transition-delay: calc(var(--i, 0) * 80ms + 180ms);
+    }
+
+    .slide.active .reveal {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .mask {
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: bottom;
+    }
+
+    .mask > span {
+      display: inline-block;
+      transform: translateY(110%);
+      transition: transform 1.05s var(--ease);
+      transition-delay: calc(var(--i, 0) * 85ms + 180ms);
+    }
+
+    .slide.active .mask > span {
+      transform: translateY(0);
+    }
+
+    .media {
+      position: relative;
+      overflow: hidden;
+      background: rgba(44, 40, 36, .12);
+    }
+
+    .media img {
+      object-fit: cover;
+      transform: scale(1.02);
+      transition: transform 1.4s var(--ease-out), filter 1.4s var(--ease-out);
+      will-change: transform;
+    }
+
+    .slide.active .media.pan img {
+      transform: scale(1.1) translate3d(-1.5%, 0, 0);
+      transition-duration: 10s;
+    }
+
+    .media.contain img,
+    .media.contain svg {
+      object-fit: contain;
+    }
+
+    .shade::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(44, 40, 36, .62), rgba(44, 40, 36, .1) 35%, rgba(44, 40, 36, .7)),
+        radial-gradient(circle at 50% 54%, transparent 0 36%, rgba(44, 40, 36, .42) 100%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .logo-type {
+      display: inline-flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 0.12em;
+      font-family: "Cormorant Garamond", "EB Garamond", "Palatino Linotype", Palatino, "Times New Roman", serif;
+      font-size: clamp(56px, 7vw, 112px);
+      font-weight: 300;
+      line-height: .88;
+      letter-spacing: 0.012em;
+      text-transform: uppercase;
+      font-synthesis: none;
+      font-variant-numeric: lining-nums tabular-nums;
+      font-feature-settings: "lnum" 1, "tnum" 1;
+    }
+
+    .logo-type span {
+      display: inline-block;
+      line-height: .88;
+    }
+
+    .logo-type .logo-num {
+      position: relative;
+      top: -0.018em;
+      font-variant-numeric: lining-nums tabular-nums;
+      font-feature-settings: "lnum" 1, "tnum" 1;
+    }
+
+    .cover-title-block {
+      display: grid;
+      justify-items: center;
+      gap: clamp(14px, 1.7vw, 22px);
+    }
+
+    .cover-rule {
+      width: clamp(52px, 5.4vw, 72px);
+      height: 1px;
+      background: rgba(168, 148, 116, .82);
+      transform-origin: center;
+    }
+
+    .logo-small {
+      font-family: var(--display);
+      font-size: clamp(26px, 2.4vw, 34px);
+      line-height: .9;
+      letter-spacing: -.07em;
+      text-transform: uppercase;
+    }
+
+    .thin-list {
+      display: grid;
+      gap: clamp(9px, 1vw, 14px);
+    }
+
+    .thin-row {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .number {
+      font-family: var(--display);
+      font-size: clamp(56px, 7.6vw, 110px);
+      line-height: .84;
+      letter-spacing: -.064em;
+      text-transform: uppercase;
+    }
+
+    .number.small {
+      font-size: clamp(42px, 5vw, 72px);
+    }
+
+    .pillless {
+      border-top: 1px solid currentColor;
+      padding-top: clamp(10px, 1vw, 16px);
+    }
+
+    .split-title {
+      grid-column: 1 / 13;
+      align-self: center;
+    }
+
+    .split-title .row {
+      display: flex;
+      gap: .18em;
+      align-items: baseline;
+      justify-content: center;
+      white-space: nowrap;
+    }
+
+    .split-title .row:nth-child(2) {
+      justify-content: flex-end;
+      padding-right: 9vw;
+    }
+
+    .split-title .row:nth-child(3) {
+      justify-content: center;
+      padding-left: 10vw;
+    }
+
+    .overprint {
+      mix-blend-mode: multiply;
+      opacity: .12;
+      position: absolute;
+      z-index: 1;
+      inset: auto -3vw -4vw auto;
+      font-family: var(--display);
+      font-size: 28vw;
+      letter-spacing: -.08em;
+      line-height: .75;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+
+    .grain {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      pointer-events: none;
+      opacity: .17;
+      mix-blend-mode: soft-light;
+      background-image:
+        repeating-radial-gradient(circle at 17% 31%, rgba(255, 255, 255, .9) 0 1px, transparent 1px 3px);
+      background-size: 5px 5px;
+    }
+
+    .progress {
+      position: fixed;
+      z-index: 20;
+      left: clamp(20px, 3.1vw, 48px);
+      right: clamp(20px, 3.1vw, 48px);
+      bottom: clamp(16px, 2.1vw, 32px);
+      display: grid;
+      grid-template-columns: 56px 1fr 56px;
+      gap: 16px;
+      align-items: center;
+      color: inherit;
+      pointer-events: none;
+      mix-blend-mode: difference;
+    }
+
+    .bar {
+      height: 1px;
+      background: rgba(255, 255, 255, .32);
+      transform: translateZ(0);
+    }
+
+    .bar > i {
+      display: block;
+      height: 100%;
+      width: calc(var(--progress, 0) * 100%);
+      background: rgba(255, 255, 255, .9);
+      transition: width var(--dur) var(--ease);
+    }
+
+    .fraction {
+      color: white;
+    }
+
+    .cover-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .cover-content {
+      z-index: 2;
+      grid-column: 2 / 12;
+      align-self: center;
+      display: grid;
+      gap: clamp(28px, 4vw, 72px);
+    }
+
+    .cover-meta {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(16px, 3vw, 48px);
+    }
+
+    .quote {
+      grid-column: 3 / 11;
+      align-self: center;
+    }
+
+    .quote .h5 {
+      text-align: center;
+      text-wrap: balance;
+    }
+
+    .about-title {
+      grid-column: 1 / 5;
+      grid-row: 1;
+      align-self: start;
+    }
+
+    .about-title .h1 {
+      font-size: clamp(54px, 7vw, 100px);
+    }
+
+    .about-copy-left {
+      grid-column: 1 / 4;
+      grid-row: 1;
+      align-self: end;
+    }
+
+    .about-copy-right {
+      grid-column: 10 / 13;
+      grid-row: 1;
+      align-self: end;
+    }
+
+    .about-image {
+      grid-column: 5 / 10;
+      grid-row: 1;
+      align-self: center;
+      height: min(56vh, 43vw);
+    }
+
+    .about-image img {
+      object-position: center;
+    }
+
+    .location-map {
+      grid-column: 1 / 8;
+      align-self: end;
+      height: 52vh;
+      padding: clamp(12px, 1.4vw, 20px);
+      background: rgba(44, 40, 36, .05);
+    }
+
+    .location-copy {
+      grid-column: 8 / 13;
+      align-self: end;
+      display: grid;
+      gap: clamp(18px, 2.4vw, 34px);
+    }
+
+    .season-left,
+    .season-right {
+      position: absolute;
+      inset-block: 0;
+      width: 50%;
+      z-index: 0;
+    }
+
+    .season-left {
+      left: 0;
+    }
+
+    .season-right {
+      right: 0;
+    }
+
+    .season-left::after,
+    .season-right::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(44, 40, 36, .56);
+    }
+
+    .season-content {
+      grid-column: 2 / 12;
+      align-self: center;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(28px, 5vw, 72px);
+      color: var(--sand);
+    }
+
+    .amenity-title {
+      grid-column: 1 / 7;
+      align-self: start;
+    }
+
+    .amenity-title .h2 {
+      font-size: clamp(42px, 5.2vw, 74px);
+      line-height: .94;
+    }
+
+    .amenity-grid {
+      grid-column: 1 / 13;
+      align-self: end;
+      display: grid;
+      grid-template-columns: 1.15fr 1.15fr .85fr .85fr;
+      gap: clamp(12px, 1.7vw, 24px);
+      height: 48vh;
+      margin-bottom: clamp(32px, 4vw, 52px);
+    }
+
+    .amenity {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      align-content: end;
+      padding: clamp(16px, 2vw, 28px);
+      background: var(--stone);
+      color: var(--sand);
+    }
+
+    .amenity img {
+      position: absolute;
+      inset: 0;
+      object-fit: cover;
+      opacity: .72;
+      transform: scale(1.04);
+      transition: transform 8s var(--ease-out);
+    }
+
+    .slide.active .amenity img {
+      transform: scale(1.15);
+    }
+
+    .amenity::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(44, 40, 36, .08), rgba(44, 40, 36, .88));
+    }
+
+    .amenity > *:not(img) {
+      position: relative;
+      z-index: 1;
+    }
+
+    .amenity .h5 {
+      font-size: clamp(22px, 2.4vw, 34px);
+    }
+
+    .timeline {
+      grid-column: 1 / 13;
+      align-self: center;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: clamp(20px, 4vw, 72px);
+    }
+
+    .timeline-item {
+      min-height: 42vh;
+      display: grid;
+      align-content: space-between;
+      border-top: 1px solid currentColor;
+      padding-top: clamp(16px, 1.7vw, 24px);
+    }
+
+    .finance-title {
+      grid-column: 1 / 5;
+      align-self: start;
+    }
+
+    .finance-title .h2 {
+      font-size: clamp(44px, 5.2vw, 76px);
+    }
+
+    .finance-metrics {
+      grid-column: 6 / 13;
+      align-self: center;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: clamp(18px, 3vw, 44px);
+    }
+
+    .metric {
+      min-height: 25vh;
+      display: grid;
+      align-content: space-between;
+      border-top: 1px solid currentColor;
+      padding-top: clamp(14px, 1.5vw, 22px);
+    }
+
+    .apartments-title {
+      grid-column: 1 / 4;
+      grid-row: 1;
+      align-self: start;
+    }
+
+    .apartments-title .h2 {
+      font-size: clamp(52px, 6.5vw, 92px);
+    }
+
+    .apartment-copy {
+      grid-column: 10 / 13;
+      grid-row: 1;
+      align-self: end;
+    }
+
+    .apartment-strip {
+      grid-column: 5 / 10;
+      grid-row: 1;
+      align-self: center;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(12px, 1.7vw, 24px);
+      height: 62vh;
+    }
+
+    .developer-copy {
+      grid-column: 1 / 4;
+      grid-row: 1;
+      align-self: end;
+    }
+
+    .developer-copy .h3 {
+      font-size: clamp(34px, 4.35vw, 62px);
+    }
+
+    .factoids {
+      grid-column: 6 / 13;
+      grid-row: 1;
+      align-self: end;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: clamp(12px, 1.7vw, 24px);
+    }
+
+    .factoid {
+      border-top: 1px solid currentColor;
+      min-height: 32vh;
+      display: grid;
+      align-content: space-between;
+      padding-top: clamp(14px, 1.5vw, 22px);
+    }
+
+    .gallery-mosaic {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      z-index: 0;
+    }
+
+    .gallery-mosaic .media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(44, 40, 36, .42);
+    }
+
+    .gallery-copy {
+      grid-column: 3 / 11;
+      align-self: center;
+      color: var(--sand);
+      display: grid;
+      gap: clamp(22px, 3vw, 48px);
+    }
+
+    .closing-copy {
+      grid-column: 2 / 12;
+      align-self: center;
+      display: grid;
+      gap: clamp(30px, 4vw, 64px);
+    }
+
+    .closing-copy .h2 {
+      font-size: clamp(42px, 5.85vw, 84px);
+    }
+
+    .contact-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(18px, 3vw, 48px);
+    }
+
+    .footer-note {
+      position: absolute;
+      z-index: 5;
+      left: clamp(20px, 3.1vw, 48px);
+      top: clamp(20px, 3.1vw, 48px);
+    }
+
+    @media (max-width: 900px) {
+      .slide {
+        padding: 20px;
+      }
+
+      .grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .cover-content,
+      .quote,
+      .split-title,
+      .amenity-title,
+      .amenity-grid,
+      .timeline,
+      .finance-title,
+      .finance-metrics,
+      .apartments-title,
+      .apartment-strip,
+      .apartment-copy,
+      .developer-copy,
+      .factoids,
+      .gallery-copy,
+      .closing-copy,
+      .location-map,
+      .location-copy,
+      .about-title,
+      .about-copy-left,
+      .about-copy-right,
+      .about-image {
+        grid-column: 1 / 5;
+      }
+
+      .cover-meta,
+      .season-content,
+      .contact-row {
+        grid-template-columns: 1fr;
+      }
+
+      .about-image {
+        grid-row: auto;
+        height: 36vh;
+      }
+
+      .location-map {
+        height: 33vh;
+      }
+
+      .amenity-grid,
+      .apartment-strip,
+      .factoids,
+      .timeline,
+      .finance-metrics {
+        grid-template-columns: 1fr 1fr;
+        height: auto;
+      }
+
+      .amenity,
+      .timeline-item,
+      .factoid,
+      .metric {
+        min-height: 22vh;
+      }
+
+      .split-title .row,
+      .split-title .row:nth-child(2),
+      .split-title .row:nth-child(3) {
+        justify-content: flex-start;
+        padding: 0;
+      }
+
+      .display,
+      .h1 {
+        font-size: clamp(58px, 18vw, 96px);
+      }
+
+      .progress {
+        grid-template-columns: 42px 1fr 42px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" aria-label="GPT 5.5 horizontal presentation">
+    <div class="deck" id="deck">
+      <section class="slide dark active" data-theme="dark">
+        <div class="cover-bg media shade pan"><img src="asterion_assets/earthrise.jpg" alt=""></div>
+        <div class="grain"></div>
+        <div class="grid">
+          <div class="cover-content center">
+            <p class="p3 reveal" style="--i:0">OpenAI / 2026-04-23</p>
+            <div class="cover-title-block">
+              <div class="logo-type reveal" style="--i:1"><span>GPT</span><span class="logo-num">5.5</span></div>
+              <div class="cover-rule reveal" style="--i:2"></div>
+            </div>
+            <div class="cover-meta">
+              <p class="p5 reveal" style="--i:3">Capability<br>Dossier 01</p>
+              <p class="p5 reveal" style="--i:4">Execution<br>System</p>
+              <p class="p5 reveal" style="--i:5">Coding / Tools<br>Complex Work</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide light" data-theme="light">
+        <div class="overprint">01</div>
+        <div class="grid">
+          <div class="quote">
+            <div class="center reveal" style="--i:0">
+              <span class="eyebrow">GPT 5.5 briefing</span>
+            </div>
+            <div style="height:clamp(22px,3vw,48px)"></div>
+            <h2 class="h5 reveal" style="--i:1">This deck analyzes GPT 5.5's real shift: not just better answers, but stronger execution across coding, tool use, and complex task progress with less human process management.</h2>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide light" data-theme="light">
+        <div class="grid">
+          <div class="about-title">
+            <h2 class="h1">
+              <span class="mask"><span style="--i:0">Execution</span></span><br>
+              <span class="mask"><span style="--i:1">System</span></span>
+            </h2>
+            <div style="height:24px"></div>
+            <p class="p3 reveal" style="--i:2">From answer model to execution system</p>
+          </div>
+          <div class="about-image media pan"><img src="asterion_assets/moon_rover.jpg" alt=""></div>
+          <div class="about-copy-left reveal" style="--i:3">
+            <h3 class="h4">Core Shift</h3>
+            <div style="height:22px"></div>
+            <div class="line"></div>
+            <div style="height:22px"></div>
+            <p class="p6">Previous models behaved more like high-quality function calls: you decomposed tasks, controlled steps, and checked results. GPT 5.5 more often understands the goal earlier, plans, uses tools, checks, and continues.</p>
+          </div>
+          <div class="about-copy-right reveal" style="--i:4">
+            <h3 class="h4">Value</h3>
+            <div style="height:22px"></div>
+            <div class="line"></div>
+            <div style="height:22px"></div>
+            <p class="p6">The value is not only single-answer quality. It is fewer handoffs, fewer clarification loops, and less mid-task drift.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide light" data-theme="light">
+        <div class="grid">
+          <div class="split-title">
+            <h2 class="h1">
+              <span class="row"><span class="mask"><span style="--i:0">continuous</span></span></span>
+              <span class="row"><span class="mask"><span style="--i:1">action</span></span></span>
+              <span class="row"><span class="mask"><span style="--i:2">leads</span></span></span>
+            </h2>
+          </div>
+          <div class="location-map media contain reveal" style="--i:4"><img src="asterion_assets/moon_far_side.jpg" alt=""></div>
+          <div class="location-copy reveal" style="--i:5">
+            <p class="p4">GPT 5.5's clearest lead appears in tasks that require persistent action: holding intent, choosing tools, recovering from failures, and checking the result as one chain.</p>
+            <div class="thin-list">
+              <div class="thin-row"><span class="p6 muted">82.7%</span><span class="line"></span><span class="p6">Terminal-Bench 2.0</span></div>
+              <div class="thin-row"><span class="p6 muted">84.9%</span><span class="line"></span><span class="p6">GDPval wins/ties</span></div>
+              <div class="thin-row"><span class="p6 muted">81.8%</span><span class="line"></span><span class="p6">CyberGym</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide dark" data-theme="dark">
+        <div class="season-left media pan"><img src="asterion_assets/artemis_rollout.jpg" alt=""></div>
+        <div class="season-right media pan"><img src="asterion_assets/payload_moon.jpg" alt=""></div>
+        <div class="grain"></div>
+        <div class="grid">
+          <div class="season-content">
+            <div class="reveal" style="--i:0">
+              <p class="p6 muted">Coding</p>
+              <div style="height:18px"></div>
+              <h2 class="h3">from completion to agentic repair</h2>
+              <div style="height:24px"></div>
+              <p class="p6">Better suited to cross-file understanding, command-line loops, and continuing after failure. The Terminal-Bench jump points to stronger action quality in real development environments.</p>
+            </div>
+            <div class="right reveal" style="--i:1">
+              <p class="p6 muted">Computer Use</p>
+              <div style="height:18px"></div>
+              <h2 class="h3">moving between software surfaces</h2>
+              <div style="height:24px"></div>
+              <p class="p6">The point is not merely clicking. It is maintaining goal coherence across pages, documents, spreadsheets, and tool calls so humans do less process management.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide light" data-theme="light">
+        <div class="grid">
+          <div class="amenity-title">
+            <p class="p6 reveal" style="--i:0">Capability map</p>
+            <div style="height:16px"></div>
+            <h2 class="h2 reveal" style="--i:1">four zones define the practical boundary</h2>
+          </div>
+          <div class="amenity-grid">
+            <article class="amenity reveal" style="--i:2">
+              <img src="asterion_assets/artemis_sls.jpg" alt="">
+              <p class="p6 muted">Coding</p>
+              <div style="height:12px"></div>
+              <h3 class="h5">cross-file repair loops</h3>
+            </article>
+            <article class="amenity reveal" style="--i:3">
+              <img src="asterion_assets/apollo16_earthrise.jpg" alt="">
+              <p class="p6 muted">Tools</p>
+              <div style="height:12px"></div>
+              <h3 class="h5">tool-heavy workflows</h3>
+            </article>
+            <article class="amenity reveal" style="--i:4">
+              <p class="p6 muted">Knowledge</p>
+              <div style="height:12px"></div>
+              <h3 class="h5">turn fuzzy input into artifacts</h3>
+            </article>
+            <article class="amenity reveal" style="--i:5">
+              <p class="p6 muted">Prompting</p>
+              <div style="height:12px"></div>
+              <h3 class="h5">outcomes over step obedience</h3>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide dark" data-theme="dark">
+        <div class="grid">
+          <div class="timeline">
+            <div class="timeline-item reveal" style="--i:0">
+              <p class="number">Plan</p>
+              <p class="p3">understand goals<br>and constraints</p>
+            </div>
+            <div class="timeline-item reveal" style="--i:1">
+              <p class="number">Act</p>
+              <p class="p3">move tasks<br>across tools</p>
+            </div>
+            <div class="timeline-item reveal" style="--i:2">
+              <p class="number">Verify</p>
+              <p class="p3">check results<br>and converge</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide light" data-theme="light">
+        <div class="grid">
+          <div class="finance-title">
+            <p class="p6 reveal" style="--i:0">Model indicators</p>
+            <div style="height:16px"></div>
+            <h2 class="h2 reveal" style="--i:1">The cost is total task completion</h2>
+          </div>
+          <div class="finance-metrics">
+            <div class="metric reveal" style="--i:2">
+              <p class="metric-label muted">Terminal-Bench 2.0</p>
+              <p class="number small">82.7%</p>
+            </div>
+            <div class="metric reveal" style="--i:3">
+              <p class="metric-label muted">GDPval wins/ties</p>
+              <p class="number small">84.9%</p>
+            </div>
+            <div class="metric reveal" style="--i:4">
+              <p class="metric-label muted">CyberGym</p>
+              <p class="number small">81.8%</p>
+            </div>
+            <div class="metric reveal" style="--i:5">
+              <p class="metric-label muted">BrowseComp</p>
+              <p class="number small">84.4%</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide dark" data-theme="dark">
+        <div class="grid">
+          <div class="apartments-title">
+            <p class="p6 reveal" style="--i:0">Model routing</p>
+            <div style="height:16px"></div>
+            <h2 class="h2 reveal" style="--i:1">model choice becomes operations</h2>
+          </div>
+          <div class="apartment-strip">
+            <div class="media pan reveal" style="--i:2"><img src="asterion_assets/payload_moon.jpg" alt=""></div>
+            <div class="media pan reveal" style="--i:3"><img src="asterion_assets/moon_rover.jpg" alt=""></div>
+          </div>
+          <div class="apartment-copy reveal" style="--i:4">
+            <p class="p6">Use evals for routing instead of making the strongest model the default. The hidden bill is retries, human takeover, tool misuse, and context drift.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide light" data-theme="light">
+        <div class="grid">
+          <div class="developer-copy reveal" style="--i:0">
+            <p class="p6 muted">Safety / control</p>
+            <div style="height:16px"></div>
+            <h2 class="h3">as capability looks like operation, governance becomes systems engineering</h2>
+            <div style="height:24px"></div>
+            <p class="p6">The more capable the tool use, the more the system needs clear tool descriptions, parameter limits, evidence rules, confirmation points, and audit logs.</p>
+          </div>
+          <div class="factoids">
+            <div class="factoid reveal" style="--i:1">
+              <p class="number small">01</p>
+              <p class="p6">pre-deployment safety evaluation</p>
+            </div>
+            <div class="factoid reveal" style="--i:2">
+              <p class="number small">02</p>
+              <p class="p6">runtime permission narrowing</p>
+            </div>
+            <div class="factoid reveal" style="--i:3">
+              <p class="number small">03</p>
+              <p class="p6">evidence rules and audit logs</p>
+            </div>
+            <div class="factoid reveal" style="--i:4">
+              <p class="number small">04</p>
+              <p class="p6">human confirmation for high-risk actions</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide dark" data-theme="dark">
+        <div class="gallery-mosaic">
+          <div class="media pan"><img src="asterion_assets/earthrise.jpg" alt=""></div>
+          <div class="media pan"><img src="asterion_assets/artemis_sls.jpg" alt=""></div>
+          <div class="media pan"><img src="asterion_assets/launch_spectators.jpg" alt=""></div>
+        </div>
+        <div class="grain"></div>
+        <div class="grid">
+          <div class="gallery-copy center">
+            <p class="p6 reveal" style="--i:0">Adoption playbook</p>
+            <h2 class="h2 reveal" style="--i:1">start with high-friction verifiable work</h2>
+            <p class="p3 reveal" style="--i:2">Code repair, data cleanup, research, document generation, and complex support tickets.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide light" data-theme="light">
+        <div class="footer-note logo-small reveal" style="--i:0">GPT 5.5</div>
+        <div class="grid">
+          <div class="closing-copy center">
+            <h2 class="h2 reveal" style="--i:1">Not a bigger chat box, but a smaller management burden.</h2>
+            <div class="line"></div>
+            <div class="contact-row">
+              <p class="p2 reveal" style="--i:2">GPT 5.5 analysis / 01</p>
+              <p class="p2 reveal" style="--i:3">Workflow completion</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div class="progress" aria-hidden="true">
+    <div class="fraction" id="current">01</div>
+    <div class="bar"><i id="bar"></i></div>
+    <div class="fraction right" id="total">12</div>
+  </div>
+
+  <script>
+    (() => {
+      const deck = document.getElementById("deck");
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const current = document.getElementById("current");
+      const total = document.getElementById("total");
+      const bar = document.getElementById("bar");
+      let index = 0;
+      let wheelLock = false;
+      let startX = 0;
+      let startY = 0;
+      let dragging = false;
+
+      total.textContent = String(slides.length).padStart(2, "0");
+
+      function setTheme() {
+        document.body.style.color = slides[index].dataset.theme === "dark" ? "#a89474" : "#2c2824";
+      }
+
+      function go(next) {
+        index = Math.max(0, Math.min(slides.length - 1, next));
+        deck.style.transform = `translate3d(${-index * 100}vw, 0, 0)`;
+        slides.forEach((slide, i) => slide.classList.toggle("active", i === index));
+        current.textContent = String(index + 1).padStart(2, "0");
+        bar.style.setProperty("--progress", (index + 1) / slides.length);
+        setTheme();
+      }
+
+      function advance(direction) {
+        go(index + direction);
+      }
+
+      window.addEventListener("keydown", (event) => {
+        if (["ArrowRight", "PageDown", " "].includes(event.key)) advance(1);
+        if (["ArrowLeft", "PageUp", "Backspace"].includes(event.key)) advance(-1);
+        if (event.key === "Home") go(0);
+        if (event.key === "End") go(slides.length - 1);
+      });
+
+      window.addEventListener("wheel", (event) => {
+        if (wheelLock) return;
+        const primary = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+        if (Math.abs(primary) < 30) return;
+        wheelLock = true;
+        advance(primary > 0 ? 1 : -1);
+        window.setTimeout(() => {
+          wheelLock = false;
+        }, 720);
+      }, { passive: true });
+
+      window.addEventListener("pointerdown", (event) => {
+        dragging = true;
+        startX = event.clientX;
+        startY = event.clientY;
+        document.body.classList.add("dragging");
+      });
+
+      window.addEventListener("pointerup", (event) => {
+        if (!dragging) return;
+        dragging = false;
+        document.body.classList.remove("dragging");
+        const dx = event.clientX - startX;
+        const dy = event.clientY - startY;
+        if (Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy)) {
+          advance(dx < 0 ? 1 : -1);
+        }
+      });
+
+      window.addEventListener("pointercancel", () => {
+        dragging = false;
+        document.body.classList.remove("dragging");
+      });
+
+      go(0);
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content="Lieflat XHS Longform" />
+<meta name="template-origin" content="Lieflat XHS Longform template">
+<title>Dot Matrix Light 小红书长文模板</title>
+<style>
+  :root{
+    --bg:#deded9;
+    --paper:#fbfaf6;
+    --ink:#24221f;
+    --muted:rgba(36,34,31,.66);
+    --quiet:rgba(36,34,31,.28);
+    --line:rgba(36,34,31,.18);
+    --cyan:#3e4744;
+    --green:#716d62;
+    --rose:#8b7c6b;
+    --blue:#8e9694;
+    --display:"Songti SC","Noto Serif CJK SC","STSong","SimSun",serif;
+    --body:"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",Arial,sans-serif;
+    --mono:"SFMono-Regular","Menlo","Consolas",monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100%}
+  body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:32px;
+    background:
+      radial-gradient(circle at 72% 26%, rgba(142,150,148,.22), transparent 23%),
+      radial-gradient(circle at 50% 112%, rgba(120,115,106,.18), transparent 34%),
+      linear-gradient(90deg, rgba(251,250,246,.5), transparent 38%, rgba(222,222,217,.64)),
+      var(--bg);
+    color:var(--ink);
+    font-family:var(--body);
+    -webkit-font-smoothing:antialiased;
+  }
+  .card{
+    width:600px;
+    height:1000px;
+    max-width:calc(100vw - 24px);
+    position:relative;
+    overflow:hidden;
+    border-radius:10px;
+    background:
+      radial-gradient(circle at 70% 22%, rgba(142,150,148,.16), transparent 28%),
+      linear-gradient(90deg, rgba(36,34,31,.035) 1px, transparent 1px),
+      linear-gradient(180deg, rgba(36,34,31,.03) 1px, transparent 1px),
+      var(--paper);
+    background-size:auto, calc(100% / 12) 100%, 100% calc(100% / 20);
+    border:1px solid rgba(36,34,31,.2);
+    box-shadow:0 25px 50px rgba(60,56,48,.22),0 10px 30px rgba(60,56,48,.18);
+  }
+  #field{position:absolute;inset:0;width:100%;height:100%;z-index:0;opacity:.42}
+  .scan{
+    position:absolute;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    opacity:.32;
+    mix-blend-mode:multiply;
+    background:
+      linear-gradient(rgba(36,34,31,.04) 1px, transparent 1px) 0 0 / 100% .8rem,
+      radial-gradient(circle at 50% 50%, transparent 0, rgba(90,86,78,.09) 78%);
+  }
+  .article{
+    position:relative;
+    z-index:2;
+    height:100%;
+    overflow-y:auto;
+    padding:44px 42px 52px;
+  }
+  .article::-webkit-scrollbar{width:8px}
+  .article::-webkit-scrollbar-track{background:rgba(36,34,31,.05)}
+  .article::-webkit-scrollbar-thumb{background:rgba(36,34,31,.22);border-radius:8px}
+  .top-code{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    color:var(--quiet);
+    font-family:var(--mono);
+    font-size:10px;
+    line-height:1.6;
+    margin-bottom:42px;
+    white-space:pre;
+  }
+  .kicker{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    color:var(--muted);
+    font-size:13px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    margin-bottom:20px;
+  }
+  .kicker::before{
+    content:"";
+    width:64px;
+    height:1px;
+    background:currentColor;
+    opacity:.7;
+  }
+  h1{
+    max-width:10ch;
+    color:var(--cyan);
+    font-family:var(--display);
+    font-size:60px;
+    line-height:1.02;
+    font-weight:400;
+    letter-spacing:.02em;
+    margin-bottom:20px;
+  }
+  .thesis{
+    max-width:14ch;
+    color:var(--ink);
+    font-family:var(--display);
+    font-size:34px;
+    line-height:1.12;
+    letter-spacing:.02em;
+    margin-bottom:24px;
+  }
+  .deckline{
+    max-width:480px;
+    color:var(--muted);
+    font-size:21px;
+    line-height:1.65;
+    letter-spacing:.02em;
+    margin-bottom:34px;
+  }
+  h2{
+    color:var(--ink);
+    font-family:var(--display);
+    font-size:34px;
+    line-height:1.16;
+    font-weight:400;
+    letter-spacing:.02em;
+    margin:44px 0 18px;
+  }
+  h2 span{color:var(--rose)}
+  p{
+    color:var(--muted);
+    font-size:22px;
+    line-height:1.72;
+    letter-spacing:.01em;
+    font-weight:300;
+    margin-bottom:18px;
+  }
+  strong{color:var(--ink);font-weight:600}
+  .matrix{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+    margin:24px 0 30px;
+  }
+  .cell{
+    min-height:126px;
+    padding:15px;
+    border:1px solid var(--line);
+    background:rgba(246,244,239,.62);
+  }
+  .cell b{
+    display:block;
+    color:var(--cyan);
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.08em;
+    margin-bottom:12px;
+  }
+  .cell span{
+    display:block;
+    color:var(--ink);
+    font-family:var(--display);
+    font-size:23px;
+    line-height:1.28;
+    margin-bottom:8px;
+  }
+  .cell small{
+    display:block;
+    color:var(--muted);
+    font-size:15px;
+    line-height:1.55;
+  }
+  .axis{
+    margin:26px 0 32px;
+    padding:20px 0 10px;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .axis-row{
+    display:grid;
+    grid-template-columns:78px 1fr 42px;
+    gap:12px;
+    align-items:center;
+    margin-bottom:14px;
+    color:var(--muted);
+    font-family:var(--mono);
+    font-size:12px;
+  }
+  .track{
+    height:3px;
+    background:rgba(36,34,31,.1);
+  }
+  .track i{
+    display:block;
+    height:100%;
+    background:var(--cyan);
+  }
+  blockquote{
+    margin:30px 0;
+    padding:22px 24px;
+    border:1px solid var(--line);
+    background:rgba(246,244,239,.72);
+    color:var(--ink);
+    font-family:var(--display);
+    font-size:28px;
+    line-height:1.52;
+  }
+  ul{margin:10px 0 24px 20px}
+  li{
+    color:var(--muted);
+    font-size:21px;
+    line-height:1.7;
+    margin-bottom:8px;
+    font-weight:300;
+  }
+  .footer{
+    margin-top:44px;
+    padding-top:18px;
+    border-top:1px solid var(--line);
+    color:var(--quiet);
+    font-family:var(--mono);
+    font-size:10px;
+    line-height:1.7;
+  }
+  @media(max-width:650px){
+    body{padding:10px}
+    .card{width:100%;height:auto;min-height:80vh}
+    .article{height:auto;min-height:80vh;overflow:visible;padding:32px 28px}
+    h1{font-size:44px}
+    .thesis{font-size:28px}
+    p,li{font-size:20px}
+    .matrix{grid-template-columns:1fr}
+    blockquote{font-size:24px}
+  }
+</style>
+</head>
+<body>
+  <main class="card">
+    <canvas id="field"></canvas>
+    <div class="scan"></div>
+    <article class="article">
+      <div class="top-code"><span>MODEL REVIEW FIELD
+XHS LONGFORM</span><span>CODEX / LATEST
+2026.05.21</span></div>
+      <div class="kicker">light dot matrix analysis</div>
+      <h1>Codex 最新版</h1>
+      <div class="thesis">从“回答问题”进入“完成任务”。</div>
+      <p class="deckline">这是一份浅色点阵版实测笔记：看它能不能读上下文、调用工具、预览页面，并把一轮工作收干净。</p>
+
+      <h2><span>01</span> 这次升级的真实体感</h2>
+      <p>我对 Codex 最新版的判断很简单：它不只是写代码更顺，而是更像一个能在本地环境里行动的工作流代理。</p>
+      <p>它会先读项目，再动手；会把模糊需求转成文件；会跑预览，也会根据截图继续修。这种“持续推进”的感觉，比单点答案更重要。</p>
+
+      <div class="matrix">
+        <div class="cell"><b>CONTEXT</b><span>更会读场地</span><small>目录、模板、既有风格，先吸收再行动。</small></div>
+        <div class="cell"><b>TOOLS</b><span>更会用工具</span><small>命令、浏览器、文件、截图，进入闭环。</small></div>
+        <div class="cell"><b>DESIGN</b><span>更能落地</span><small>不是只给建议，而是生成可预览页面。</small></div>
+        <div class="cell"><b>CONTROL</b><span>仍要验收</span><small>最新事实、账号动作、发布权限，人来把关。</small></div>
+      </div>
+
+      <h2><span>02</span> 体感雷达</h2>
+      <div class="axis">
+        <div class="axis-row"><span>READ</span><span class="track"><i style="width:92%"></i></span><span>9.2</span></div>
+        <div class="axis-row"><span>BUILD</span><span class="track"><i style="width:88%"></i></span><span>8.8</span></div>
+        <div class="axis-row"><span>CHECK</span><span class="track"><i style="width:84%"></i></span><span>8.4</span></div>
+        <div class="axis-row"><span>FACT</span><span class="track"><i style="width:76%"></i></span><span>7.6</span></div>
+      </div>
+
+      <h2><span>03</span> 我最推荐的用法</h2>
+      <p>把它当成“会收尾的执行者”，而不是“万能答案机”。你负责定方向和判断，它负责把中间步骤跑完。</p>
+      <ul>
+        <li>给它清楚的产物格式，比如 HTML、报告、长文图、测试结果。</li>
+        <li>给它约束，比如沿用现有模板、不要破坏风格、首屏完整。</li>
+        <li>让它验证，比如打开预览、截图、检查溢出和比例。</li>
+      </ul>
+
+      <blockquote>最好的提示词不是“你怎么看”，而是“请读完上下文，做出一个能验收的版本”。</blockquote>
+
+      <h2><span>04</span> 最后判断</h2>
+      <p>如果你的工作常在代码、内容、网页、文档之间切换，Codex 最新版的存在感会很强。它不能替你做最终判断，但能替你把大量推进工作扛起来。</p>
+      <p>这也是它最像“同事”的地方：不是永远正确，而是能一起把事情做完。</p>
+      <footer class="footer">信息来源： 二〇二六年五月二十一日核对 OpenAI Codex 官方开发者文档。 Dot Matrix Light 小红书长文排版样张.</footer>
+    </article>
+  </main>
+<script>
+(function(){
+  const canvas=document.getElementById("field");
+  const ctx=canvas.getContext("2d");
+  function render(){
+    const rect=canvas.parentElement.getBoundingClientRect();
+    const dpr=Math.min(window.devicePixelRatio||1,2);
+    canvas.width=rect.width*dpr;
+    canvas.height=rect.height*dpr;
+    canvas.style.width=rect.width+"px";
+    canvas.style.height=rect.height+"px";
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.clearRect(0,0,rect.width,rect.height);
+    ctx.fillStyle="rgba(36,34,31,0.16)";
+    const gap=14;
+    for(let y=10;y<rect.height;y+=gap){
+      for(let x=8;x<rect.width;x+=gap){
+        const dx=x-rect.width*0.72;
+        const dy=y-rect.height*0.18;
+        const dist=Math.sqrt(dx*dx+dy*dy);
+        const wave=Math.sin(x*.025+y*.018)+Math.cos(dist*.035);
+        if(wave>1.16 || Math.random()>.992){
+          ctx.beginPath();
+          ctx.arc(x,y,1.1,0,Math.PI*2);
+          ctx.fill();
+        }
+      }
+    }
+  }
+  render();
+  window.addEventListener("resize",render);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content="Lieflat XHS Longform" />
+<meta name="template-origin" content="Lieflat XHS Longform template">
+<title>Geek Report 小红书长文模板</title>
+<style>
+  :root{
+    --frame:#252525;
+    --paper:#e2deda;
+    --ink:#292929;
+    --soft:rgba(41,41,41,.62);
+    --line:rgba(41,41,41,.18);
+    --line-strong:rgba(41,41,41,.36);
+    --red:#eb4e3d;
+    --blue:#7f9cb4;
+    --acid:#c9f044;
+    --terminal:#202020;
+    --terminal-text:#e2deda;
+    --mono:Consolas,"SFMono-Regular",Menlo,Monaco,"Courier New","PingFang SC","Microsoft YaHei",monospace;
+    --sans:"PingFang SC","Microsoft YaHei",Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100%}
+  body{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:32px;
+    background:
+      radial-gradient(circle at 50% 48%, rgba(226,222,218,.09), transparent 48%),
+      repeating-linear-gradient(45deg, rgba(226,222,218,.05) 0 1px, transparent 1px 4px),
+      #262625;
+    color:var(--ink);
+    font-family:var(--mono);
+    -webkit-font-smoothing:antialiased;
+  }
+  .card{
+    width:600px;
+    height:1000px;
+    max-width:calc(100vw - 24px);
+    overflow:hidden;
+    border-radius:8px;
+    background:var(--paper);
+    border:1px solid rgba(226,222,218,.18);
+    box-shadow:0 28px 80px rgba(0,0,0,.45), inset 0 0 54px rgba(0,0,0,.12);
+    position:relative;
+  }
+  .card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    opacity:.18;
+    background:
+      linear-gradient(90deg, rgba(41,41,41,.04) 1px, transparent 1px),
+      linear-gradient(180deg, rgba(41,41,41,.035) 1px, transparent 1px);
+    background-size:calc(100% / 12) 100%,100% calc(100% / 18);
+  }
+  .card::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    opacity:.12;
+    background:repeating-linear-gradient(0deg, rgba(41,41,41,.07) 0 1px, transparent 1px 4px);
+  }
+  .article{
+    position:relative;
+    z-index:1;
+    height:100%;
+    overflow-y:auto;
+    padding:32px;
+  }
+  .article::-webkit-scrollbar{width:8px}
+  .article::-webkit-scrollbar-track{background:rgba(41,41,41,.06)}
+  .article::-webkit-scrollbar-thumb{background:rgba(41,41,41,.28);border-radius:6px}
+  .topbar{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:12px;
+    border:1px solid var(--line-strong);
+    background:rgba(255,255,255,.18);
+    padding:10px 12px;
+    font-size:10px;
+    line-height:1.5;
+    color:var(--soft);
+    letter-spacing:.04em;
+    margin-bottom:24px;
+  }
+  h1{
+    font-size:46px;
+    line-height:1.08;
+    letter-spacing:.02em;
+    color:var(--ink);
+    font-weight:700;
+    text-transform:uppercase;
+    margin:0 0 16px;
+  }
+  .prompt{
+    border:1px solid var(--line-strong);
+    background:var(--terminal);
+    color:var(--terminal-text);
+    padding:18px;
+    margin:22px 0 28px;
+    box-shadow:0 10px 24px rgba(0,0,0,.14);
+  }
+  .prompt b{color:var(--acid);font-weight:700}
+  .prompt p{
+    color:var(--terminal-text);
+    font-size:16px;
+    line-height:1.72;
+    margin:0;
+  }
+  .status{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    border:1px solid var(--line-strong);
+    margin:22px 0 30px;
+  }
+  .status div{
+    padding:13px 12px;
+    border-right:1px solid var(--line);
+  }
+  .status div:last-child{border-right:0}
+  .status span{
+    display:block;
+    font-size:9px;
+    color:var(--soft);
+    margin-bottom:8px;
+  }
+  .status strong{
+    display:block;
+    font-size:22px;
+    color:var(--ink);
+  }
+  h2{
+    font-size:25px;
+    line-height:1.35;
+    font-weight:700;
+    margin:38px 0 14px;
+    padding-top:16px;
+    border-top:1px solid var(--line-strong);
+  }
+  p{
+    font-family:var(--sans);
+    font-size:22px;
+    line-height:1.78;
+    color:#343434;
+    font-weight:300;
+    margin-bottom:18px;
+  }
+  .mono-p{
+    font-family:var(--mono);
+    font-size:15px;
+    line-height:1.72;
+    color:var(--soft);
+  }
+  mark{
+    color:var(--ink);
+    background:var(--acid);
+    padding:1px 5px;
+    font-family:var(--mono);
+  }
+  strong{font-weight:700;color:#111}
+  .test-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+    margin:22px 0 28px;
+  }
+  .test{
+    display:grid;
+    grid-template-columns:72px 1fr auto;
+    gap:12px;
+    align-items:center;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.16);
+    padding:12px;
+  }
+  .tag{
+    color:var(--red);
+    font-size:12px;
+    font-weight:700;
+  }
+  .test b{
+    font-size:15px;
+    line-height:1.35;
+  }
+  .test span:last-child{
+    color:var(--blue);
+    font-size:14px;
+    font-weight:700;
+  }
+  .code{
+    display:block;
+    white-space:pre-wrap;
+    padding:16px;
+    margin:24px 0;
+    background:#202020;
+    color:#e2deda;
+    border:1px solid rgba(0,0,0,.45);
+    font-size:14px;
+    line-height:1.68;
+  }
+  ul{margin:8px 0 22px 20px}
+  li{
+    font-family:var(--sans);
+    font-size:21px;
+    line-height:1.72;
+    color:#343434;
+    font-weight:300;
+    margin-bottom:8px;
+  }
+  .verdict{
+    margin:28px 0;
+    border:2px solid var(--ink);
+    padding:18px;
+    background:rgba(235,78,61,.08);
+  }
+  .verdict p{
+    margin:0;
+    font-size:24px;
+    line-height:1.68;
+    font-weight:400;
+  }
+  .footer{
+    margin-top:42px;
+    padding-top:18px;
+    border-top:1px solid var(--line-strong);
+    font-size:11px;
+    color:var(--soft);
+    line-height:1.7;
+  }
+  @media(max-width:650px){
+    body{padding:10px}
+    .card{width:100%;height:auto;min-height:80vh}
+    .article{height:auto;min-height:80vh;overflow:visible;padding:24px}
+    h1{font-size:36px}
+    p,li{font-size:20px}
+    .status{grid-template-columns:1fr}
+    .status div{border-right:0;border-bottom:1px solid var(--line)}
+    .test{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+  <main class="card">
+    <article class="article">
+      <div class="topbar">
+        <span>RUN_ID: XHS-CODEX-REVIEW / MODE: FIELD TEST</span>
+        <span>2026-05-21</span>
+      </div>
+      <h1>Codex<br>最新版<br>实测报告</h1>
+      <div class="prompt">
+        <p><b>$ task</b> 把一个抽象需求变成可交付文件：读模板、写长文、跑预览、修版式。<br><b>$ result</b> 它不只是“会写”，更像会执行一轮工程流程。</p>
+      </div>
+      <div class="status">
+        <div><span>CONTEXT</span><strong>9.2</strong></div>
+        <div><span>EXECUTION</span><strong>8.8</strong></div>
+        <div><span>QA LOOP</span><strong>8.3</strong></div>
+      </div>
+      <p>这版 Codex 最强的地方，是它会把任务拆进真实环境里做。它会查文件、跑命令、读输出，也会在看到首屏不够干净时继续改。</p>
+      <h2>01 / 不是代码补全，是工作流代理</h2>
+      <p>以前的 AI 编程体验，像你旁边有一个很快的代码片段生成器。新版 Codex 更像一个 agent：它能在本地项目里读上下文、管理步骤、调用工具，并把结果落成文件。</p>
+      <p>这让它适合做那些<mark>中间步骤很多</mark>的任务：重构、迁移、视觉稿、文档、自动化检查。你不用把每一步都拆给它，它会自己维持一条执行线。</p>
+      <h2>02 / 我测了三件事</h2>
+      <div class="test-grid">
+        <div class="test"><span class="tag">TEST A</span><b>读现有风格，不破坏项目语法</b><span>PASS</span></div>
+        <div class="test"><span class="tag">TEST B</span><b>把内容做成可发布的小红书长文</b><span>PASS</span></div>
+        <div class="test"><span class="tag">TEST C</span><b>预览后按截图继续修排版</b><span>PASS</span></div>
+      </div>
+      <p>我最喜欢的是第三点。很多工具停在“生成了”，Codex 更愿意走到“看过了、改过了、能交付”。这才是日常工作里最值钱的部分。</p>
+      <h2>03 / 它的边界也很清楚</h2>
+      <p>它不是事实机器。凡是涉及最新政策、价格、版本、论文或发布状态，都要让它回到官方来源。凡是涉及账号、发布、权限、删除，也应该由人做最后确认。</p>
+      <ul>
+        <li>给它明确目标，不要只给情绪。</li>
+        <li>给它验收标准，例如“首屏不要露出残缺模块”。</li>
+        <li>让它跑检查，而不是只交一段解释。</li>
+        <li>让它先读项目，再开始写。</li>
+      </ul>
+      <code class="code">recommended_prompt = """
+先读现有代码和视觉风格。
+做最小必要改动。
+完成后本地预览并截图检查。
+如果排版不完整，继续修到可交付。
+"""</code>
+      <h2>04 / 结论</h2>
+      <div class="verdict">
+        <p>Codex 最新版的价值，不是替你多写几行代码，而是替你推进一整轮“从需求到文件”的工作。</p>
+      </div>
+      <p>如果你常做项目、内容页、自动化和文档，它会变成一个很顺手的工作台。它不完美，但已经足够像一个会收尾的工程同事。</p>
+      <footer class="footer">信息来源： 二〇二六年五月二十一日核对 OpenAI Codex 官方开发者文档。 Geek Report 小红书长文排版样张.</footer>
+    </article>
+  </main>
+</body>
+</html>

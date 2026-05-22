@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Lieflat XHS Longform">
+<meta name="template-origin" content="Lieflat XHS Longform template">
+<title>晨光轻奢小红书长文 - 小红书长文模板</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Noto+Serif+SC:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#2a1d14;
+  --ink-mid:rgba(42,29,20,.70);
+  --ink-faint:rgba(42,29,20,.48);
+  --ink-fainter:rgba(42,29,20,.32);
+  --line:rgba(42,29,20,.18);
+  --gold:#b48a4a;
+  --gold-soft:rgba(180,138,74,.55);
+  --paper:#ece2d8;
+  --serif:"Cormorant Garamond","EB Garamond","Noto Serif SC","Songti SC",Georgia,serif;
+  --cn-serif:"Noto Serif SC","Songti SC","STSong",serif;
+  --sans:"Noto Sans SC","PingFang SC","Microsoft YaHei",Arial,sans-serif;
+}
+html,body{min-height:100%}
+body{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:32px;
+  background:
+    radial-gradient(ellipse at 18% 18%, rgba(232,178,140,.32), transparent 50%),
+    radial-gradient(ellipse at 82% 72%, rgba(206,148,158,.26), transparent 52%),
+    #34251b;
+  color:var(--ink);
+  font-family:var(--cn-serif);
+  -webkit-font-smoothing:antialiased;
+}
+.card{
+  position:relative;
+  width:600px;
+  height:1000px;
+  max-width:calc(100vw - 24px);
+  overflow:hidden;
+  border-radius:12px;
+  background:var(--paper);
+  box-shadow:
+    0 25px 50px rgba(0,0,0,.40),
+    0 10px 30px rgba(0,10,20,.30),
+    0 5px 15px rgba(0,5,15,.25);
+  isolation:isolate;
+}
+#bg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:0;
+}
+.grain{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+  mix-blend-mode:multiply;
+  opacity:.52;
+}
+.corner{
+  position:absolute;
+  z-index:3;
+  font-family:var(--serif);
+  font-size:9px;
+  line-height:1.65;
+  letter-spacing:.38em;
+  color:var(--ink-faint);
+  text-transform:uppercase;
+  pointer-events:none;
+}
+.corner.tl{top:34px;left:34px}
+.corner.tr{top:34px;right:34px;text-align:right}
+.corner.bl{bottom:24px;left:18px}
+.corner.br{bottom:24px;right:18px;text-align:right}
+.article{
+  position:relative;
+  z-index:2;
+  height:100%;
+  overflow-y:auto;
+  padding:72px 50px 88px;
+}
+.article::-webkit-scrollbar{width:8px}
+.article::-webkit-scrollbar-track{background:rgba(42,29,20,.06)}
+.article::-webkit-scrollbar-thumb{background:rgba(180,138,74,.45);border-radius:8px}
+.article-head{
+  text-align:center;
+  margin-bottom:30px;
+}
+.kicker{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  margin-bottom:18px;
+  font-family:var(--cn-serif);
+  font-size:13px;
+  line-height:1;
+  color:var(--gold);
+  letter-spacing:.42em;
+  white-space:nowrap;
+}
+.kicker::before,
+.kicker::after{
+  content:"";
+  width:34px;
+  height:1px;
+  background:var(--gold-soft);
+}
+h1{
+  font-family:var(--cn-serif);
+  font-size:40px;
+  line-height:1.18;
+  color:var(--ink);
+  font-weight:600;
+  letter-spacing:0;
+  margin-bottom:16px;
+}
+h1 .latin{
+  display:block;
+  font-family:var(--serif);
+  font-size:66px;
+  line-height:.95;
+  font-weight:300;
+  font-style:italic;
+  letter-spacing:.01em;
+}
+h1 .cn-title{
+  display:block;
+  margin-top:8px;
+}
+h1 .gold{
+  color:var(--gold);
+}
+.subtitle{
+  font-family:var(--cn-serif);
+  font-size:22px;
+  line-height:1.7;
+  color:var(--ink-mid);
+  max-width:430px;
+  margin:0 auto 18px;
+}
+.gold-rule{
+  width:56px;
+  height:1px;
+  background:var(--gold);
+  margin:20px auto 0;
+}
+h2{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-family:var(--cn-serif);
+  font-size:26px;
+  line-height:1.35;
+  color:var(--ink);
+  font-weight:600;
+  margin:38px 0 16px;
+}
+h2::before{
+  content:attr(data-num);
+  flex:0 0 auto;
+  min-width:30px;
+  font-family:var(--serif);
+  font-size:18px;
+  line-height:1;
+  font-style:italic;
+  font-weight:400;
+  color:var(--gold);
+}
+h2::after{
+  content:"";
+  flex:1;
+  height:1px;
+  background:var(--line);
+}
+.article-head + h2{margin-top:0}
+h3{
+  font-family:var(--cn-serif);
+  font-size:22px;
+  line-height:1.45;
+  color:#2c3e50;
+  font-weight:600;
+  margin:30px 0 15px;
+}
+p{
+  font-family:var(--cn-serif);
+  font-size:24px;
+  line-height:1.8;
+  color:rgba(42,29,20,.76);
+  font-weight:300;
+  margin-bottom:20px;
+}
+strong{
+  color:#000;
+  font-weight:600;
+}
+em{
+  color:#000;
+  font-style:normal;
+}
+mark{
+  background:#fff2a8;
+  color:#000;
+  font-weight:700;
+  border-bottom:2px solid var(--gold);
+  border-radius:4px;
+  padding:2px 6px;
+}
+blockquote{
+  position:relative;
+  margin:28px 0;
+  padding:18px 24px;
+  border-top:1px solid var(--gold-soft);
+  border-bottom:1px solid var(--gold-soft);
+  border-left:0;
+  background:rgba(255,249,240,.20);
+  font-family:var(--cn-serif);
+  font-size:24px;
+  line-height:1.8;
+  color:var(--ink);
+  font-style:normal;
+  text-align:center;
+}
+ul{
+  margin:8px 0 24px 20px;
+}
+li{
+  font-size:22px;
+  line-height:1.75;
+  color:#333;
+  font-weight:300;
+  margin-bottom:8px;
+}
+.note{
+  margin:28px 0;
+  padding:22px 24px;
+  border:1px solid var(--line);
+  background:
+    linear-gradient(135deg,rgba(255,250,244,.34),rgba(236,212,200,.20));
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);
+}
+.note p{
+  margin-bottom:0;
+}
+.footer{
+  margin-top:44px;
+  padding-top:18px;
+  border-top:1px solid var(--line);
+  font-family:var(--sans);
+  font-size:14px;
+  line-height:1.8;
+  color:var(--ink-faint);
+}
+@media(max-width:650px){
+  body{padding:10px}
+  .card{width:100%;height:auto;min-height:80vh}
+  .corner{display:none}
+  .article{height:auto;min-height:80vh;overflow:visible;padding:34px 30px}
+  h1{font-size:36px}
+  h1 .latin{font-size:54px}
+  h2{font-size:24px}
+  p,.subtitle,blockquote{font-size:20px}
+  li{font-size:20px}
+}
+</style>
+</head>
+<body>
+<main class="card">
+  <canvas id="bg"></canvas>
+  <div class="grain"></div>
+  <div class="corner tl">晨光<br>测评</div>
+  <div class="corner tr">二〇二六<br>五月</div>
+  <div class="corner bl">小红书<br>长文</div>
+  <div class="corner br">卷一</div>
+  <article class="article">
+    <header class="article-head">
+      <div class="kicker">测评手记</div>
+      <h1><span class="latin">Codex</span><span class="cn-title"><span class="gold">最新</span>版测评</span></h1>
+      <p class="subtitle">真正拉开差距的，不是它会不会写，而是它能不能把一件事做到收尾。</p>
+      <div class="gold-rule"></div>
+    </header>
+
+    <h2 data-num="Ⅰ">先说结论</h2>
+    <p>这次我对 Codex 最新版的体感很明确：它更像一个已经坐进项目里的协作者，而不是站在项目外面给建议的人。</p>
+    <p>你给它一个模糊需求，它会先读上下文，找已有文件、设计风格、技术边界和验收标准。等它真正动手时，产物往往不是孤零零的一段内容，而是能接进当前项目的结果。</p>
+    <p>这点对内容工作也很重要。小红书长文、网页、报告、文档，最怕的是每一段都能看，但拼在一起不像同一个东西。Codex 最新版的优势，恰好是能把风格、结构和落地动作放在同一条线上处理。</p>
+
+    <h2 data-num="Ⅱ">它变强的地方</h2>
+    <p>第一是上下文感。以前让工具改页面，经常会得到一版“好看但不属于这里”的设计。现在 Codex 会更主动地看原模板，看文件命名，看已有字体和配色，再决定怎么改。</p>
+    <p>第二是收尾能力。它不只是写出代码或排版，还会去跑预览、看截图、检查字号、确认滚动高度，发现不对再继续修。这个过程很像把一个草稿慢慢推到可交付。</p>
+    <p>第三是任务形态更完整。官方文档里，Codex 已经不只是本地命令行工具，也覆盖桌面应用、编辑器、云端任务和并行工作流。也就是说，它越来越像一个工作台，而不是一个单点工具。</p>
+
+    <blockquote>我的实际感受是：越是步骤多、需要反复校准的任务，Codex 越能显出价值。</blockquote>
+
+    <h2 data-num="Ⅲ">我会怎么用它</h2>
+    <p>我会把 Codex 用在那些目标明确、过程复杂、需要反复验证的事情上。比如读一个项目，做一版页面，根据反馈改排版，再重新截图确认效果。</p>
+    <ul>
+      <li>让它处理已有项目，而不是只在空白处生成灵感。</li>
+      <li>给它清楚的风格边界，例如保留配色、字体、动效和版式气质。</li>
+      <li>给它可验收的终点，例如首屏像长文，不像幻灯片。</li>
+    </ul>
+
+    <h2 data-num="Ⅳ">但它不是自动正确</h2>
+    <p>我不会把 Codex 当成完全不需要盯的机器。它会很努力地推进，但它有时也会把“看起来完整”误判成“真的符合要求”。</p>
+    <p>所以使用它时，人要负责判断方向、指出偏差、明确哪些东西必须保留。比如这次排版，如果我只说做得高级，它可能会往封面或幻灯片方向走；但如果我说这是小红书长文，要按文章阅读节奏排，它就能继续收回来。</p>
+
+    <div class="note">
+      <p><mark>一句话结论</mark>：Codex 最新版最值得测的不是生成能力，而是它能不能理解现场、持续修正、最后把东西交到你手上。</p>
+    </div>
+
+    <h2 data-num="Ⅴ">最后判断</h2>
+    <p>如果你的工作经常在代码、内容、网页和文档之间来回切换，Codex 最新版会明显降低中间损耗。它不是替你做审美和判断，而是把那些可执行、可检查、可迭代的步骤接过去。</p>
+    <p>我觉得它最适合的角色，是一个能长期待在项目里的执行型搭档。你负责说清楚什么算好，它负责把通往“好”的很多小步骤一件件做完。</p>
+
+    <footer class="footer">信息来源：二〇二六年五月二十一日核对 OpenAI Codex 官方开发者文档。</footer>
+  </article>
+</main>
+
+<script>
+(function(){
+  const canvas = document.getElementById('bg');
+  const gl = canvas.getContext('webgl', { antialias:true, alpha:false })
+        || canvas.getContext('experimental-webgl', { antialias:true, alpha:false });
+  if(!gl){
+    canvas.style.background =
+      'radial-gradient(ellipse at 15% 25%, rgba(232,178,140,0.42) 0%, transparent 55%),' +
+      'radial-gradient(ellipse at 82% 72%, rgba(206,148,158,0.38) 0%, transparent 55%),' +
+      'rgb(236,226,216)';
+    return;
+  }
+  const VS=`attribute vec2 a_pos;void main(){gl_Position=vec4(a_pos,0.0,1.0);}`;
+  const FS=`
+    precision highp float;
+    uniform vec2 u_res;
+    uniform float u_time;
+    uniform vec3 u_c1,u_c2,u_bg;
+    vec3 _m3(vec3 x){return x-floor(x*(1./289.))*289.;}
+    vec4 _m4(vec4 x){return x-floor(x*(1./289.))*289.;}
+    vec4 _p(vec4 x){return _m4(((x*34.)+1.)*x);}
+    vec4 _ti(vec4 r){return 1.79284291400159-0.85373472095314*r;}
+    float snoise(vec3 v){
+      const vec2 C=vec2(1./6.,1./3.);
+      const vec4 D=vec4(0.,.5,1.,2.);
+      vec3 i=floor(v+dot(v,C.yyy));
+      vec3 x0=v-i+dot(i,C.xxx);
+      vec3 g=step(x0.yzx,x0.xyz),l=1.-g;
+      vec3 i1=min(g.xyz,l.zxy),i2=max(g.xyz,l.zxy);
+      vec3 x1=x0-i1+C.x,x2=x0-i2+C.y,x3=x0-D.y;
+      i=_m3(i);
+      vec4 p=_p(_p(_p(i.z+vec4(0.,i1.z,i2.z,1.))+i.y+vec4(0.,i1.y,i2.y,1.))+i.x+vec4(0.,i1.x,i2.x,1.));
+      float n_=.142857142857;
+      vec3 ns=n_*D.wyz-D.xzx;
+      vec4 j=p-49.*floor(p*ns.z*ns.z);
+      vec4 x_=floor(j*ns.z),y_=floor(j-7.*x_);
+      vec4 x=x_*ns.x+ns.yyyy,y=y_*ns.x+ns.yyyy;
+      vec4 h=1.-abs(x)-abs(y);
+      vec4 b0=vec4(x.xy,y.xy),b1=vec4(x.zw,y.zw);
+      vec4 s0=floor(b0)*2.+1.,s1=floor(b1)*2.+1.;
+      vec4 sh=-step(h,vec4(0.));
+      vec4 a0=b0.xzyw+s0.xzyw*sh.xxyy,a1=b1.xzyw+s1.xzyw*sh.zzww;
+      vec3 p0=vec3(a0.xy,h.x),p1=vec3(a0.zw,h.y),p2=vec3(a1.xy,h.z),p3=vec3(a1.zw,h.w);
+      vec4 nr=_ti(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3)));
+      p0*=nr.x;p1*=nr.y;p2*=nr.z;p3*=nr.w;
+      vec4 m=max(.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.);
+      m=m*m;
+      return 42.*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));
+    }
+    void main(){
+      vec2 uv=gl_FragCoord.xy/u_res;
+      uv.y=1.-uv.y;
+      float n1=snoise(vec3(uv*1.7,u_time*.16));
+      float n2=snoise(vec3(uv*3.3+1.7,u_time*.11+4.5));
+      float n3=snoise(vec3(uv*6.8+3.2,u_time*.06+9.0));
+      float b=clamp(n1*.55+n2*.28+n3*.17,-.99,.99)*.5+.5;
+      float alpha=smoothstep(.32,.58,b);
+      vec3 nc=mix(u_c1/255.,u_c2/255.,smoothstep(.30,.70,b));
+      vec3 col=mix(u_bg/255.,nc,alpha*.30+.04);
+      float vg=1.-.12*length((uv-.5)*vec2(1.4,.9));
+      col*=vg;
+      gl_FragColor=vec4(col,1.);
+    }`;
+  function sh(type,src){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);return s;}
+  const prog=gl.createProgram();
+  gl.attachShader(prog,sh(gl.VERTEX_SHADER,VS));
+  gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,FS));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  const buf=gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+  const loc=gl.getAttribLocation(prog,'a_pos');
+  gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+  const U={
+    res:gl.getUniformLocation(prog,'u_res'),
+    time:gl.getUniformLocation(prog,'u_time'),
+    c1:gl.getUniformLocation(prog,'u_c1'),
+    c2:gl.getUniformLocation(prog,'u_c2'),
+    bg:gl.getUniformLocation(prog,'u_bg')
+  };
+  const C1=[228,175,138], C2=[200,152,158], BG=[236,226,216];
+  function resize(){
+    const r=canvas.parentElement.getBoundingClientRect();
+    const dpr=Math.min(window.devicePixelRatio||1,2);
+    canvas.width=Math.max(1,Math.floor(r.width*dpr));
+    canvas.height=Math.max(1,Math.floor(r.height*dpr));
+    canvas.style.width=r.width+'px';
+    canvas.style.height=r.height+'px';
+    gl.viewport(0,0,canvas.width,canvas.height);
+  }
+  resize();
+  addEventListener('resize',resize);
+  const t0=performance.now();
+  function draw(){
+    const t=(performance.now()-t0)/1000;
+    gl.uniform2f(U.res,canvas.width,canvas.height);
+    gl.uniform1f(U.time,t);
+    gl.uniform3fv(U.c1,C1);
+    gl.uniform3fv(U.c2,C2);
+    gl.uniform3fv(U.bg,BG);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>

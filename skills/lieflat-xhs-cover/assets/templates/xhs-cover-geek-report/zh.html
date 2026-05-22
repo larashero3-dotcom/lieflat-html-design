@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content="Lieflat XHS Cover" />
+<meta name="template-origin" content="Lieflat XHS Cover template">
+<title>Geek Report 封面</title>
+<style>
+:root {
+  --frame: #252525;
+  --paper: #e2deda;
+  --ink: #292929;
+  --soft: rgba(41, 41, 41, 0.58);
+  --line: rgba(41, 41, 41, 0.18);
+  --line-strong: rgba(41, 41, 41, 0.36);
+  --red: #eb4e3d;
+  --blue: #8ba5ba;
+  --acid: #c9f044;
+  --terminal: #202020;
+  --terminal-text: #e2deda;
+  --sans: "PP Neue Montreal", "Inter", "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --mono: Consolas, "SFMono-Regular", Menlo, Monaco, "Courier New", monospace;
+  --mono-cjk: "Hiragino Sans GB", "STHeiti", "SFMono-Regular", Menlo, Monaco, Consolas, "PingFang SC", "Microsoft YaHei", monospace;
+}
+
+* { box-sizing: border-box; }
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  background: var(--frame);
+  color: var(--terminal-text);
+  font-family: var(--mono-cjk);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+p {
+  margin: 0;
+  letter-spacing: 0;
+}
+
+.card {
+  position: relative;
+  width: 600px;
+  height: 800px;
+  max-width: calc(100vw - 24px);
+  overflow: hidden;
+  padding: 48px 44px;
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 50% 48%, rgba(226, 222, 218, 0.09), transparent 48%),
+    repeating-linear-gradient(45deg, rgba(226, 222, 218, 0.05) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.12) 0 1px, transparent 1px 5px),
+    #262625;
+  box-shadow:
+    0 28px 80px rgba(0, 0, 0, 0.42),
+    0 0 0 1px rgba(0, 0, 0, 0.36),
+    inset 0 1px 0 rgba(226, 222, 218, 0.1);
+  isolation: isolate;
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  opacity: 0.1;
+  background:
+    repeating-linear-gradient(45deg, rgba(226, 222, 218, 0.08) 0 1px, transparent 1px 5px),
+    repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.1) 0 1px, transparent 1px 6px);
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(226, 222, 218, 0.12);
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(226, 222, 218, 0.035) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(226, 222, 218, 0.025) 1px, transparent 1px),
+    radial-gradient(circle at 50% 50%, transparent 52%, rgba(0, 0, 0, 0.24) 100%),
+    var(--terminal);
+  background-size: calc(100% / 12) 100%, 100% calc(100% / 10), auto;
+  box-shadow:
+    0 20px 46px rgba(0, 0, 0, 0.38),
+    inset 0 0 76px rgba(0, 0, 0, 0.28);
+}
+
+/* The source deck alternates terminal and paper layers; the cover exposes both in one frame. */
+.paper {
+  position: absolute;
+  inset: 48px 34px 116px;
+  padding: 28px 30px;
+  border: 1px solid rgba(41, 41, 41, 0.32);
+  border-radius: 8px;
+  color: var(--ink);
+  background:
+    linear-gradient(90deg, rgba(41, 41, 41, 0.035) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(41, 41, 41, 0.03) 1px, transparent 1px),
+    radial-gradient(circle at 50% 38%, rgba(255, 255, 255, 0.38), transparent 58%),
+    var(--paper);
+  background-size: calc(100% / 10) 100%, 100% calc(100% / 8), auto;
+  box-shadow:
+    0 20px 46px rgba(0, 0, 0, 0.34),
+    inset 0 0 54px rgba(0, 0, 0, 0.13),
+    inset 0 1px 1px rgba(255, 255, 255, 0.42);
+}
+
+.paper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.13;
+  background:
+    repeating-linear-gradient(0deg, rgba(41, 41, 41, 0.04) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(90deg, rgba(41, 41, 41, 0.025) 0 1px, transparent 1px 5px);
+}
+
+.bar {
+  position: absolute;
+  z-index: 3;
+  top: 16px;
+  left: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  color: rgba(226, 222, 218, 0.64);
+  font-family: var(--mono);
+  font-size: 10px;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.label {
+  display: inline-block;
+  padding: 5px 8px;
+  border: 1px solid rgba(226, 222, 218, 0.18);
+  color: var(--acid);
+}
+
+.kicker {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  color: var(--soft);
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.title {
+  position: relative;
+  z-index: 2;
+  max-width: 390px;
+  margin-top: 44px;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 58px;
+  font-weight: 800;
+  line-height: 1.02;
+}
+
+.title span {
+  color: var(--red);
+}
+
+.subtitle {
+  position: relative;
+  z-index: 2;
+  max-width: 385px;
+  margin-top: 20px;
+  color: var(--soft);
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 1.58;
+}
+
+.terminal {
+  position: absolute;
+  z-index: 3;
+  left: 32px;
+  right: 32px;
+  bottom: 28px;
+  padding: 14px 16px;
+  border: 1px solid rgba(226, 222, 218, 0.2);
+  background: #171717;
+  color: var(--terminal-text);
+  box-shadow: 6px 6px 0 rgba(201, 240, 68, 0.13);
+}
+
+.terminal b {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--acid);
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.2;
+}
+
+.terminal p {
+  color: rgba(226, 222, 218, 0.78);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.metrics {
+  position: absolute;
+  z-index: 3;
+  left: 34px;
+  right: 34px;
+  bottom: 34px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.metric {
+  min-height: 64px;
+  padding: 11px 10px;
+  border: 1px solid rgba(226, 222, 218, 0.16);
+  background: rgba(226, 222, 218, 0.04);
+}
+
+.metric b {
+  display: block;
+  color: var(--acid);
+  font-family: var(--mono);
+  font-size: 18px;
+  line-height: 1;
+}
+
+.metric span {
+  display: block;
+  margin-top: 8px;
+  color: rgba(226, 222, 218, 0.62);
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+@media (max-width: 650px) {
+  body { padding: 10px; }
+  .card { width: 100%; height: auto; aspect-ratio: 3 / 4; padding: 28px 24px; }
+}
+</style>
+</head>
+<body>
+<main class="card" aria-label="Geek Report 封面">
+  <section class="inner">
+    <header class="bar"><span class="label">GEEK REPORT</span><span>LOCAL WORKBENCH / 2026.05</span></header>
+    <section class="paper" aria-label="主标题">
+      <div class="kicker"><span>技术测评</span><span>本地工作流</span></div>
+      <h1 class="title"><span>Codex</span><br>能把任务做到哪一步？</h1>
+      <p class="subtitle">从读项目、写代码、开预览到修细节，观察一个本地 AI 工作流的完整闭环。</p>
+      <div class="terminal">
+        <b>$ run real_workflow_check</b>
+        <p>结论：它的价值不在单次回答，而在持续推进、落地文件、完成验收。</p>
+      </div>
+    </section>
+    <section class="metrics" aria-label="信号面板">
+      <div class="metric"><b>01</b><span>读懂结构</span></div>
+      <div class="metric"><b>02</b><span>动手实现</span></div>
+      <div class="metric"><b>03</b><span>验收修正</span></div>
+    </section>
+  </section>
+</main>
+</body>
+</html>

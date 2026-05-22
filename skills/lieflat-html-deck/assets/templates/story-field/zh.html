@@ -1,0 +1,1521 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GPT 5.5 - 图像叙事 HTML 演示</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=EB+Garamond:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sand: #a89474;
+      --stone: #2c2824;
+      --sand-50: rgba(168, 148, 116, .5);
+      --stone-50: rgba(44, 40, 36, .5);
+      --light: #f4efe6;
+      --white-soft: rgba(255, 255, 255, .72);
+      --dur: 900ms;
+      --ease: cubic-bezier(.76, 0, .24, 1);
+      --ease-out: cubic-bezier(.25, 1, .5, 1);
+      --body: "PingFang SC", "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif;
+      --display: "Cormorant Garamond", "EB Garamond", "Songti SC", "Noto Serif CJK SC", "STSong", "Times New Roman", serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: var(--sand);
+      color: var(--stone);
+      font-family: var(--body);
+      line-height: 1;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+    }
+
+    body {
+      cursor: grab;
+      user-select: none;
+    }
+
+    body.dragging {
+      cursor: grabbing;
+    }
+
+    img,
+    svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .stage {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .deck {
+      height: 100%;
+      display: flex;
+      will-change: transform;
+      transition: transform var(--dur) var(--ease);
+    }
+
+    .slide {
+      position: relative;
+      flex: 0 0 100vw;
+      width: 100vw;
+      height: 100vh;
+      min-height: 100vh;
+      overflow: hidden;
+      padding: clamp(20px, 3.1vw, 48px);
+      background: var(--sand);
+      color: var(--stone);
+      isolation: isolate;
+    }
+
+      .slide.dark {
+        background: var(--stone);
+        color: var(--sand);
+      }
+
+      .slide.codex-plain {
+        background:
+          linear-gradient(90deg, rgba(168, 148, 116, .05) 0 1px, transparent 1px 100%),
+          linear-gradient(180deg, rgba(168, 148, 116, .05) 0 1px, transparent 1px 100%),
+          var(--stone);
+        background-size: 64px 64px;
+      }
+
+    .slide.light {
+      background: var(--sand);
+      color: var(--stone);
+    }
+
+    .grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: clamp(12px, 2.2vw, 32px);
+      width: 100%;
+      height: 100%;
+    }
+
+    .v-center {
+      align-self: center;
+    }
+
+    .bottom {
+      align-self: end;
+    }
+
+    .right {
+      text-align: right;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .display,
+    .h1,
+    .h2,
+    .h3,
+    .h4,
+    .h5,
+    .h6 {
+      margin: 0;
+      font-family: var(--display);
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: -.064em;
+    }
+
+    .display {
+      font-size: clamp(88px, 12.2vw, 176px);
+      line-height: .84;
+    }
+
+    .h1 {
+      font-size: clamp(72px, 10vw, 144px);
+      line-height: .84;
+    }
+
+    .h2 {
+      font-size: clamp(52px, 6.7vw, 96px);
+      line-height: .92;
+    }
+
+    .h3 {
+      font-size: clamp(42px, 5vw, 72px);
+      line-height: .89;
+    }
+
+    .h4 {
+      font-size: clamp(32px, 3.9vw, 56px);
+      line-height: 1;
+    }
+
+    .h5 {
+      font-size: clamp(26px, 2.8vw, 40px);
+      line-height: 1;
+    }
+
+    .h6 {
+      font-size: clamp(20px, 1.7vw, 24px);
+      line-height: 1;
+    }
+
+    .p1,
+    .p2,
+    .p3,
+    .p4,
+    .p5,
+    .p6,
+    .eyebrow,
+    .metric-label,
+    .fraction {
+      margin: 0;
+      font-family: var(--body);
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .p1 {
+      font-size: clamp(20px, 2.25vw, 32px);
+      line-height: 1;
+    }
+
+    .p2 {
+      font-size: clamp(18px, 1.7vw, 24px);
+      line-height: 1.18;
+    }
+
+    .p3 {
+      font-size: clamp(15px, 1.4vw, 20px);
+      line-height: 1.2;
+    }
+
+    .p4 {
+      font-size: clamp(13px, 1.12vw, 16px);
+      line-height: 1.5;
+    }
+
+    .p5 {
+      font-size: clamp(11px, .84vw, 12px);
+      line-height: 1.67;
+    }
+
+    .p6,
+    .eyebrow,
+    .metric-label,
+    .fraction {
+      font-size: clamp(9px, .7vw, 10px);
+      line-height: 1.6;
+    }
+
+    .muted {
+      color: currentColor;
+      opacity: .52;
+    }
+
+    .line {
+      height: 1px;
+      width: 100%;
+      background: currentColor;
+      opacity: .42;
+      transform-origin: left;
+      transform: scaleX(0);
+      transition: transform 1.1s var(--ease-out) .18s;
+    }
+
+    .slide.active .line {
+      transform: scaleX(1);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(34px);
+      transition: opacity .9s var(--ease-out), transform .9s var(--ease-out);
+      transition-delay: calc(var(--i, 0) * 80ms + 180ms);
+    }
+
+    .slide.active .reveal {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .mask {
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: bottom;
+    }
+
+    .mask > span {
+      display: inline-block;
+      transform: translateY(110%);
+      transition: transform 1.05s var(--ease);
+      transition-delay: calc(var(--i, 0) * 85ms + 180ms);
+    }
+
+    .slide.active .mask > span {
+      transform: translateY(0);
+    }
+
+    .media {
+      position: relative;
+      overflow: hidden;
+      background: rgba(44, 40, 36, .12);
+    }
+
+    .media img {
+      object-fit: cover;
+      transform: scale(1.02);
+      transition: transform 1.4s var(--ease-out), filter 1.4s var(--ease-out);
+      will-change: transform;
+    }
+
+    .slide.active .media.pan img {
+      transform: scale(1.1) translate3d(-1.5%, 0, 0);
+      transition-duration: 10s;
+    }
+
+    .media.contain img,
+    .media.contain svg {
+      object-fit: contain;
+    }
+
+    .codex-cover-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 72% 26%, rgba(168, 148, 116, .18), transparent 28%),
+        linear-gradient(135deg, #181512 0%, #2c2824 52%, #11100f 100%);
+    }
+
+    .codex-cover-bg::before {
+      content: "";
+      position: absolute;
+      inset: 9% 6% 14%;
+      border: 1px solid rgba(168, 148, 116, .18);
+      background:
+        linear-gradient(90deg, rgba(168, 148, 116, .08) 0 1px, transparent 1px 100%),
+        linear-gradient(180deg, rgba(168, 148, 116, .08) 0 1px, transparent 1px 100%);
+      background-size: 88px 88px;
+      opacity: .72;
+    }
+
+    .codex-cover-bg::after {
+      content: "read   edit   verify   review";
+      position: absolute;
+      left: 5vw;
+      right: 5vw;
+      bottom: 18vh;
+      font-family: var(--display);
+      font-size: clamp(42px, 7vw, 96px);
+      line-height: .9;
+      letter-spacing: 0;
+      color: rgba(168, 148, 116, .16);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .codex-board,
+    .codex-diff-board,
+    .codex-archive-board {
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+      background:
+        linear-gradient(90deg, rgba(44, 40, 36, .08) 0 1px, transparent 1px 100%),
+        linear-gradient(180deg, rgba(44, 40, 36, .08) 0 1px, transparent 1px 100%);
+      background-size: 42px 42px;
+    }
+
+    .codex-board,
+    .codex-diff-board {
+      background-color: rgba(44, 40, 36, .035);
+    }
+
+    .codex-board .p6,
+    .codex-diff-board .p6,
+    .codex-board .codex-code,
+    .codex-diff-board .codex-diff-lines {
+      opacity: .82;
+    }
+
+    .codex-board {
+      grid-column: 5 / 10;
+      grid-row: 1;
+      align-self: center;
+      min-height: min(56vh, 43vw);
+      display: grid;
+      align-content: space-between;
+      padding: clamp(20px, 2.2vw, 32px);
+    }
+
+    .codex-code {
+      margin: 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: clamp(10px, .92vw, 14px);
+      line-height: 1.8;
+      letter-spacing: 0;
+      text-transform: none;
+      white-space: pre-wrap;
+    }
+
+    .codex-flow {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(12px, 1.5vw, 22px);
+    }
+
+    .codex-flow > div,
+    .codex-action,
+    .codex-thread {
+      border-top: 1px solid currentColor;
+      min-height: clamp(120px, 17vh, 180px);
+      display: grid;
+      align-content: space-between;
+      padding-top: clamp(14px, 1.4vw, 22px);
+    }
+
+    .codex-diff-board {
+      grid-column: 1 / 8;
+      align-self: end;
+      min-height: 46vh;
+      padding: clamp(22px, 2.4vw, 36px);
+      display: grid;
+      align-content: end;
+      gap: clamp(20px, 2.4vw, 34px);
+    }
+
+    .codex-diff-lines {
+      display: grid;
+      gap: 8px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: clamp(10px, .78vw, 12px);
+      line-height: 1.6;
+      letter-spacing: 0;
+      text-transform: none;
+      opacity: .72;
+    }
+
+    .codex-diff-lines span {
+      border-top: 1px solid rgba(44, 40, 36, .2);
+      padding-top: 8px;
+    }
+
+    .codex-split-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      opacity: .42;
+      background: #201d1a;
+    }
+
+    .codex-split-bg > div {
+      border-right: 1px solid rgba(168, 148, 116, .2);
+      background:
+        linear-gradient(90deg, rgba(168, 148, 116, .08) 0 1px, transparent 1px 100%),
+        linear-gradient(180deg, rgba(168, 148, 116, .08) 0 1px, transparent 1px 100%);
+      background-size: 56px 56px;
+    }
+
+    .codex-split-bg > div:nth-child(2) {
+      border-right: 0;
+      background-size: 72px 72px;
+    }
+
+    .codex-action-grid {
+      grid-column: 1 / 13;
+      align-self: end;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: clamp(12px, 1.7vw, 24px);
+      margin-bottom: clamp(32px, 4vw, 52px);
+    }
+
+    .codex-action {
+      min-height: 34vh;
+    }
+
+    .codex-thread-board {
+      grid-column: 5 / 10;
+      grid-row: 1;
+      align-self: center;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(14px, 1.8vw, 26px);
+    }
+
+    .codex-thread {
+      min-height: 28vh;
+    }
+
+    .codex-archive-board {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      opacity: .48;
+    }
+
+    .codex-archive-board > div {
+      border-right: 1px solid rgba(168, 148, 116, .2);
+      padding: clamp(28px, 4vw, 58px);
+      display: grid;
+      align-content: end;
+    }
+
+    .codex-archive-board > div:last-child {
+      border-right: 0;
+    }
+
+    .shade::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(44, 40, 36, .62), rgba(44, 40, 36, .1) 35%, rgba(44, 40, 36, .7)),
+        radial-gradient(circle at 50% 54%, transparent 0 36%, rgba(44, 40, 36, .42) 100%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .logo-type {
+      display: inline-flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 0.12em;
+      font-family: "Cormorant Garamond", "EB Garamond", "Palatino Linotype", Palatino, "Times New Roman", serif;
+      font-size: clamp(56px, 7vw, 112px);
+      font-weight: 300;
+      line-height: .88;
+      letter-spacing: 0.012em;
+      text-transform: uppercase;
+      font-synthesis: none;
+      font-variant-numeric: lining-nums tabular-nums;
+      font-feature-settings: "lnum" 1, "tnum" 1;
+    }
+
+    .logo-type span {
+      display: inline-block;
+      line-height: .88;
+    }
+
+    .logo-type .logo-num {
+      position: relative;
+      top: -0.018em;
+      font-variant-numeric: lining-nums tabular-nums;
+      font-feature-settings: "lnum" 1, "tnum" 1;
+    }
+
+    .cover-title-block {
+      display: grid;
+      justify-items: center;
+      gap: clamp(14px, 1.7vw, 22px);
+    }
+
+    .cover-rule {
+      width: clamp(52px, 5.4vw, 72px);
+      height: 1px;
+      background: rgba(168, 148, 116, .82);
+      transform-origin: center;
+    }
+
+    .logo-small {
+      font-family: var(--display);
+      font-size: clamp(26px, 2.4vw, 34px);
+      line-height: .9;
+      letter-spacing: -.07em;
+      text-transform: uppercase;
+    }
+
+    .thin-list {
+      display: grid;
+      gap: clamp(9px, 1vw, 14px);
+    }
+
+    .thin-row {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .number {
+      font-family: var(--display);
+      font-size: clamp(56px, 7.6vw, 110px);
+      line-height: .84;
+      letter-spacing: -.064em;
+      text-transform: uppercase;
+    }
+
+    .number.small {
+      font-size: clamp(42px, 5vw, 72px);
+    }
+
+    .pillless {
+      border-top: 1px solid currentColor;
+      padding-top: clamp(10px, 1vw, 16px);
+    }
+
+    .split-title {
+      grid-column: 1 / 13;
+      align-self: center;
+    }
+
+    .split-title .row {
+      display: flex;
+      gap: .18em;
+      align-items: baseline;
+      justify-content: center;
+      white-space: nowrap;
+    }
+
+    .split-title .row:nth-child(2) {
+      justify-content: flex-end;
+      padding-right: 9vw;
+    }
+
+    .split-title .row:nth-child(3) {
+      justify-content: center;
+      padding-left: 10vw;
+    }
+
+    .overprint {
+      mix-blend-mode: multiply;
+      opacity: .12;
+      position: absolute;
+      z-index: 1;
+      inset: auto -3vw -4vw auto;
+      font-family: var(--display);
+      font-size: 28vw;
+      letter-spacing: -.08em;
+      line-height: .75;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+
+    .grain {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      pointer-events: none;
+      opacity: .17;
+      mix-blend-mode: soft-light;
+      background-image:
+        repeating-radial-gradient(circle at 17% 31%, rgba(255, 255, 255, .9) 0 1px, transparent 1px 3px);
+      background-size: 5px 5px;
+    }
+
+    .progress {
+      position: fixed;
+      z-index: 20;
+      left: clamp(20px, 3.1vw, 48px);
+      right: clamp(20px, 3.1vw, 48px);
+      bottom: clamp(16px, 2.1vw, 32px);
+      display: grid;
+      grid-template-columns: 56px 1fr 56px;
+      gap: 16px;
+      align-items: center;
+      color: inherit;
+      pointer-events: none;
+      mix-blend-mode: difference;
+    }
+
+    .bar {
+      height: 1px;
+      background: rgba(255, 255, 255, .32);
+      transform: translateZ(0);
+    }
+
+    .bar > i {
+      display: block;
+      height: 100%;
+      width: calc(var(--progress, 0) * 100%);
+      background: rgba(255, 255, 255, .9);
+      transition: width var(--dur) var(--ease);
+    }
+
+    .fraction {
+      color: white;
+    }
+
+    .cover-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .cover-content {
+      z-index: 2;
+      grid-column: 2 / 12;
+      align-self: center;
+      display: grid;
+      gap: clamp(28px, 4vw, 72px);
+    }
+
+    .cover-meta {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(16px, 3vw, 48px);
+    }
+
+    .quote {
+      grid-column: 3 / 11;
+      align-self: center;
+    }
+
+    .quote .h5 {
+      text-align: center;
+      text-wrap: balance;
+    }
+
+    .about-title {
+      grid-column: 1 / 5;
+      grid-row: 1;
+      align-self: start;
+    }
+
+    .about-title .h1 {
+      font-size: clamp(54px, 7vw, 100px);
+    }
+
+    .about-copy-left {
+      grid-column: 1 / 4;
+      grid-row: 1;
+      align-self: end;
+    }
+
+    .about-copy-right {
+      grid-column: 10 / 13;
+      grid-row: 1;
+      align-self: end;
+    }
+
+    .about-image {
+      grid-column: 5 / 10;
+      grid-row: 1;
+      align-self: center;
+      height: min(56vh, 43vw);
+    }
+
+    .about-image img {
+      object-position: center;
+    }
+
+    .location-map {
+      grid-column: 1 / 8;
+      align-self: end;
+      height: 52vh;
+      padding: clamp(12px, 1.4vw, 20px);
+      background: rgba(44, 40, 36, .05);
+    }
+
+    .location-copy {
+      grid-column: 8 / 13;
+      align-self: end;
+      display: grid;
+      gap: clamp(18px, 2.4vw, 34px);
+    }
+
+    .season-left,
+    .season-right {
+      position: absolute;
+      inset-block: 0;
+      width: 50%;
+      z-index: 0;
+    }
+
+    .season-left {
+      left: 0;
+    }
+
+    .season-right {
+      right: 0;
+    }
+
+    .season-left::after,
+    .season-right::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(44, 40, 36, .56);
+    }
+
+    .season-content {
+      grid-column: 2 / 12;
+      align-self: center;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(28px, 5vw, 72px);
+      color: var(--sand);
+    }
+
+    .amenity-title {
+      grid-column: 1 / 7;
+      align-self: start;
+    }
+
+    .amenity-title .h2 {
+      font-size: clamp(42px, 5.2vw, 74px);
+      line-height: .94;
+    }
+
+    .amenity-grid {
+      grid-column: 1 / 13;
+      align-self: end;
+      display: grid;
+      grid-template-columns: 1.15fr 1.15fr .85fr .85fr;
+      gap: clamp(12px, 1.7vw, 24px);
+      height: 48vh;
+      margin-bottom: clamp(32px, 4vw, 52px);
+    }
+
+    .amenity {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      align-content: end;
+      padding: clamp(16px, 2vw, 28px);
+      background: var(--stone);
+      color: var(--sand);
+    }
+
+    .amenity img {
+      position: absolute;
+      inset: 0;
+      object-fit: cover;
+      opacity: .72;
+      transform: scale(1.04);
+      transition: transform 8s var(--ease-out);
+    }
+
+    .slide.active .amenity img {
+      transform: scale(1.15);
+    }
+
+    .amenity::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(44, 40, 36, .08), rgba(44, 40, 36, .88));
+    }
+
+    .amenity > *:not(img) {
+      position: relative;
+      z-index: 1;
+    }
+
+    .amenity .h5 {
+      font-size: clamp(22px, 2.4vw, 34px);
+    }
+
+    .timeline {
+      grid-column: 1 / 13;
+      align-self: center;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: clamp(20px, 4vw, 72px);
+    }
+
+    .timeline-item {
+      min-height: 42vh;
+      display: grid;
+      align-content: space-between;
+      border-top: 1px solid currentColor;
+      padding-top: clamp(16px, 1.7vw, 24px);
+    }
+
+    .finance-title {
+      grid-column: 1 / 5;
+      align-self: start;
+    }
+
+    .finance-title .h2 {
+      font-size: clamp(44px, 5.2vw, 76px);
+    }
+
+    .finance-metrics {
+      grid-column: 6 / 13;
+      align-self: center;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: clamp(18px, 3vw, 44px);
+    }
+
+    .metric {
+      min-height: 25vh;
+      display: grid;
+      align-content: space-between;
+      border-top: 1px solid currentColor;
+      padding-top: clamp(14px, 1.5vw, 22px);
+    }
+
+    .apartments-title {
+      grid-column: 1 / 4;
+      grid-row: 1;
+      align-self: start;
+    }
+
+    .apartments-title .h2 {
+      font-size: clamp(52px, 6.5vw, 92px);
+    }
+
+    .apartment-copy {
+      grid-column: 10 / 13;
+      grid-row: 1;
+      align-self: end;
+    }
+
+    .apartment-strip {
+      grid-column: 5 / 10;
+      grid-row: 1;
+      align-self: center;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(12px, 1.7vw, 24px);
+      height: 62vh;
+    }
+
+    .developer-copy {
+      grid-column: 1 / 4;
+      grid-row: 1;
+      align-self: end;
+    }
+
+    .developer-copy .h3 {
+      font-size: clamp(34px, 4.35vw, 62px);
+    }
+
+    .factoids {
+      grid-column: 6 / 13;
+      grid-row: 1;
+      align-self: end;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: clamp(12px, 1.7vw, 24px);
+    }
+
+    .factoid {
+      border-top: 1px solid currentColor;
+      min-height: 32vh;
+      display: grid;
+      align-content: space-between;
+      padding-top: clamp(14px, 1.5vw, 22px);
+    }
+
+    .gallery-mosaic {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      z-index: 0;
+    }
+
+    .gallery-mosaic .media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(44, 40, 36, .42);
+    }
+
+    .gallery-copy {
+      grid-column: 3 / 11;
+      align-self: center;
+      color: var(--sand);
+      display: grid;
+      gap: clamp(22px, 3vw, 48px);
+    }
+
+    .closing-copy {
+      grid-column: 2 / 12;
+      align-self: center;
+      display: grid;
+      gap: clamp(30px, 4vw, 64px);
+    }
+
+    .closing-copy .h2 {
+      font-size: clamp(42px, 5.85vw, 84px);
+    }
+
+    .contact-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(18px, 3vw, 48px);
+    }
+
+    .footer-note {
+      position: absolute;
+      z-index: 5;
+      left: clamp(20px, 3.1vw, 48px);
+      top: clamp(20px, 3.1vw, 48px);
+    }
+
+    .zh .split-title {
+      grid-column: 1 / 8;
+      align-self: start;
+      padding-top: 0;
+      z-index: 5;
+    }
+
+    .zh .display,
+    .zh .h1,
+    .zh .h2,
+    .zh .h3,
+    .zh .h4,
+    .zh .h5,
+    .zh .h6 {
+      line-height: 1.06;
+      letter-spacing: 0;
+    }
+
+    .zh .mask {
+      display: inline;
+      overflow: visible;
+      padding-block: 0;
+    }
+
+    .zh .mask > span {
+      display: inline;
+      line-height: 1.08;
+      transform: none;
+    }
+
+    .zh .about-title .h1 {
+      font-size: clamp(50px, 6.4vw, 92px);
+    }
+
+    .zh .split-title .h1 {
+      font-size: clamp(48px, 6.2vw, 88px);
+      line-height: 1.02;
+    }
+
+    .zh .split-title .row,
+    .zh .split-title .row:nth-child(2) {
+      justify-content: flex-start;
+      padding-right: 0;
+    }
+
+    .zh .split-title .row:nth-child(3) {
+      justify-content: flex-start;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .zh .location-map {
+      height: 46vh;
+    }
+
+    .zh .apartments-title {
+      grid-column: 1 / 5;
+    }
+
+    .zh .apartments-title .h2 {
+      font-size: clamp(44px, 5.2vw, 76px);
+    }
+
+    .zh .closing-copy .h2 {
+      font-size: clamp(40px, 5.2vw, 76px);
+    }
+
+    .zh .codex-action .h5 {
+      font-size: clamp(26px, 3vw, 42px);
+    }
+
+    .zh .codex-thread .h5 {
+      font-size: clamp(24px, 2.7vw, 38px);
+    }
+
+    @media (max-width: 900px) {
+      .slide {
+        padding: 20px;
+      }
+
+      .grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .cover-content,
+      .quote,
+      .split-title,
+      .amenity-title,
+      .amenity-grid,
+      .timeline,
+      .finance-title,
+      .finance-metrics,
+      .apartments-title,
+      .apartment-strip,
+      .apartment-copy,
+      .developer-copy,
+      .factoids,
+      .gallery-copy,
+      .closing-copy,
+      .location-map,
+      .location-copy,
+      .about-title,
+      .about-copy-left,
+      .about-copy-right,
+      .about-image,
+      .codex-board,
+      .codex-diff-board,
+      .codex-thread-board,
+      .codex-action-grid {
+        grid-column: 1 / 5;
+      }
+
+      .cover-meta,
+      .season-content,
+      .contact-row,
+      .codex-flow {
+        grid-template-columns: 1fr;
+      }
+
+      .about-image {
+        grid-row: auto;
+        height: 36vh;
+      }
+
+      .location-map {
+        height: 33vh;
+      }
+
+      .amenity-grid,
+      .apartment-strip,
+      .codex-thread-board,
+      .factoids,
+      .timeline,
+      .finance-metrics {
+        grid-template-columns: 1fr 1fr;
+        height: auto;
+      }
+
+      .amenity,
+      .timeline-item,
+      .factoid,
+      .metric,
+      .codex-action,
+      .codex-thread {
+        min-height: 22vh;
+      }
+
+      .split-title .row,
+      .split-title .row:nth-child(2),
+      .split-title .row:nth-child(3) {
+        justify-content: flex-start;
+        padding: 0;
+      }
+
+      .display,
+      .h1 {
+        font-size: clamp(58px, 18vw, 96px);
+      }
+
+      .progress {
+        grid-template-columns: 42px 1fr 42px;
+      }
+    }
+  </style>
+</head>
+<body class="zh">
+  <main class="stage" aria-label="GPT 5.5 图像叙事横向演示">
+    <div class="deck" id="deck">
+      <section class="slide dark active" data-theme="dark">
+        <div class="cover-bg media shade pan"><img src="asterion_assets/earthrise.jpg" alt=""></div>
+        <div class="grain"></div>
+        <div class="grid">
+          <div class="cover-content center">
+            <p class="p3 reveal" style="--i:0">OpenAI / 2026-04-23</p>
+            <div class="cover-title-block">
+              <div class="logo-type reveal" style="--i:1"><span>GPT</span><span class="logo-num">5.5</span></div>
+              <div class="cover-rule reveal" style="--i:2"></div>
+            </div>
+            <div class="cover-meta">
+              <p class="p5 reveal" style="--i:3">能力分析<br>档案 01</p>
+              <p class="p5 reveal" style="--i:4">执行系统<br>工作流</p>
+              <p class="p5 reveal" style="--i:5">编码 / 工具<br>复杂任务</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide light" data-theme="light">
+        <div class="overprint">01</div>
+        <div class="grid">
+          <div class="quote">
+            <div class="center reveal" style="--i:0">
+              <span class="eyebrow">GPT 5.5 简报</span>
+            </div>
+            <div style="height:clamp(22px,3vw,48px)"></div>
+            <h2 class="h5 reveal" style="--i:1">这组 deck 分析 GPT 5.5 的真正变化：它不是单纯“更会说”，而是在编码、工具使用、复杂任务推进中，开始减少人类的流程管理负担。</h2>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide light" data-theme="light">
+        <div class="grid">
+          <div class="about-title">
+            <h2 class="h1">
+              <span class="mask"><span style="--i:0">执行</span></span><br>
+              <span class="mask"><span style="--i:1">系统</span></span>
+            </h2>
+            <div style="height:24px"></div>
+            <p class="p3 reveal" style="--i:2">从回答模型到执行系统</p>
+          </div>
+          <div class="codex-board reveal" style="--i:2">
+            <p class="p6 muted">工作方式</p>
+            <pre class="codex-code">understand(goal)
+plan(steps)
+use(tools)
+verify(result)</pre>
+            <div class="codex-flow">
+              <div>
+                <p class="p6 muted">输入</p>
+                <p class="p6">目标与边界</p>
+              </div>
+              <div>
+                <p class="p6 muted">过程</p>
+                <p class="p6">规划与行动</p>
+              </div>
+              <div>
+                <p class="p6 muted">输出</p>
+                <p class="p6">可验收结果</p>
+              </div>
+            </div>
+          </div>
+          <div class="about-copy-left reveal" style="--i:3">
+            <h3 class="h4">核心变化</h3>
+            <div style="height:22px"></div>
+            <div class="line"></div>
+            <div style="height:22px"></div>
+            <p class="p6">过去的模型更像高质量函数调用：你拆任务、控步骤、校验结果。GPT 5.5 的差异在于它更早理解目标，更稳定地规划、用工具、检查并继续。</p>
+          </div>
+          <div class="about-copy-right reveal" style="--i:4">
+            <h3 class="h4">价值</h3>
+            <div style="height:22px"></div>
+            <div class="line"></div>
+            <div style="height:22px"></div>
+            <p class="p6">价值不只来自单次答案质量，而来自更少的人工调度、更少的往返、更少的中途失控。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide light" data-theme="light">
+        <div class="grid">
+          <div class="split-title">
+            <h2 class="h1">
+              <span class="row"><span class="mask"><span style="--i:0">连续行动</span></span></span>
+              <span class="row"><span class="mask"><span style="--i:1">成为优势</span></span></span>
+            </h2>
+          </div>
+          <div class="codex-diff-board reveal" style="--i:4">
+            <p class="p6 muted">领先最明显的地方，是需要连续行动的任务。</p>
+            <div class="codex-diff-lines">
+              <span>Terminal-Bench 2.0：82.7% / GPT-5.4：75.1%</span>
+              <span>OSWorld-Verified：78.7% / GPT-5.4：75.0%</span>
+              <span>FrontierMath T4：35.4% / GPT-5.4：27.1%</span>
+              <span>BrowseComp：84.4% / GPT-5.4：82.7%</span>
+            </div>
+          </div>
+          <div class="location-copy reveal" style="--i:5">
+            <p class="p4">GPT 5.5 的领先点不只是推理分数，而是把目标保持、工具选择、失败恢复和结果检查串成更少断点的执行链。</p>
+            <div class="thin-list">
+              <div class="thin-row"><span class="p6 muted">82.7%</span><span class="line"></span><span class="p6">Terminal-Bench 2.0</span></div>
+              <div class="thin-row"><span class="p6 muted">84.9%</span><span class="line"></span><span class="p6">GDPval wins/ties</span></div>
+              <div class="thin-row"><span class="p6 muted">81.8%</span><span class="line"></span><span class="p6">CyberGym</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide dark codex-plain" data-theme="dark">
+        <div class="codex-split-bg"><div></div><div></div></div>
+        <div class="grain"></div>
+        <div class="grid">
+          <div class="season-content">
+            <div class="reveal" style="--i:0">
+              <p class="p6 muted">Coding</p>
+              <div style="height:18px"></div>
+              <h2 class="h3">从补全到代理式修复</h2>
+              <div style="height:24px"></div>
+              <p class="p6">更适合跨文件理解、命令行循环、失败后继续定位问题。Terminal-Bench 的跃升说明它在真实开发环境里的动作质量提高。</p>
+            </div>
+            <div class="right reveal" style="--i:1">
+              <p class="p6 muted">Computer Use</p>
+              <div style="height:18px"></div>
+              <h2 class="h3">在软件之间移动</h2>
+              <div style="height:24px"></div>
+              <p class="p6">重点不是“能点击”，而是能在网页、文档、表格、工具调用之间保持目标一致，减少人类当流程管理员。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide light" data-theme="light">
+        <div class="grid">
+          <div class="amenity-title">
+            <p class="p6 reveal" style="--i:0">能力地图</p>
+            <div style="height:16px"></div>
+            <h2 class="h2 reveal" style="--i:1">四个能力区构成实际边界</h2>
+          </div>
+          <div class="codex-action-grid">
+            <article class="codex-action reveal" style="--i:2">
+              <p class="p6 muted">Coding</p>
+              <div style="height:12px"></div>
+              <h3 class="h5">跨文件理解与修复</h3>
+            </article>
+            <article class="codex-action reveal" style="--i:3">
+              <p class="p6 muted">Tools</p>
+              <div style="height:12px"></div>
+              <h3 class="h5">工具密集流程推进</h3>
+            </article>
+            <article class="codex-action reveal" style="--i:4">
+              <p class="p6 muted">Knowledge</p>
+              <div style="height:12px"></div>
+              <h3 class="h5">把模糊输入变成产物</h3>
+            </article>
+            <article class="codex-action reveal" style="--i:5">
+              <p class="p6 muted">Prompting</p>
+              <div style="height:12px"></div>
+              <h3 class="h5">从流程服从到结果负责</h3>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide dark codex-plain" data-theme="dark">
+        <div class="grid">
+          <div class="timeline">
+            <div class="timeline-item reveal" style="--i:0">
+              <p class="number">Plan</p>
+              <p class="p3">理解目标<br>与约束</p>
+            </div>
+            <div class="timeline-item reveal" style="--i:1">
+              <p class="number">Act</p>
+              <p class="p3">跨工具推进<br>复杂任务</p>
+            </div>
+            <div class="timeline-item reveal" style="--i:2">
+              <p class="number">Verify</p>
+              <p class="p3">检查结果<br>并收敛</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide light" data-theme="light">
+        <div class="grid">
+          <div class="finance-title">
+            <p class="p6 reveal" style="--i:0">模型指标</p>
+            <div style="height:16px"></div>
+            <h2 class="h2 reveal" style="--i:1">任务完成总成本</h2>
+          </div>
+          <div class="finance-metrics">
+            <div class="metric reveal" style="--i:2">
+              <p class="metric-label muted">Terminal-Bench 2.0</p>
+              <p class="number small">82.7%</p>
+            </div>
+            <div class="metric reveal" style="--i:3">
+              <p class="metric-label muted">GDPval wins/ties</p>
+              <p class="number small">84.9%</p>
+            </div>
+            <div class="metric reveal" style="--i:4">
+              <p class="metric-label muted">CyberGym</p>
+              <p class="number small">81.8%</p>
+            </div>
+            <div class="metric reveal" style="--i:5">
+              <p class="metric-label muted">BrowseComp</p>
+              <p class="number small">84.4%</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide dark" data-theme="dark">
+        <div class="grid">
+          <div class="apartments-title">
+            <p class="p6 reveal" style="--i:0">模型路由</p>
+            <div style="height:16px"></div>
+            <h2 class="h2 reveal" style="--i:1">把模型选择变成运营问题</h2>
+          </div>
+          <div class="codex-thread-board">
+            <div class="codex-thread reveal" style="--i:2">
+              <p class="p6 muted">medium</p>
+              <h3 class="h5">默认生产起点</h3>
+              <p class="p6">质量、可靠性、延迟、成本的平衡点。</p>
+            </div>
+            <div class="codex-thread reveal" style="--i:3">
+              <p class="p6 muted">high / xhigh</p>
+              <h3 class="h5">高价值复杂任务</h3>
+              <p class="p6">复杂规划、工具密集、难验证工作需要明确停止条件。</p>
+            </div>
+          </div>
+          <div class="apartment-copy reveal" style="--i:4">
+            <p class="p6">建议用 eval 做路由，而不是用“最强模型”做默认答案。真正的成本项，是失败重试、人工接管、工具乱用和上下文漂移。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide light" data-theme="light">
+        <div class="grid">
+          <div class="developer-copy reveal" style="--i:0">
+            <p class="p6 muted">安全与控制</p>
+            <div style="height:16px"></div>
+            <h2 class="h3">能力越像执行者，治理就越要像系统工程</h2>
+            <div style="height:24px"></div>
+            <p class="p6">越会用工具，越需要清楚的工具描述、参数约束、证据规则、确认点和审计日志。高风险动作仍应由人确认。</p>
+          </div>
+          <div class="factoids">
+            <div class="factoid reveal" style="--i:1">
+              <p class="number small">01</p>
+              <p class="p6">预部署安全评估</p>
+            </div>
+            <div class="factoid reveal" style="--i:2">
+              <p class="number small">02</p>
+              <p class="p6">运行时权限收窄</p>
+            </div>
+            <div class="factoid reveal" style="--i:3">
+              <p class="number small">03</p>
+              <p class="p6">证据规则和审计日志</p>
+            </div>
+            <div class="factoid reveal" style="--i:4">
+              <p class="number small">04</p>
+              <p class="p6">高风险动作人工确认</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide dark codex-plain" data-theme="dark">
+        <div class="codex-archive-board" aria-hidden="true">
+          <div><p class="p6 muted">start</p><h3 class="h5">多步可验证</h3></div>
+          <div><p class="p6 muted">measure</p><h3 class="h5">完成率与接管率</h3></div>
+          <div><p class="p6 muted">guard</p><h3 class="h5">权限与回滚路径</h3></div>
+        </div>
+        <div class="grain"></div>
+        <div class="grid">
+          <div class="gallery-copy center">
+            <p class="p6 reveal" style="--i:0">采用手册</p>
+            <h2 class="h2 reveal" style="--i:1">优先切入高摩擦工作</h2>
+            <p class="p3 reveal" style="--i:2">代码修复、数据清理、资料研究、表格/文档生成、客服复杂工单。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide light" data-theme="light">
+        <div class="footer-note logo-small reveal" style="--i:0">GPT 5.5</div>
+        <div class="grid">
+          <div class="closing-copy center">
+            <h2 class="h2 reveal" style="--i:1">不是更大的聊天框，<br>而是更小的管理负担。</h2>
+            <div class="line"></div>
+            <div class="contact-row">
+              <p class="p2 reveal" style="--i:2">GPT 5.5 分析 / 01</p>
+              <p class="p2 reveal" style="--i:3">工作流完成度</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div class="progress" aria-hidden="true">
+    <div class="fraction" id="current">01</div>
+    <div class="bar"><i id="bar"></i></div>
+    <div class="fraction right" id="total">12</div>
+  </div>
+
+  <script>
+    (() => {
+      const deck = document.getElementById("deck");
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const current = document.getElementById("current");
+      const total = document.getElementById("total");
+      const bar = document.getElementById("bar");
+      let index = 0;
+      let wheelLock = false;
+      let startX = 0;
+      let startY = 0;
+      let dragging = false;
+
+      total.textContent = String(slides.length).padStart(2, "0");
+
+      function setTheme() {
+        document.body.style.color = slides[index].dataset.theme === "dark" ? "#a89474" : "#2c2824";
+      }
+
+      function go(next) {
+        index = Math.max(0, Math.min(slides.length - 1, next));
+        deck.style.transform = `translate3d(${-index * 100}vw, 0, 0)`;
+        slides.forEach((slide, i) => slide.classList.toggle("active", i === index));
+        current.textContent = String(index + 1).padStart(2, "0");
+        bar.style.setProperty("--progress", (index + 1) / slides.length);
+        setTheme();
+      }
+
+      function advance(direction) {
+        go(index + direction);
+      }
+
+      window.addEventListener("keydown", (event) => {
+        if (["ArrowRight", "PageDown", " "].includes(event.key)) advance(1);
+        if (["ArrowLeft", "PageUp", "Backspace"].includes(event.key)) advance(-1);
+        if (event.key === "Home") go(0);
+        if (event.key === "End") go(slides.length - 1);
+      });
+
+      window.addEventListener("wheel", (event) => {
+        if (wheelLock) return;
+        const primary = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+        if (Math.abs(primary) < 30) return;
+        wheelLock = true;
+        advance(primary > 0 ? 1 : -1);
+        window.setTimeout(() => {
+          wheelLock = false;
+        }, 720);
+      }, { passive: true });
+
+      window.addEventListener("pointerdown", (event) => {
+        dragging = true;
+        startX = event.clientX;
+        startY = event.clientY;
+        document.body.classList.add("dragging");
+      });
+
+      window.addEventListener("pointerup", (event) => {
+        if (!dragging) return;
+        dragging = false;
+        document.body.classList.remove("dragging");
+        const dx = event.clientX - startX;
+        const dy = event.clientY - startY;
+        if (Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy)) {
+          advance(dx < 0 ? 1 : -1);
+        }
+      });
+
+      window.addEventListener("pointercancel", () => {
+        dragging = false;
+        document.body.classList.remove("dragging");
+      });
+
+      go(0);
+    })();
+  </script>
+</body>
+</html>

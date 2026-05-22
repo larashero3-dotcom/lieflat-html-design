@@ -1,0 +1,1641 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Y2K 示例品牌 · 品牌手册</title>
+  <style>
+    :root {
+      --ink: #1d113d;
+      --deep: #090612;
+      --purple: #6556ff;
+      --violet: #b13bf0;
+      --pink: #ff91db;
+      --hot: #ff3bc4;
+      --aqua: #79f7ff;
+      --mint: #91ffbf;
+      --lemon: #f6ff76;
+      --white: #fff7ff;
+      --line: 3px solid var(--ink);
+      --shadow: rgba(38, 9, 86, .42);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #0b0718;
+      color: var(--ink);
+      font-family: Arial, "Helvetica Neue", sans-serif;
+      letter-spacing: 0;
+      -webkit-font-smoothing: none;
+      text-rendering: geometricPrecision;
+    }
+
+    button { font: inherit; color: inherit; }
+
+    .viewport {
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 16% 18%, rgba(121,247,255,.26), transparent 25%),
+        radial-gradient(circle at 86% 72%, rgba(246,255,118,.2), transparent 23%),
+        radial-gradient(circle, rgba(255,247,255,.16) 0 2px, transparent 2.6px) 0 0 / 42px 42px,
+        radial-gradient(circle, rgba(121,247,255,.12) 0 1.5px, transparent 2.3px) 21px 19px / 42px 42px,
+        radial-gradient(circle, rgba(255,145,219,.12) 0 1px, transparent 2px) 8px 30px / 56px 56px,
+        linear-gradient(145deg, #170b48 0%, #6c40c8 42%, #2e155d 68%, #0d0822 100%);
+    }
+
+    .stage {
+      position: relative;
+      left: 0;
+      top: 0;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      transform: scale(var(--scale, 1));
+      transform-origin: top left;
+      border: var(--line);
+      background:
+        radial-gradient(circle at 12% 18%, rgba(121,247,255,.22), transparent 28%),
+        radial-gradient(circle at 74% 12%, rgba(246,255,118,.16), transparent 18%),
+        radial-gradient(circle, rgba(255,247,255,.16) 0 2px, transparent 2.8px) 0 0 / 40px 40px,
+        radial-gradient(circle, rgba(246,255,118,.12) 0 1.5px, transparent 2.4px) 20px 20px / 40px 40px,
+        radial-gradient(circle, rgba(121,247,255,.1) 0 1px, transparent 2px) 9px 28px / 64px 64px,
+        linear-gradient(135deg, #4934bf 0%, #b94ec8 44%, #2b176d 71%, #12072c 100%);
+      box-shadow: 0 24px 86px rgba(8, 2, 30, .55);
+      isolation: isolate;
+    }
+
+    .stage::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle, rgba(255,255,255,.14) 0 1px, transparent 1.8px) 16px 12px / 28px 28px,
+        radial-gradient(circle, rgba(121,247,255,.12) 0 1px, transparent 1.8px) 4px 24px / 52px 52px,
+        repeating-linear-gradient(0deg, rgba(255,255,255,.07) 0 1px, transparent 1px 5px),
+        radial-gradient(circle at 50% 6%, rgba(255,175,234,.3), transparent 31%);
+      mix-blend-mode: screen;
+      opacity: .45;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      display: none;
+      padding: 54px 62px 48px;
+      overflow: hidden;
+    }
+
+    .slide.active { display: block; animation: boot .22s steps(2, end); }
+
+    @keyframes boot {
+      0% { filter: contrast(1.7) saturate(1.5); transform: translateY(2px); }
+      100% { filter: none; transform: translateY(0); }
+    }
+
+    .slide::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 30;
+      pointer-events: none;
+      background: linear-gradient(180deg, transparent 0 50%, rgba(255,255,255,.08) 50% 100%);
+      background-size: 100% 6px;
+      mix-blend-mode: soft-light;
+      opacity: .45;
+    }
+
+    .glimmer-canvas {
+      position: absolute;
+      inset: 0;
+      z-index: 24;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      mix-blend-mode: screen;
+      opacity: .86;
+    }
+
+    .glimmer-fallback {
+      position: absolute;
+      inset: 0;
+      z-index: 25;
+      pointer-events: none;
+      mix-blend-mode: screen;
+      opacity: .96;
+    }
+
+    .glimmer-fallback i {
+      position: absolute;
+      width: var(--s, 18px);
+      height: var(--s, 18px);
+      left: var(--x);
+      top: var(--y);
+      transform: translate(-50%, -50%) rotate(var(--r, 0deg));
+      opacity: var(--o, 1);
+      animation: glintPulse var(--d, 2.4s) steps(3, end) infinite;
+      filter:
+        drop-shadow(0 0 calc(var(--s, 18px) * .34) var(--c, #fff7ff))
+        drop-shadow(0 0 calc(var(--s, 18px) * .18) #fff);
+    }
+
+    .glimmer-fallback i::before,
+    .glimmer-fallback i::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      transform: none;
+      width: 100%;
+      height: 100%;
+      background: var(--c, #fff7ff);
+      clip-path: polygon(50% 0%, 58% 38%, 100% 50%, 58% 62%, 50% 100%, 42% 62%, 0% 50%, 42% 38%);
+    }
+
+    .glimmer-fallback i::before {
+      box-shadow: 0 0 24px #fff, 0 0 42px var(--c, #fff7ff), 0 0 58px rgba(133,246,255,.78);
+    }
+
+    .glimmer-fallback i::after {
+      transform: scale(1.85);
+      opacity: .34;
+      filter: blur(1px);
+    }
+
+    .has-webgl-glimmer .glimmer-fallback {
+      opacity: .58;
+    }
+
+    @keyframes glintPulse {
+      0%, 100% { transform: translate(-50%, -50%) rotate(var(--r, 0deg)) scale(.72); opacity: calc(var(--o, .72) * .5); }
+      45% { transform: translate(-50%, -50%) rotate(var(--r, 0deg)) scale(1.16); opacity: var(--o, .72); }
+    }
+
+    .pixel {
+      font-family: "Courier New", "Lucida Console", monospace;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 5px 12px;
+      border: var(--line);
+      background: var(--lemon);
+      box-shadow: 5px 5px 0 var(--shadow);
+      font-size: 15px;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+
+    .mega {
+      margin-top: 34px;
+      width: 620px;
+      color: var(--white);
+      font-size: 92px;
+      line-height: .94;
+      text-transform: uppercase;
+      text-shadow: 5px 5px 0 var(--ink), 10px 10px 0 rgba(255,120,208,.55);
+    }
+
+    .balloon-chrome {
+      font-family: Impact, "Arial Black", "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+      font-weight: 900;
+      letter-spacing: 0;
+      color: transparent;
+      text-shadow: none;
+      filter: saturate(1.28) contrast(1.08);
+      isolation: isolate;
+    }
+
+    .balloon-line {
+      --metal-fill:
+        radial-gradient(circle at 22% 12%, #ffffff 0 3%, transparent 4%),
+        linear-gradient(156deg, rgba(255,255,255,.9) 0 4%, transparent 5% 28%, rgba(255,255,255,.64) 29% 34%, transparent 35% 100%),
+        linear-gradient(180deg, #fff0fb 0%, #ff9de2 10%, #ff3db9 27%, #d61df0 44%, #fff1ff 50%, #ff67ce 58%, #9d21d4 78%, #34105f 100%);
+      --rim: #fff2ff;
+      --extrude-a: #ff56d2;
+      --extrude-b: #6f22b8;
+      position: relative;
+      z-index: 1;
+      display: block;
+      width: max-content;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      -webkit-text-stroke: .65px var(--rim);
+      background: var(--metal-fill);
+      -webkit-background-clip: text;
+      background-clip: text;
+      transform: skewX(-5deg);
+      text-shadow:
+        0 -1px 0 rgba(255,255,255,.78),
+        0 2px 0 rgba(68,10,100,.28),
+        0 0 20px rgba(255,255,255,.68);
+    }
+
+    .balloon-line::before,
+    .balloon-line::after {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .balloon-line::before {
+      z-index: -2;
+      color: var(--extrude-b);
+      -webkit-text-fill-color: var(--extrude-b);
+      -webkit-text-stroke: 8px #31105f;
+      transform: translate(12px, 12px);
+      text-shadow:
+        -3px -2px 0 var(--extrude-a),
+        4px 4px 0 #1c073a,
+        9px 9px 0 rgba(20, 7, 53, .78),
+        0 0 24px rgba(255, 120, 208, .45);
+    }
+
+    .balloon-line::after {
+      z-index: 2;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      -webkit-text-stroke: .35px rgba(255,255,255,.5);
+      background:
+        radial-gradient(ellipse at 24% 14%, rgba(255,255,255,.98) 0 4%, transparent 5%),
+        linear-gradient(170deg, rgba(255,255,255,.82) 0 4%, transparent 5% 34%, rgba(255,255,255,.58) 35% 39%, transparent 40% 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      opacity: .42;
+    }
+
+    .balloon-line.silver {
+      --metal-fill:
+        radial-gradient(circle at 22% 12%, #ffffff 0 4%, transparent 5%),
+        linear-gradient(155deg, rgba(255,255,255,1) 0 5%, transparent 6% 24%, rgba(255,255,255,.8) 25% 31%, transparent 32% 100%),
+        linear-gradient(180deg, #ffffff 0%, #d7fbff 12%, #86d6ff 27%, #6a64ff 43%, #ffffff 51%, #bfe8ff 61%, #5e55d9 81%, #211057 100%);
+      --rim: #ffffff;
+      --extrude-a: #85f6ff;
+      --extrude-b: #5133b8;
+    }
+
+    .balloon-line.orange {
+      --metal-fill:
+        radial-gradient(circle at 22% 12%, #ffffff 0 4%, transparent 5%),
+        linear-gradient(155deg, rgba(255,255,255,.92) 0 5%, transparent 6% 24%, rgba(255,255,255,.7) 25% 31%, transparent 32% 100%),
+        linear-gradient(180deg, #fff7d8 0%, #ffc85a 12%, #ff7c12 30%, #f05800 44%, #fff1c0 51%, #ff9f24 61%, #e34b00 80%, #6b1236 100%);
+      --rim: #fff7e8;
+      --extrude-a: #ffb44a;
+      --extrude-b: #c03874;
+    }
+
+    .balloon-svg {
+      display: block;
+      width: 360px;
+      height: 310px;
+      overflow: visible;
+      filter: drop-shadow(0 0 18px rgba(255,255,255,.58));
+    }
+
+    .balloon-svg.small {
+      width: 420px;
+      height: 214px;
+    }
+
+    .balloon-svg text {
+      font-family: Impact, "Arial Black", "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+      font-weight: 900;
+      font-size: 88px;
+      letter-spacing: 0;
+      paint-order: stroke fill markers;
+    }
+
+    .balloon-svg.small text {
+      font-size: 96px;
+    }
+
+    .svg-extrude {
+      fill: #4d168b;
+      stroke: #210843;
+      stroke-width: 16px;
+      opacity: .96;
+      paint-order: stroke fill markers;
+    }
+
+    .svg-rim {
+      stroke: #fff8ff;
+      stroke-width: 7px;
+      stroke-linejoin: round;
+    }
+
+    .svg-shine {
+      fill: rgba(255,255,255,.58);
+      stroke: rgba(255,255,255,.7);
+      stroke-width: 1px;
+      mix-blend-mode: screen;
+    }
+
+    .svg-defs {
+      position: absolute;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+    }
+
+    .title-balloon {
+      max-width: 930px;
+      margin-top: 26px;
+      line-height: 1;
+      text-shadow: none;
+    }
+
+    .title-balloon-svg {
+      display: block;
+      width: var(--tw, 880px);
+      height: var(--th, 156px);
+      overflow: visible;
+      filter: drop-shadow(0 0 8px rgba(255,255,255,.38));
+    }
+
+    .title-balloon-svg text {
+      font-family: Impact, "Arial Black", "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+      font-weight: 900;
+      font-size: var(--tfs, 58px);
+      letter-spacing: 0;
+      paint-order: stroke fill markers;
+    }
+
+    .title-balloon-svg .svg-extrude {
+      stroke-width: 15px;
+    }
+
+    .title-balloon-svg .svg-rim {
+      stroke-width: 3px;
+      filter: drop-shadow(0 0 1px rgba(45,19,104,.7));
+    }
+
+    .title-balloon-svg .svg-shine {
+      opacity: .42;
+    }
+
+    .claim {
+      max-width: 720px;
+      color: var(--white);
+      font-size: 56px;
+      line-height: 1.02;
+      text-shadow: 4px 4px 0 var(--ink);
+    }
+
+    .sub {
+      max-width: 560px;
+      margin-top: 16px;
+      color: var(--deep);
+      font-size: 22px;
+      line-height: 1.38;
+      font-weight: 700;
+    }
+
+    .window {
+      position: absolute;
+      border: var(--line);
+      background: var(--pink);
+      box-shadow: 10px 12px 0 var(--shadow);
+      overflow: hidden;
+    }
+
+    .bar {
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 8px 0 10px;
+      border-bottom: var(--line);
+      background: linear-gradient(90deg, #ffb9ef 0%, #ce85ff 100%);
+      font-size: 16px;
+      white-space: nowrap;
+    }
+
+    .ctrl { display: flex; gap: 5px; }
+    .ctrl i {
+      width: 17px;
+      height: 17px;
+      border: 2px solid var(--ink);
+      background: rgba(255,255,255,.3);
+      box-shadow: inset 2px 2px 0 rgba(255,255,255,.36);
+    }
+
+    .body { position: relative; height: calc(100% - 30px); padding: 18px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 82px;
+      height: 34px;
+      padding: 0 14px;
+      border: 2px solid var(--ink);
+      background: #f8cbff;
+      box-shadow: inset 2px 2px 0 rgba(255,255,255,.7), 3px 3px 0 rgba(45,19,104,.18);
+      font-size: 15px;
+      line-height: 1;
+    }
+
+    .cloud {
+      position: absolute;
+      width: 166px;
+      height: 48px;
+      z-index: 2;
+      background: var(--white);
+      border-radius: 999px;
+      box-shadow: 4px 4px 0 rgba(45,19,104,.16);
+    }
+    .cloud::before, .cloud::after {
+      content: "";
+      position: absolute;
+      bottom: 14px;
+      background: var(--white);
+      border-radius: 50%;
+    }
+    .cloud::before { left: 20px; width: 62px; height: 62px; }
+    .cloud::after { left: 76px; width: 84px; height: 84px; }
+
+    .sun {
+      position: absolute;
+      width: 142px;
+      height: 142px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 34% 30%, #fff8c2 0 17%, var(--lemon) 18% 100%);
+      border: 3px solid rgba(255,255,255,.55);
+      box-shadow: 0 0 0 8px rgba(255,255,255,.18), 9px 9px 0 rgba(45,19,104,.18);
+    }
+
+    .mountains {
+      position: absolute;
+      left: -20px;
+      right: -20px;
+      bottom: 0;
+      height: 156px;
+      z-index: 0;
+      background:
+        linear-gradient(90deg, transparent 0 6%, rgba(255,249,255,.28) 6% 8%, transparent 8% 13%, rgba(121,247,255,.24) 13% 15%, transparent 15% 26%, rgba(255,145,219,.28) 26% 28%, transparent 28% 41%, rgba(246,255,118,.18) 41% 44%, transparent 44% 58%, rgba(255,249,255,.22) 58% 60%, transparent 60% 74%, rgba(121,247,255,.2) 74% 77%, transparent 77%),
+        repeating-linear-gradient(90deg, rgba(255,247,255,.18) 0 2px, transparent 2px 38px),
+        repeating-linear-gradient(0deg, rgba(29,17,61,.2) 0 2px, transparent 2px 22px),
+        linear-gradient(180deg, transparent 0%, rgba(255,59,196,.18) 18%, rgba(101,86,255,.5) 54%, rgba(9,6,18,.82) 100%);
+      border-top: 3px solid rgba(255,247,255,.32);
+      box-shadow: inset 0 18px 0 rgba(133,246,255,.08);
+      opacity: .92;
+    }
+
+    .mountains::before {
+      content: "";
+      position: absolute;
+      left: 48px;
+      right: 48px;
+      top: 28px;
+      height: 22px;
+      background:
+        repeating-linear-gradient(90deg, var(--aqua) 0 18px, transparent 18px 30px, var(--pink) 30px 40px, transparent 40px 58px);
+      border: 2px solid rgba(45,19,104,.6);
+      opacity: .32;
+    }
+
+    .mountains::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 62px;
+      background:
+        radial-gradient(ellipse at 50% 100%, rgba(255,232,145,.28), transparent 62%),
+        linear-gradient(180deg, rgba(255,247,255,.1), rgba(20,7,53,.28));
+    }
+
+    .big-x {
+      width: 58px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--violet);
+      color: var(--white);
+      font-size: 46px;
+      line-height: 1;
+      box-shadow: 4px 4px 0 rgba(45,19,104,.22);
+    }
+
+    .avatar {
+      position: relative;
+      height: 100%;
+      background:
+        radial-gradient(circle at 78% 26%, rgba(255,255,255,.92) 0 21%, transparent 22%),
+        linear-gradient(135deg, #6b4ee8 0%, #ac87ff 100%);
+    }
+    .avatar .hair {
+      position: absolute;
+      right: 120px;
+      top: 16px;
+      width: 142px;
+      height: 174px;
+      background: #16094c;
+      border-radius: 78% 0 68% 34%;
+      transform: rotate(-10deg);
+    }
+    .avatar .face {
+      position: absolute;
+      right: 70px;
+      top: 30px;
+      width: 138px;
+      height: 156px;
+      background: #ffe79d;
+      border-radius: 54% 46% 48% 52%;
+      border-left: 20px solid #170b55;
+      transform: rotate(6deg);
+    }
+    .avatar .glasses {
+      position: absolute;
+      right: 62px;
+      top: 78px;
+      width: 132px;
+      height: 38px;
+      border: 5px solid var(--white);
+      border-radius: 4px 4px 22px 22px;
+      background: #2a136b;
+      box-shadow: -72px 0 0 #2a136b, -72px 0 0 5px var(--white);
+    }
+    .avatar .lips {
+      position: absolute;
+      right: 98px;
+      top: 142px;
+      width: 36px;
+      height: 16px;
+      background: var(--violet);
+      clip-path: polygon(0 52%, 22% 20%, 50% 42%, 78% 20%, 100% 52%, 72% 84%, 28% 84%);
+    }
+
+    .cursor {
+      position: absolute;
+      width: 34px;
+      height: 52px;
+      background: var(--white);
+      border: 3px solid var(--ink);
+      clip-path: polygon(0 0, 0 100%, 29% 75%, 47% 100%, 65% 91%, 47% 67%, 84% 67%);
+      filter: drop-shadow(5px 5px 0 rgba(45,19,104,.35));
+      transform: rotate(-13deg);
+    }
+
+    .terminal {
+      height: 100%;
+      margin: 0;
+      padding: 11px;
+      overflow: hidden;
+      background: #140738;
+      color: var(--white);
+      font-size: 14px;
+      line-height: 1.25;
+    }
+    .terminal span { color: var(--aqua); }
+
+    .cover .w-home { left: 402px; top: 246px; width: 512px; height: 330px; z-index: 7; }
+    .cover .w-orbit { right: 72px; top: 116px; width: 284px; height: 238px; z-index: 5; }
+    .cover .w-guest { left: 64px; top: 456px; width: 230px; height: 150px; z-index: 6; }
+    .cover .w-player { right: 30px; bottom: 86px; width: 330px; height: 132px; z-index: 4; }
+    .cover .w-code { left: 640px; top: 76px; width: 300px; height: 160px; z-index: 3; }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 42px;
+    }
+    .card {
+      min-height: 318px;
+      border: var(--line);
+      background: #ffb7ef;
+      box-shadow: 10px 10px 0 rgba(45,19,104,.34);
+      overflow: hidden;
+    }
+    .card .body { height: calc(100% - 30px); }
+    .card h3 {
+      margin-bottom: 14px;
+      font-size: 26px;
+      line-height: 1.05;
+      text-transform: uppercase;
+    }
+    .card p, .card li {
+      font-size: 20px;
+      line-height: 1.32;
+      font-weight: 700;
+    }
+    .card ul {
+      display: grid;
+      gap: 11px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .swatches {
+      display: grid;
+      grid-template-columns: repeat(5, 48px);
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .swatch {
+      width: 48px;
+      height: 48px;
+      border: 3px solid var(--ink);
+      box-shadow: inset 3px 3px 0 rgba(255,255,255,.55), 4px 4px 0 rgba(45,19,104,.18);
+    }
+
+    .meter {
+      height: 29px;
+      border: 2px solid var(--ink);
+      background:
+        linear-gradient(90deg, var(--aqua) var(--fill, 50%), transparent 0),
+        repeating-linear-gradient(90deg, rgba(45,19,104,.2) 0 2px, transparent 2px 20px),
+        #f8cbff;
+      box-shadow: 4px 4px 0 rgba(45,19,104,.2);
+    }
+
+    .tabs {
+      position: absolute;
+      left: 70px;
+      top: 336px;
+      width: 240px;
+      height: 305px;
+    }
+    .mini {
+      position: absolute;
+      width: 184px;
+      height: 58px;
+      border: var(--line);
+      background: #885cf4;
+      box-shadow: 6px 6px 0 rgba(45,19,104,.3);
+    }
+    .mini .bar { height: 22px; font-size: 13px; }
+    .mini:nth-child(1) { left: 0; top: 0; }
+    .mini:nth-child(2) { left: 14px; top: 22px; }
+    .mini:nth-child(3) { left: 28px; top: 44px; }
+    .mini:nth-child(4) { left: 42px; top: 66px; }
+    .mini:nth-child(5) { left: 56px; top: 88px; }
+    .mini:nth-child(6) { left: 70px; top: 110px; }
+
+    .map {
+      position: relative;
+      height: 430px;
+      margin-top: 24px;
+      border: var(--line);
+      background:
+        radial-gradient(circle, rgba(45,19,104,.18) 0 2px, transparent 2.8px) 0 0 / 34px 34px,
+        radial-gradient(circle, rgba(255,247,255,.28) 0 1.5px, transparent 2.4px) 17px 17px / 34px 34px,
+        radial-gradient(circle, rgba(121,247,255,.16) 0 1px, transparent 2px) 9px 27px / 58px 58px,
+        rgba(255,183,239,.68);
+      box-shadow: 12px 12px 0 rgba(45,19,104,.28);
+    }
+
+    .home-page {
+      height: 100%;
+      display: grid;
+      grid-template-columns: 1fr 128px;
+      gap: 14px;
+      background:
+        radial-gradient(circle, rgba(45,19,104,.16) 0 2px, transparent 2.8px) 0 0 / 30px 30px,
+        radial-gradient(circle, rgba(255,247,255,.34) 0 1.5px, transparent 2.3px) 15px 15px / 30px 30px,
+        radial-gradient(circle, rgba(255,145,219,.18) 0 1px, transparent 2px) 7px 23px / 52px 52px,
+        linear-gradient(135deg, #f7c3ff, #95f7ff);
+      padding: 16px;
+    }
+    .home-page h3 {
+      color: var(--white);
+      font-size: 37px;
+      line-height: 1;
+      text-shadow: 3px 3px 0 var(--ink);
+      text-transform: uppercase;
+    }
+    .home-page p {
+      margin-top: 12px;
+      font-size: 18px;
+      line-height: 1.28;
+      font-weight: 700;
+    }
+    .home-links {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 18px;
+    }
+    .home-links span {
+      border: 2px solid var(--ink);
+      background: var(--lemon);
+      padding: 8px 10px;
+      font-size: 14px;
+      box-shadow: 4px 4px 0 rgba(45,19,104,.18);
+    }
+    .badge-stack {
+      display: grid;
+      gap: 10px;
+    }
+    .badge-stack i {
+      display: grid;
+      place-items: center;
+      min-height: 54px;
+      border: 2px solid var(--ink);
+      background: rgba(255,247,255,.7);
+      font-style: normal;
+      font-size: 13px;
+      text-align: center;
+      box-shadow: inset 2px 2px 0 rgba(255,255,255,.7);
+    }
+
+    .orbit-art {
+      position: relative;
+      height: 100%;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(255,232,145,.95) 0 17%, transparent 18%),
+        radial-gradient(circle at 50% 50%, rgba(133,246,255,.58) 0 31%, transparent 32%),
+        linear-gradient(135deg, #3a2495, #8b67ff);
+    }
+    .orbit-art::before,
+    .orbit-art::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 220px;
+      height: 74px;
+      border: 5px solid var(--white);
+      border-radius: 50%;
+      transform: translate(-50%, -50%) rotate(var(--turn, -18deg));
+      box-shadow: 5px 5px 0 rgba(45,19,104,.24);
+    }
+    .orbit-art::after {
+      --turn: 28deg;
+      width: 180px;
+      height: 112px;
+      border-color: var(--lemon);
+      opacity: .9;
+    }
+    .orbit-art .dot {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border: 3px solid var(--ink);
+      background: var(--hot);
+      box-shadow: 4px 4px 0 rgba(45,19,104,.22);
+    }
+    .node {
+      position: absolute;
+      border: var(--line);
+      background: var(--white);
+      box-shadow: 6px 6px 0 rgba(45,19,104,.23);
+      padding: 12px 14px;
+      font-size: 18px;
+      line-height: 1.12;
+      font-weight: 700;
+    }
+    .wire {
+      position: absolute;
+      height: 4px;
+      background: var(--ink);
+      transform-origin: left center;
+    }
+
+    .checks {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 30px;
+    }
+    .check {
+      min-height: 98px;
+      border: var(--line);
+      background: rgba(255,247,255,.74);
+      box-shadow: 7px 7px 0 rgba(45,19,104,.24);
+      padding: 14px 16px;
+      font-size: 20px;
+      line-height: 1.26;
+      font-weight: 700;
+    }
+    .check b {
+      display: block;
+      margin-bottom: 5px;
+      color: #b018b4;
+      font-size: 17px;
+      text-transform: uppercase;
+    }
+
+    .marquee {
+      position: absolute;
+      left: 0;
+      right: 0;
+      display: flex;
+      overflow: hidden;
+      white-space: nowrap;
+      border-block: var(--line);
+      background: var(--lemon);
+      color: var(--ink);
+      font-size: 22px;
+      line-height: 40px;
+      text-transform: uppercase;
+    }
+    .marquee b {
+      display: inline-block;
+      min-width: 100%;
+      animation: ticker 17s linear infinite;
+    }
+    @keyframes ticker { to { transform: translateX(-100%); } }
+
+    .motion {
+      display: grid;
+      grid-template-columns: 1.04fr .96fr;
+      gap: 28px;
+      margin-top: 22px;
+    }
+
+    .motion .card {
+      min-height: 278px;
+    }
+    .blink { animation: blink 1s steps(2, end) infinite; }
+    @keyframes blink { 50% { opacity: .24; } }
+
+    .sparkle {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: var(--white);
+      clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+      filter: drop-shadow(3px 3px 0 rgba(45,19,104,.2));
+      animation: twinkle 1.8s steps(2, end) infinite;
+    }
+    @keyframes twinkle { 50% { transform: scale(.64) rotate(22deg); } }
+
+    .ghost {
+      position: absolute;
+      right: -14px;
+      bottom: 40px;
+      z-index: 0;
+      color: rgba(255,247,255,.13);
+      font-size: 142px;
+      line-height: .82;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+
+    .footer {
+      position: absolute;
+      left: 344px;
+      bottom: 30px;
+      z-index: 12;
+      color: rgba(255,247,255,.78);
+      font-size: 12px;
+      text-transform: uppercase;
+      text-shadow: 2px 2px 0 rgba(45,19,104,.4);
+    }
+
+    .nav {
+      position: absolute;
+      right: 24px;
+      bottom: 21px;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav button, .nav .count {
+      height: 32px;
+      border: 2px solid var(--ink);
+      background: var(--pink);
+      box-shadow: 4px 4px 0 rgba(45,19,104,.35);
+    }
+    .nav button {
+      width: 34px;
+      cursor: pointer;
+    }
+    .count {
+      display: grid;
+      place-items: center;
+      min-width: 82px;
+      padding: 0 10px;
+      font-size: 13px;
+    }
+    .dots {
+      position: absolute;
+      left: 24px;
+      bottom: 22px;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      height: 34px;
+      padding: 0 8px;
+      border: 2px solid var(--ink);
+      background: rgba(255,175,234,.88);
+      box-shadow: 4px 4px 0 rgba(45,19,104,.35);
+    }
+    .dots::before {
+      content: "PAGES";
+      margin-right: 2px;
+      color: var(--ink);
+      font-family: "Courier New", "Lucida Console", monospace;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .dots button {
+      width: 21px;
+      height: 20px;
+      padding: 0;
+      border: 2px solid var(--ink);
+      background: rgba(255,255,255,.58);
+      font-family: "Courier New", "Lucida Console", monospace;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .dots button.active {
+      background: var(--lemon);
+      box-shadow: 3px 3px 0 rgba(45,19,104,.32);
+    }
+
+    [data-theme="lemon"] {
+      background:
+        radial-gradient(circle at 84% 18%, rgba(121,247,255,.25), transparent 22%),
+        radial-gradient(circle, rgba(45,19,104,.13) 0 2px, transparent 2.8px) 0 0 / 36px 36px,
+        radial-gradient(circle, rgba(255,255,255,.28) 0 1.5px, transparent 2.4px) 18px 18px / 36px 36px,
+        radial-gradient(circle, rgba(255,145,219,.16) 0 1px, transparent 2px) 8px 26px / 60px 60px,
+        linear-gradient(135deg, #ffd6f4 0%, #fff0a7 100%);
+    }
+    [data-theme="lemon"] .claim {
+      color: var(--ink);
+      text-shadow: 5px 5px 0 var(--white), 10px 10px 0 rgba(162,63,215,.24);
+    }
+    [data-theme="aqua"] {
+      background:
+        radial-gradient(circle at 18% 24%, rgba(246,255,118,.23), transparent 20%),
+        radial-gradient(circle, rgba(45,19,104,.12) 0 2px, transparent 2.8px) 0 0 / 38px 38px,
+        radial-gradient(circle, rgba(255,247,255,.24) 0 1.5px, transparent 2.4px) 19px 19px / 38px 38px,
+        radial-gradient(circle, rgba(246,255,118,.14) 0 1px, transparent 2px) 10px 28px / 64px 64px,
+        linear-gradient(135deg, #86f6ff 0%, #cfa5ff 54%, #ffb5ef 100%);
+    }
+    [data-theme="dark"] {
+      background:
+        radial-gradient(circle at 82% 20%, rgba(255,145,219,.16), transparent 24%),
+        radial-gradient(circle, rgba(133,246,255,.15) 0 2px, transparent 2.8px) 0 0 / 40px 40px,
+        radial-gradient(circle, rgba(255,247,255,.09) 0 1.5px, transparent 2.4px) 20px 20px / 40px 40px,
+        radial-gradient(circle, rgba(255,145,219,.12) 0 1px, transparent 2px) 11px 30px / 66px 66px,
+        linear-gradient(135deg, #251166 0%, #3e238f 47%, #130631 100%);
+    }
+    [data-theme="dark"] .sub, [data-theme="dark"] .check { color: var(--white); }
+    [data-theme="dark"] .check { background: rgba(255,175,234,.2); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .glimmer-canvas, .glimmer-fallback { opacity: .36; }
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="viewport" aria-label="Y2K millennium web style HTML deck">
+    <section class="stage" id="stage">
+      <div class="mountains"></div>
+      <canvas class="glimmer-canvas" id="glimmer" width="1280" height="720" aria-hidden="true"></canvas>
+      <svg class="svg-defs" aria-hidden="true">
+        <defs>
+          <linearGradient id="miniPink" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#ffffff"/>
+            <stop offset=".15" stop-color="#ffd7f4"/>
+            <stop offset=".31" stop-color="#ff54c3"/>
+            <stop offset=".46" stop-color="#d01de8"/>
+            <stop offset=".54" stop-color="#fff7ff"/>
+            <stop offset=".7" stop-color="#ff78d2"/>
+            <stop offset="1" stop-color="#34105f"/>
+          </linearGradient>
+          <linearGradient id="miniSilver" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#ffffff"/>
+            <stop offset=".12" stop-color="#c7f6ff"/>
+            <stop offset=".3" stop-color="#49b9ff"/>
+            <stop offset=".46" stop-color="#3f33db"/>
+            <stop offset=".54" stop-color="#f7ffff"/>
+            <stop offset=".68" stop-color="#75cfff"/>
+            <stop offset=".84" stop-color="#4c36c9"/>
+            <stop offset="1" stop-color="#18083f"/>
+          </linearGradient>
+          <linearGradient id="miniOrange" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#ffffff"/>
+            <stop offset=".14" stop-color="#ffd56f"/>
+            <stop offset=".32" stop-color="#ff7a12"/>
+            <stop offset=".46" stop-color="#f25500"/>
+            <stop offset=".54" stop-color="#fff4c6"/>
+            <stop offset=".7" stop-color="#ffa32d"/>
+            <stop offset="1" stop-color="#6b1236"/>
+          </linearGradient>
+          <linearGradient id="miniFlash" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#ffffff" stop-opacity=".95"/>
+            <stop offset=".18" stop-color="#ffffff" stop-opacity=".8"/>
+            <stop offset=".2" stop-color="#ffffff" stop-opacity="0"/>
+            <stop offset=".52" stop-color="#ffffff" stop-opacity="0"/>
+            <stop offset=".6" stop-color="#ffffff" stop-opacity=".72"/>
+            <stop offset=".66" stop-color="#ffffff" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <div class="glimmer-fallback" aria-hidden="true">
+        <i style="--x:8%; --y:16%; --s:28px; --r:12deg; --c:#ffffff; --d:2.1s;"></i>
+        <i style="--x:18%; --y:56%; --s:22px; --r:35deg; --c:#efffff; --d:2.7s;"></i>
+        <i style="--x:31%; --y:82%; --s:24px; --r:-16deg; --c:#fff9d8; --d:2.4s;"></i>
+        <i style="--x:46%; --y:18%; --s:20px; --r:27deg; --c:#fff0fb; --d:2.9s;"></i>
+        <i style="--x:59%; --y:72%; --s:30px; --r:8deg; --c:#f1fff9; --d:2.3s;"></i>
+        <i style="--x:76%; --y:24%; --s:28px; --r:-21deg; --c:#ffffff; --d:2.5s;"></i>
+        <i style="--x:91%; --y:18%; --s:42px; --r:18deg; --c:#fffbe8; --d:2.2s;"></i>
+        <i style="--x:88%; --y:83%; --s:24px; --r:-28deg; --c:#f0ffff; --d:2.8s;"></i>
+        <i style="--x:6%; --y:58%; --s:20px; --r:-8deg; --c:#fffbe8; --d:2.6s;"></i>
+        <i style="--x:38%; --y:52%; --s:18px; --r:21deg; --c:#ffffff; --d:2.2s;"></i>
+        <i style="--x:55%; --y:48%; --s:21px; --r:-34deg; --c:#f0ffff; --d:2.9s;"></i>
+        <i style="--x:96%; --y:39%; --s:22px; --r:16deg; --c:#fff0fb; --d:2.4s;"></i>
+        <i style="--x:72%; --y:90%; --s:18px; --r:-19deg; --c:#ffffff; --d:2.7s;"></i>
+        <i style="--x:24%; --y:26%; --s:26px; --r:14deg; --c:#ffffff; --d:2.35s;"></i>
+        <i style="--x:34%; --y:12%; --s:18px; --r:-22deg; --c:#ffffff; --d:2.55s;"></i>
+        <i style="--x:44%; --y:68%; --s:24px; --r:30deg; --c:#fff7ff; --d:2.15s;"></i>
+        <i style="--x:62%; --y:33%; --s:20px; --r:-14deg; --c:#ffffff; --d:2.75s;"></i>
+        <i style="--x:79%; --y:58%; --s:27px; --r:24deg; --c:#fffdf1; --d:2.45s;"></i>
+        <i style="--x:14%; --y:86%; --s:148px; --r:9deg; --c:#f4ffff; --o:.26; --d:3.2s;"></i>
+        <i style="--x:69%; --y:14%; --s:172px; --r:-12deg; --c:#fff5fd; --o:.24; --d:3s;"></i>
+        <i style="--x:83%; --y:67%; --s:128px; --r:22deg; --c:#fffbe8; --o:.26; --d:3.6s;"></i>
+        <i style="--x:47%; --y:93%; --s:158px; --r:-28deg; --c:#ffffff; --o:.2; --d:3.4s;"></i>
+        <i style="--x:52%; --y:38%; --s:118px; --r:18deg; --c:#ffffff; --o:.18; --d:3.1s;"></i>
+      </div>
+
+      <article class="slide cover active" data-title="Y2K 示例品牌">
+        <div class="sun" style="right:-16px; top:-30px;"></div>
+        <div class="cloud" style="left:20px; top:24px; transform:scale(.82);"></div>
+        <div class="cloud" style="right:250px; top:72px; transform:scale(.55);"></div>
+        <p class="tag pixel">ruins-daily.exe / social account manual</p>
+        <h1 class="mega balloon-chrome" aria-label="Y2K 示例品牌品牌手册">
+          <svg class="balloon-svg" viewBox="0 0 360 310" role="img" aria-hidden="true">
+            <defs>
+              <linearGradient id="metalPink" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#ffffff"/>
+                <stop offset=".12" stop-color="#ffd7f4"/>
+                <stop offset=".28" stop-color="#ff54c3"/>
+                <stop offset=".43" stop-color="#d01de8"/>
+                <stop offset=".52" stop-color="#fff7ff"/>
+                <stop offset=".62" stop-color="#ff78d2"/>
+                <stop offset=".8" stop-color="#8b26d7"/>
+                <stop offset="1" stop-color="#34105f"/>
+              </linearGradient>
+              <linearGradient id="metalSilver" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#ffffff"/>
+                <stop offset=".16" stop-color="#dffaff"/>
+                <stop offset=".32" stop-color="#88d7ff"/>
+                <stop offset=".46" stop-color="#6d62ff"/>
+                <stop offset=".54" stop-color="#ffffff"/>
+                <stop offset=".68" stop-color="#bfe8ff"/>
+                <stop offset=".86" stop-color="#5b50d9"/>
+                <stop offset="1" stop-color="#211057"/>
+              </linearGradient>
+              <linearGradient id="metalOrange" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#ffffff"/>
+                <stop offset=".14" stop-color="#ffd56f"/>
+                <stop offset=".32" stop-color="#ff7a12"/>
+                <stop offset=".46" stop-color="#f25500"/>
+                <stop offset=".54" stop-color="#fff4c6"/>
+                <stop offset=".67" stop-color="#ffa32d"/>
+                <stop offset=".86" stop-color="#d84600"/>
+                <stop offset="1" stop-color="#6b1236"/>
+              </linearGradient>
+              <linearGradient id="metalFlash" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#ffffff" stop-opacity=".95"/>
+                <stop offset=".18" stop-color="#ffffff" stop-opacity=".85"/>
+                <stop offset=".2" stop-color="#ffffff" stop-opacity="0"/>
+                <stop offset=".48" stop-color="#ffffff" stop-opacity="0"/>
+                <stop offset=".56" stop-color="#ffffff" stop-opacity=".74"/>
+                <stop offset=".62" stop-color="#ffffff" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <g transform="skewX(-7)">
+              <text class="svg-extrude" x="20" y="78" transform="translate(15 14)">躺在</text>
+              <text class="svg-extrude" x="20" y="171" transform="translate(15 14)">废墟里</text>
+              <text class="svg-extrude" x="20" y="264" transform="translate(15 14)">手册</text>
+              <text class="svg-rim" x="20" y="78" fill="url(#metalPink)">躺在</text>
+              <text class="svg-rim" x="20" y="171" fill="url(#metalSilver)">废墟里</text>
+              <text class="svg-rim" x="20" y="264" fill="url(#metalOrange)">手册</text>
+              <text class="svg-shine" x="20" y="78" fill="url(#metalFlash)">躺在</text>
+              <text class="svg-shine" x="20" y="171" fill="url(#metalFlash)">废墟里</text>
+              <text class="svg-shine" x="20" y="264" fill="url(#metalFlash)">手册</text>
+            </g>
+          </svg>
+        </h1>
+        <p class="sub" style="max-width:360px;">抽象是世界的法则</p>
+        <div class="window w-home">
+          <div class="bar pixel"><span>ruins_daily_homepage.html</span><span class="ctrl"><i></i><i></i><i></i></span></div>
+          <div class="home-page">
+            <div>
+              <h3 class="pixel">像素都市报社<br>今日开版</h3>
+              <p>躺在互联网废墟里看新秩序冒烟，把平台、代码和 AI 创业现场写成可转发的都市社论。</p>
+              <div class="home-links pixel">
+                <span>社长锐评</span>
+                <span>废墟快讯</span>
+                <span>Markdown 档案</span>
+                <span>GitHub 街区</span>
+              </div>
+            </div>
+            <div class="badge-stack pixel">
+              <i>BEST VIEW<br>1024×768</i>
+              <i>VISITOR<br>4041999</i>
+              <i>ABSTRACT<br>LAW</i>
+            </div>
+          </div>
+        </div>
+        <div class="window w-orbit">
+          <div class="bar pixel"><span>city_afterglow.gif</span><span class="ctrl"><i></i><i></i><i></i></span></div>
+          <div class="body" style="padding:0;">
+            <div class="orbit-art">
+              <i class="dot" style="left:46px; top:38px;"></i>
+              <i class="dot" style="right:54px; bottom:44px; background:var(--aqua);"></i>
+              <div class="sparkle" style="left:198px; top:46px;"></div>
+              <div class="sparkle" style="left:68px; bottom:38px;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="window w-guest">
+          <div class="bar pixel"><span>社长电报</span><span class="ctrl"><i></i><i></i><i></i></span></div>
+          <div class="body" style="background:#8663f5; color:var(--white); padding-top:14px;">
+            <p style="font-size:18px; font-weight:700; margin:4px 0 14px;">今日废墟有新火光</p>
+            <span class="btn pixel">刊登</span>
+          </div>
+        </div>
+        <div class="window w-player">
+          <div class="bar pixel"><span>ruins-radio-player</span><span class="ctrl"><i></i><i></i><i></i></span></div>
+          <div class="body" style="display:grid; grid-template-columns:76px 1fr; gap:14px; align-items:center; background:linear-gradient(135deg,#ffb7ef,#8fffd4);">
+            <div class="big-x pixel" style="background:var(--lemon); color:var(--ink);">▶</div>
+            <div>
+              <p class="pixel" style="font-size:17px; margin-bottom:12px;">now playing: 废墟社论</p>
+              <div class="meter" style="--fill:72%;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="window w-code">
+          <div class="bar pixel"><span>editor_boot.log</span><span class="ctrl"><i></i><i></i><i></i></span></div>
+          <pre class="terminal pixel"><span>loading</span> 社长视角__
+loading GitHub街区__
+loading markdown档案__
+patching ai_xhs_take__
+patching abstract_law__
+press_online</pre>
+        </div>
+      </article>
+
+      <article class="slide" data-title="品牌定位" data-theme="lemon">
+        <p class="tag pixel">01 / brand position</p>
+        <h2 class="claim title-balloon" aria-label="报道废墟现场，也报道世界法则">
+          <svg class="title-balloon-svg" style="--tw:840px; --th:150px; --tfs:58px;" viewBox="0 0 900 160" aria-hidden="true">
+            <g transform="skewX(-6)">
+              <text class="svg-extrude" x="16" y="62" transform="translate(10 10)">报道废墟现场</text>
+              <text class="svg-extrude" x="16" y="132" transform="translate(10 10)">也报道世界法则</text>
+              <text class="svg-rim" x="16" y="62" fill="url(#miniPink)">报道废墟现场</text>
+              <text class="svg-rim" x="16" y="132" fill="url(#miniSilver)">也报道世界法则</text>
+              <text class="svg-shine" x="16" y="62" fill="url(#miniFlash)">报道废墟现场</text>
+              <text class="svg-shine" x="16" y="132" fill="url(#miniFlash)">也报道世界法则</text>
+            </g>
+          </svg>
+        </h2>
+        <div class="cards">
+          <div class="card"><div class="bar pixel">mission<span class="ctrl"><i></i><i></i></span></div><div class="body"><h3 class="pixel">使命</h3><p>把互联网新废墟里的荒诞秩序，翻译成一条能让人点头的锐评。</p></div></div>
+          <div class="card"><div class="bar pixel">audience<span class="ctrl"><i></i><i></i></span></div><div class="body"><h3 class="pixel">读者</h3><p>爱看 AI、开发者文化、平台八卦和抽象观察的人；他们想笑，也想看懂。</p></div></div>
+          <div class="card"><div class="bar pixel">difference<span class="ctrl"><i></i><i></i></span></div><div class="body"><h3 class="pixel">差异</h3><p>不是资讯号，也不是教程号，是一份从废墟里发出的互联网都市报。</p></div></div>
+        </div>
+      </article>
+
+      <article class="slide" data-title="视觉资产" data-theme="aqua">
+        <p class="tag pixel">02 / visual system</p>
+        <h2 class="claim title-balloon" aria-label="废墟灰 报纸白 电光青 警报粉">
+          <svg class="title-balloon-svg" style="--tw:900px; --th:150px; --tfs:58px;" viewBox="0 0 940 160" aria-hidden="true">
+            <g transform="skewX(-6)">
+              <text class="svg-extrude" x="16" y="62" transform="translate(10 10)">废墟灰 · 报纸白</text>
+              <text class="svg-extrude" x="16" y="132" transform="translate(10 10)">电光青 · 警报粉</text>
+              <text class="svg-rim" x="16" y="62" fill="url(#miniSilver)">废墟灰 · 报纸白</text>
+              <text class="svg-rim" x="16" y="132" fill="url(#miniPink)">电光青 · 警报粉</text>
+              <text class="svg-shine" x="16" y="62" fill="url(#miniFlash)">废墟灰 · 报纸白</text>
+              <text class="svg-shine" x="16" y="132" fill="url(#miniFlash)">电光青 · 警报粉</text>
+            </g>
+          </svg>
+        </h2>
+        <div class="window" style="left:88px; top:270px; width:456px; height:330px;">
+          <div class="bar pixel">RuinColors.exe<span class="ctrl"><i></i><i></i><i></i></span></div>
+          <div class="body">
+            <div class="swatches">
+              <i class="swatch" style="background:#79f7ff"></i><i class="swatch" style="background:#fff9ff"></i><i class="swatch" style="background:#f6ff76"></i><i class="swatch" style="background:#5c5f75"></i><i class="swatch" style="background:#171229"></i>
+              <i class="swatch" style="background:#ff91db"></i><i class="swatch" style="background:#b13bf0"></i><i class="swatch" style="background:#6556ff"></i><i class="swatch" style="background:#2b2747"></i><i class="swatch" style="background:#91ffbf"></i>
+            </div>
+            <p style="font-size:20px; font-weight:700; line-height:1.3;">灰黑负责废墟，白色负责报纸，青色负责屏幕，粉黄负责锐评里的警报声。</p>
+            <div style="display:flex; gap:12px; margin-top:18px;"><span class="btn pixel" style="background:var(--aqua)">OK</span><span class="btn pixel">Cancel</span></div>
+          </div>
+        </div>
+        <div class="window" style="right:88px; top:308px; width:470px; height:220px;">
+          <div class="bar pixel">contrast_check.bat<span class="ctrl"><i></i><i></i><i></i></span></div>
+          <div class="body">
+            <p class="pixel" style="font-size:28px; line-height:1.15; color:var(--white); text-shadow:3px 3px 0 var(--ink);">PALETTE RULE:<br>像旧网页，也像新废墟。</p>
+            <div class="meter" style="--fill:82%; margin-top:22px;"></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="slide" data-title="社长人设" data-theme="dark">
+        <p class="tag pixel">03 / editor persona</p>
+        <h2 class="claim title-balloon" aria-label="社长不是人设，是编辑视角">
+          <svg class="title-balloon-svg" style="--tw:860px; --th:150px; --tfs:56px;" viewBox="0 0 920 160" aria-hidden="true">
+            <g transform="skewX(-6)">
+              <text class="svg-extrude" x="16" y="62" transform="translate(10 10)">社长不是人设</text>
+              <text class="svg-extrude" x="16" y="132" transform="translate(10 10)">是编辑视角</text>
+              <text class="svg-rim" x="16" y="62" fill="url(#miniSilver)">社长不是人设</text>
+              <text class="svg-rim" x="16" y="132" fill="url(#miniPink)">是编辑视角</text>
+              <text class="svg-shine" x="16" y="62" fill="url(#miniFlash)">社长不是人设</text>
+              <text class="svg-shine" x="16" y="132" fill="url(#miniFlash)">是编辑视角</text>
+            </g>
+          </svg>
+        </h2>
+        <p class="sub" style="max-width:410px;">像素都市报社社长：主编、记者、评论员三合一，负责给抽象世界定版。</p>
+        <div class="tabs">
+          <div class="mini"><div class="bar pixel">主编.log</div></div><div class="mini"><div class="bar pixel">记者.txt</div></div><div class="mini"><div class="bar pixel">评论员.exe</div></div>
+          <div class="mini"><div class="bar pixel">选题池</div></div><div class="mini"><div class="bar pixel">档案柜</div></div><div class="mini"><div class="bar pixel">旧网页</div></div>
+        </div>
+        <div class="window" style="right:86px; top:236px; width:680px; height:326px;">
+          <div class="bar pixel">editorial_identity.html<span class="ctrl"><i></i><i></i><i></i></span></div>
+          <div class="body" style="display:grid; grid-template-columns:1fr 1fr; gap:18px;">
+            <div style="border:2px solid var(--ink); background:rgba(255,255,255,.42); padding:18px;">
+              <h3 class="pixel" style="font-size:30px; margin-bottom:12px;">报社社长</h3>
+              <p style="font-size:20px; line-height:1.32; font-weight:700;">负责定调：把看似抽象的热闹，写成可以被复述的判断。</p>
+            </div>
+            <div style="border:2px solid var(--ink); background:rgba(133,246,255,.58); padding:18px;">
+              <h3 class="pixel" style="font-size:30px; margin-bottom:12px;">现场记者</h3>
+              <p style="font-size:20px; line-height:1.32; font-weight:700;">负责取景：GitHub、.md 文件、AI 创业叙事，都是报纸版面。</p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="slide" data-title="栏目地图" data-theme="lemon">
+        <p class="tag pixel">04 / content map</p>
+        <h2 class="claim title-balloon" aria-label="从 GitHub 街区，到 Markdown 地层">
+          <svg class="title-balloon-svg" style="--tw:900px; --th:150px; --tfs:56px;" viewBox="0 0 940 160" aria-hidden="true">
+            <g transform="skewX(-6)">
+              <text class="svg-extrude" x="16" y="62" transform="translate(10 10)">从 GitHub 街区</text>
+              <text class="svg-extrude" x="16" y="132" transform="translate(10 10)">到 Markdown 地层</text>
+              <text class="svg-rim" x="16" y="62" fill="url(#miniOrange)">从 GitHub 街区</text>
+              <text class="svg-rim" x="16" y="132" fill="url(#miniSilver)">到 Markdown 地层</text>
+              <text class="svg-shine" x="16" y="62" fill="url(#miniFlash)">从 GitHub 街区</text>
+              <text class="svg-shine" x="16" y="132" fill="url(#miniFlash)">到 Markdown 地层</text>
+            </g>
+          </svg>
+        </h2>
+        <div class="map">
+          <div class="wire" style="left:230px; top:108px; width:250px; transform:rotate(12deg);"></div>
+          <div class="wire" style="left:502px; top:178px; width:260px; transform:rotate(-8deg);"></div>
+          <div class="wire" style="left:800px; top:170px; width:170px; transform:rotate(23deg);"></div>
+          <div class="node pixel" style="left:70px; top:72px; background:var(--aqua);">GitHub<br>AI 创业的小红书</div>
+          <div class="node pixel" style="left:388px; top:130px; background:var(--pink);">.md 文件<br>新的源代码</div>
+          <div class="node pixel" style="left:700px; top:96px; background:var(--lemon);">平台现场<br>热闹如何成秩序</div>
+          <div class="node pixel" style="right:70px; bottom:72px; background:var(--mint);">社论结论<br>抽象背后的法则</div>
+          <div class="cursor" style="left:640px; top:245px;"></div>
+        </div>
+      </article>
+
+      <article class="slide" data-title="发布节奏" data-theme="aqua">
+        <div class="marquee pixel" style="top:96px;"><b>废墟快讯上线... 社长锐评排版... Markdown 档案入库... GitHub 街区巡逻...&nbsp;&nbsp;</b><b>废墟快讯上线... 社长锐评排版... Markdown 档案入库... GitHub 街区巡逻...&nbsp;&nbsp;</b></div>
+        <p class="tag pixel">05 / publishing rhythm</p>
+        <h2 class="claim title-balloon" style="margin-top:88px;" aria-label="先锐评，再归档，最后成社论">
+          <svg class="title-balloon-svg" style="--tw:900px; --th:150px; --tfs:56px;" viewBox="0 0 940 160" aria-hidden="true">
+            <g transform="skewX(-6)">
+              <text class="svg-extrude" x="16" y="62" transform="translate(10 10)">先锐评，再归档</text>
+              <text class="svg-extrude" x="16" y="132" transform="translate(10 10)">最后成社论</text>
+              <text class="svg-rim" x="16" y="62" fill="url(#miniPink)">先锐评，再归档</text>
+              <text class="svg-rim" x="16" y="132" fill="url(#miniOrange)">最后成社论</text>
+              <text class="svg-shine" x="16" y="62" fill="url(#miniFlash)">先锐评，再归档</text>
+              <text class="svg-shine" x="16" y="132" fill="url(#miniFlash)">最后成社论</text>
+            </g>
+          </svg>
+        </h2>
+        <div class="motion">
+          <div class="card"><div class="bar pixel">loader.gif<span class="ctrl"><i></i><i></i><i></i></span></div><div class="body">
+            <h3 class="pixel">出报流程</h3>
+            <p>开头给一句社论判断，中段展开现场证据，结尾把抽象沉淀成一个可复用命名。</p>
+            <div class="meter" style="--fill:64%; margin-top:22px;"></div>
+            <p class="pixel blink" style="margin-top:15px; font-size:18px;">报纸排版中...</p>
+          </div></div>
+          <div class="card" style="background:#cfa5ff;"><div class="bar pixel">micro_noise<span class="ctrl"><i></i><i></i><i></i></span></div><div class="body">
+            <div class="sparkle" style="left:72px; top:80px;"></div>
+            <div class="sparkle" style="left:260px; top:142px;"></div>
+            <div class="sparkle" style="left:170px; top:220px;"></div>
+            <p class="pixel" style="font-size:34px; line-height:1.1; color:var(--white); text-shadow:3px 3px 0 var(--ink);">标题要响<br>判断要硬</p>
+          </div></div>
+        </div>
+      </article>
+
+      <article class="slide" data-title="内容模块" data-theme="dark">
+        <p class="tag pixel">06 / column modules</p>
+        <h2 class="claim title-balloon" aria-label="三个固定栏目，像报纸一样出街">
+          <svg class="title-balloon-svg" style="--tw:860px; --th:150px; --tfs:56px;" viewBox="0 0 920 160" aria-hidden="true">
+            <g transform="skewX(-6)">
+              <text class="svg-extrude" x="16" y="62" transform="translate(10 10)">三个固定栏目</text>
+              <text class="svg-extrude" x="16" y="132" transform="translate(10 10)">像报纸一样出街</text>
+              <text class="svg-rim" x="16" y="62" fill="url(#miniSilver)">三个固定栏目</text>
+              <text class="svg-rim" x="16" y="132" fill="url(#miniPink)">像报纸一样出街</text>
+              <text class="svg-shine" x="16" y="62" fill="url(#miniFlash)">三个固定栏目</text>
+              <text class="svg-shine" x="16" y="132" fill="url(#miniFlash)">像报纸一样出街</text>
+            </g>
+          </svg>
+        </h2>
+        <div class="cards">
+          <div class="card"><div class="bar pixel">社长锐评<span class="ctrl"><i></i><i></i></span></div><pre class="terminal pixel" style="height:288px;">topic = AI 创业现场
+take = GitHub 是小红书
+proof = star / demo / README
+result = 抽象但成立</pre></div>
+          <div class="card"><div class="bar pixel">源码废墟<span class="ctrl"><i></i><i></i></span></div><div class="body"><h3 class="pixel">观察</h3><ul><li>.md 是新源码</li><li>README 是门面</li><li>Prompt 是工地</li><li>Demo 是橱窗</li></ul></div></div>
+          <div class="card"><div class="bar pixel">都市报副刊<span class="ctrl"><i></i><i></i></span></div><div class="body"><h3 class="pixel">社论</h3><p>把一条梗写成一种时代切面，让读者觉得“这话离谱，但真的很准”。</p><div class="meter" style="--fill:91%; margin-top:20px;"></div></div></div>
+        </div>
+      </article>
+
+      <article class="slide" data-title="语气规则" data-theme="lemon">
+        <p class="tag pixel">07 / voice rules</p>
+        <h2 class="claim title-balloon" aria-label="抽象可以飞，结论必须落地">
+          <svg class="title-balloon-svg" style="--tw:880px; --th:150px; --tfs:56px;" viewBox="0 0 920 160" aria-hidden="true">
+            <g transform="skewX(-6)">
+              <text class="svg-extrude" x="16" y="62" transform="translate(10 10)">抽象可以飞</text>
+              <text class="svg-extrude" x="16" y="132" transform="translate(10 10)">结论必须落地</text>
+              <text class="svg-rim" x="16" y="62" fill="url(#miniOrange)">抽象可以飞</text>
+              <text class="svg-rim" x="16" y="132" fill="url(#miniSilver)">结论必须落地</text>
+              <text class="svg-shine" x="16" y="62" fill="url(#miniFlash)">抽象可以飞</text>
+              <text class="svg-shine" x="16" y="132" fill="url(#miniFlash)">结论必须落地</text>
+            </g>
+          </svg>
+        </h2>
+        <div class="checks">
+          <div class="check"><b>Do</b>标题像报纸头版：短、狠、可引用。</div>
+          <div class="check"><b>Do</b>正文像社论：先命名现象，再给判断。</div>
+          <div class="check"><b>Don't</b>不要把抽象写成谜语，读者要能立刻复述。</div>
+          <div class="check"><b>Don't</b>不要只追热点，必须沉淀一个可继续使用的概念。</div>
+        </div>
+        <div class="window" style="right:100px; bottom:88px; width:360px; height:120px;">
+          <div class="bar pixel">no_error.exe<span class="ctrl"><i></i><i></i><i></i></span></div>
+          <div class="body" style="display:flex; align-items:center; justify-content:space-between;">
+            <p class="pixel" style="font-size:18px;">不是段子<br>是现场报道</p>
+            <span class="btn pixel">刊发</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="slide" data-title="品牌上线" data-theme="dark">
+        <div class="sun" style="right:82px; top:62px; transform:scale(.82);"></div>
+        <div class="cloud" style="right:140px; top:108px; transform:scale(.55);"></div>
+        <p class="tag pixel">08 / launch kit</p>
+        <h2 class="mega balloon-chrome" style="width:820px; margin-top:38px;" aria-label="废墟开版">
+          <svg class="balloon-svg small" viewBox="0 0 470 230" role="img" aria-hidden="true">
+            <defs>
+              <linearGradient id="launchPink" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#ffffff"/><stop offset=".15" stop-color="#ffd7f4"/><stop offset=".3" stop-color="#ff54c3"/><stop offset=".46" stop-color="#d01de8"/><stop offset=".54" stop-color="#fff7ff"/><stop offset=".7" stop-color="#ff78d2"/><stop offset="1" stop-color="#34105f"/>
+              </linearGradient>
+              <linearGradient id="launchOrange" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#ffffff"/><stop offset=".15" stop-color="#ffd56f"/><stop offset=".34" stop-color="#ff7a12"/><stop offset=".48" stop-color="#f25500"/><stop offset=".55" stop-color="#fff4c6"/><stop offset=".72" stop-color="#ffa32d"/><stop offset="1" stop-color="#6b1236"/>
+              </linearGradient>
+              <linearGradient id="launchFlash" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#ffffff" stop-opacity=".95"/><stop offset=".2" stop-color="#ffffff" stop-opacity=".78"/><stop offset=".22" stop-color="#ffffff" stop-opacity="0"/><stop offset=".5" stop-color="#ffffff" stop-opacity="0"/><stop offset=".58" stop-color="#ffffff" stop-opacity=".7"/><stop offset=".64" stop-color="#ffffff" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <g transform="skewX(-7)">
+              <text class="svg-extrude" x="20" y="82" transform="translate(15 14)">废墟</text>
+              <text class="svg-extrude" x="20" y="176" transform="translate(15 14)">开版</text>
+              <text class="svg-rim" x="20" y="82" fill="url(#launchPink)">废墟</text>
+              <text class="svg-rim" x="20" y="176" fill="url(#launchOrange)">开版</text>
+              <text class="svg-shine" x="20" y="82" fill="url(#launchFlash)">废墟</text>
+              <text class="svg-shine" x="20" y="176" fill="url(#launchFlash)">开版</text>
+            </g>
+          </svg>
+        </h2>
+        <p class="sub">这套品牌手册可以直接指导头像、社媒封面、栏目命名、编辑口吻和长期选题资产。</p>
+        <div class="window" style="right:110px; bottom:108px; width:420px; height:164px;">
+          <div class="bar pixel">launch_dialog<span class="ctrl"><i></i><i></i><i></i></span></div>
+          <div class="body" style="display:flex; align-items:center; gap:18px;">
+            <div class="big-x pixel" style="background:var(--aqua); color:var(--ink);">!</div>
+            <div><p class="pixel" style="font-size:20px; margin-bottom:16px;">ruins press saved.</p><span class="btn pixel" style="background:var(--lemon)">OK</span></div>
+          </div>
+        </div>
+      </article>
+
+      <div class="ghost pixel">404</div>
+      <div class="footer pixel">Y2K 示例品牌 BRAND MANUAL · HTML SINGLE FILE</div>
+      <div class="dots" id="dots" aria-label="slide dots"></div>
+      <nav class="nav pixel" aria-label="deck navigation">
+        <button type="button" id="prev" aria-label="上一页">&lt;</button>
+        <div class="count" id="count">01 / 09</div>
+        <button type="button" id="next" aria-label="下一页">&gt;</button>
+      </nav>
+    </section>
+  </main>
+
+  <script>
+    const stage = document.getElementById("stage");
+    const slides = Array.from(document.querySelectorAll(".slide"));
+    const dots = document.getElementById("dots");
+    const count = document.getElementById("count");
+    const params = new URLSearchParams(location.search);
+    const requested = Number(params.get("slide"));
+    let index = Number.isFinite(requested) ? Math.min(Math.max(requested, 0), slides.length - 1) : 0;
+
+    function resize() {
+      const scale = Math.min(window.innerWidth / 1280, window.innerHeight / 720);
+      stage.style.setProperty("--scale", scale.toFixed(4));
+      stage.style.left = `${Math.max(0, (window.innerWidth - 1280 * scale) / 2)}px`;
+      stage.style.top = `${Math.max(0, (window.innerHeight - 720 * scale) / 2)}px`;
+    }
+
+    function show(nextIndex) {
+      index = (nextIndex + slides.length) % slides.length;
+      slides.forEach((slide, i) => slide.classList.toggle("active", i === index));
+      Array.from(dots.children).forEach((dot, i) => dot.classList.toggle("active", i === index));
+      count.textContent = `${String(index + 1).padStart(2, "0")} / ${String(slides.length).padStart(2, "0")}`;
+      const url = new URL(location.href);
+      url.searchParams.set("slide", index);
+      history.replaceState(null, "", url);
+    }
+
+    slides.forEach((slide, i) => {
+      const dot = document.createElement("button");
+      dot.type = "button";
+      dot.textContent = String(i + 1);
+      dot.setAttribute("aria-label", `跳到第 ${i + 1} 页：${slide.dataset.title}`);
+      dot.addEventListener("click", () => show(i));
+      dots.appendChild(dot);
+    });
+
+    document.getElementById("prev").addEventListener("click", () => show(index - 1));
+    document.getElementById("next").addEventListener("click", () => show(index + 1));
+    window.addEventListener("keydown", (event) => {
+      if (["ArrowRight", "PageDown", " "].includes(event.key)) show(index + 1);
+      if (["ArrowLeft", "PageUp", "Backspace"].includes(event.key)) show(index - 1);
+      if (event.key === "Home") show(0);
+      if (event.key === "End") show(slides.length - 1);
+    });
+    window.addEventListener("resize", resize);
+    resize();
+    show(index);
+
+    function initGlimmer() {
+      const canvas = document.getElementById("glimmer");
+      if (navigator.webdriver) {
+        canvas.style.display = "none";
+        return;
+      }
+      const gl = canvas.getContext("webgl", { alpha: false, antialias: false, premultipliedAlpha: true });
+      if (!gl) {
+        canvas.style.display = "none";
+        return;
+      }
+
+      const vertexSource = `
+        attribute vec2 aPosition;
+        void main() {
+          gl_Position = vec4(aPosition, 0.0, 1.0);
+        }
+      `;
+
+      const fragmentSource = `
+        precision mediump float;
+        uniform vec2 uResolution;
+        uniform float uTime;
+        uniform float uSlide;
+
+        float hash(vec2 p) {
+          return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+        }
+
+        float star(vec2 uv, vec2 p, float size, float twinkle) {
+          vec2 d = uv - p;
+          float r = length(d);
+          float a = atan(d.y, d.x);
+          float arms = pow(abs(cos(a * 2.0)), 2.8);
+          float radius = size * (.34 + 1.42 * arms);
+          float body = smoothstep(radius, radius * .42, r);
+          float glow = smoothstep(size * 3.2, 0.0, r) * .16;
+          return (body + glow) * twinkle;
+        }
+
+        void main() {
+          vec2 uv = gl_FragCoord.xy / uResolution.xy;
+          uv.x *= uResolution.x / uResolution.y;
+          float t = uTime * .001;
+          float slideShift = uSlide * .071;
+          float safe = 1.0;
+          safe *= smoothstep(.06, .18, uv.x);
+          safe *= 1.0 - smoothstep(1.54, 1.72, uv.x);
+          safe *= smoothstep(.08, .18, uv.y);
+          safe *= 1.0 - smoothstep(.82, .96, uv.y);
+
+          vec3 color = vec3(0.0);
+          float alpha = 0.0;
+          for (int i = 0; i < 46; i++) {
+            float fi = float(i);
+            vec2 cell = vec2(mod(fi, 8.0), floor(fi / 8.0));
+            vec2 p = (cell + vec2(hash(cell + slideShift), hash(cell + 4.17 + slideShift))) / vec2(8.0, 5.0);
+            p.x *= uResolution.x / uResolution.y;
+            float edgeBias = smoothstep(.28, .62, abs((p.x / (uResolution.x / uResolution.y)) - .5));
+            edgeBias += smoothstep(.24, .48, abs(p.y - .5));
+            float tw = .45 + .55 * sin(t * (1.6 + hash(cell) * 2.8) + fi * 1.37 + slideShift * 9.0);
+            float s = star(uv, p, .018 + hash(cell + 9.2) * .024, tw) * clamp(edgeBias, .32, 1.0);
+            vec3 tint = mix(vec3(.92, 1.0, 1.0), vec3(1.0, .94, 1.0), hash(cell + 2.7));
+            tint = mix(tint, vec3(1.0, .98, .78), step(.82, hash(cell + 8.8)));
+            color += tint * s * 2.35;
+            alpha += s * 1.28;
+          }
+
+          vec2 flareA = vec2(1.46 + .03 * sin(t * .31), .84);
+          vec2 flareB = vec2(.16, .16 + .025 * cos(t * .27));
+          float fA = star(uv, flareA, .038, .75 + .25 * sin(t * 1.7));
+          float fB = star(uv, flareB, .028, .65 + .35 * cos(t * 1.3));
+          vec2 flareC = vec2(1.18, .28 + .018 * sin(t * .43));
+          vec2 flareD = vec2(.92 + .022 * cos(t * .36), .72);
+          float fC = star(uv, flareC, .032, .74 + .26 * sin(t * 1.2));
+          float fD = star(uv, flareD, .026, .64 + .36 * cos(t * 1.9));
+          color += vec3(1.0, .96, .76) * fA * 1.65 + vec3(.92, 1.0, 1.0) * fB * 1.55;
+          color += vec3(1.0, .9, 1.0) * fC * 1.45 + vec3(.96, 1.0, .86) * fD * 1.4;
+          alpha += (fA + fB + fC + fD) * .95;
+
+          float veil = smoothstep(.0, .95, uv.x / (uResolution.x / uResolution.y)) * smoothstep(.1, .9, uv.y);
+          color += vec3(.62, .95, 1.0) * veil * .025 * (sin(t * .7 + uv.x * 18.0) * .5 + .5);
+
+          gl_FragColor = vec4(color, clamp(alpha * safe, 0.0, .78));
+        }
+      `;
+
+      function compile(type, source) {
+        const shader = gl.createShader(type);
+        gl.shaderSource(shader, source);
+        gl.compileShader(shader);
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+          console.warn(gl.getShaderInfoLog(shader));
+          return null;
+        }
+        return shader;
+      }
+
+      const vertex = compile(gl.VERTEX_SHADER, vertexSource);
+      const fragment = compile(gl.FRAGMENT_SHADER, fragmentSource);
+      if (!vertex || !fragment) {
+        canvas.style.display = "none";
+        return;
+      }
+
+      const program = gl.createProgram();
+      gl.attachShader(program, vertex);
+      gl.attachShader(program, fragment);
+      gl.linkProgram(program);
+      if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+        canvas.style.display = "none";
+        return;
+      }
+      document.documentElement.classList.add("has-webgl-glimmer");
+
+      const buffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]), gl.STATIC_DRAW);
+
+      const aPosition = gl.getAttribLocation(program, "aPosition");
+      const uResolution = gl.getUniformLocation(program, "uResolution");
+      const uTime = gl.getUniformLocation(program, "uTime");
+      const uSlide = gl.getUniformLocation(program, "uSlide");
+
+      gl.useProgram(program);
+      gl.enableVertexAttribArray(aPosition);
+      gl.vertexAttribPointer(aPosition, 2, gl.FLOAT, false, 0, 0);
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+      function render(time) {
+        gl.viewport(0, 0, canvas.width, canvas.height);
+        gl.clearColor(0, 0, 0, 1);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.uniform2f(uResolution, canvas.width, canvas.height);
+        gl.uniform1f(uTime, time);
+        gl.uniform1f(uSlide, index);
+        gl.drawArrays(gl.TRIANGLES, 0, 6);
+        requestAnimationFrame(render);
+      }
+      requestAnimationFrame(render);
+    }
+
+    initGlimmer();
+  </script>
+</body>
+</html>

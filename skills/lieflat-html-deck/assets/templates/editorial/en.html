@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Editorial — Investor Deck (EN)</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --ink:    #111;
+  --mid:    #555;
+  --faint:  #999;
+  --fainter:#bbb;
+  --paper:  #faf8f3;
+  --line:   #e8e5de;
+  --accent: #111;
+}
+
+html, body { width: 100%; height: 100%; overflow: hidden; background: #d8d4cc; }
+
+#bg { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; }
+
+.slide {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1; opacity: 0; pointer-events: none;
+  transition: opacity 0.55s cubic-bezier(0.4,0,0.2,1);
+}
+.slide.active { opacity: 1; pointer-events: all; }
+
+.frame {
+  width: 100vw;
+  height: 100vh;
+  position: relative; overflow: hidden;
+  background: transparent;
+}
+.frame::after {
+  content: ''; position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 100; opacity: 0.4;
+}
+
+.mono { font-family: 'Space Mono', monospace; }
+.sans { font-family: 'Inter', sans-serif; }
+
+#nav { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 20px; z-index: 10; }
+.nav-btn { width: 36px; height: 36px; border: 1px solid rgba(0,0,0,0.18); background: rgba(250,248,243,0.75); backdrop-filter: blur(6px); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; font-size: 14px; color: #333; }
+.nav-btn:hover { background: rgba(250,248,243,0.98); }
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(0,0,0,0.2); transition: background 0.3s, transform 0.3s; cursor: pointer; }
+.dot.active { background: #111; transform: scale(1.4); }
+
+#counter { position: fixed; top: 20px; right: 24px; font-family: 'Space Mono', monospace; font-size: 9px; color: rgba(0,0,0,0.35); letter-spacing: 0.1em; z-index: 10; }
+
+/* Shared chrome */
+.sys-bar { position: absolute; top: 5%; left: 6%; right: 6%; display: flex; justify-content: space-between; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+.sys-label { font-family: 'Space Mono', monospace; font-size: clamp(6px, 0.85vw, 9px); color: var(--fainter); line-height: 1.9; text-transform: uppercase; letter-spacing: 0.15em; }
+.foot-bar { position: absolute; bottom: 5%; left: 6%; right: 6%; display: flex; justify-content: space-between; padding-top: 14px; border-top: 1px solid var(--line); }
+.foot-label { font-family: 'Space Mono', monospace; font-size: clamp(6px, 0.8vw, 8px); color: var(--fainter); text-transform: uppercase; letter-spacing: 0.12em; }
+
+@keyframes fadeUp   { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeDown { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeIn   { from{opacity:0} to{opacity:1} }
+@keyframes slideR   { from{opacity:0;transform:translateX(-20px)} to{opacity:1;transform:translateX(0)} }
+@keyframes slideL   { from{opacity:0;transform:translateX(20px)} to{opacity:1;transform:translateX(0)} }
+@keyframes scaleIn  { from{opacity:0;transform:scale(.92)} to{opacity:1;transform:scale(1)} }
+@keyframes drawX    { from{transform:scaleX(0);transform-origin:left} to{transform:scaleX(1);transform-origin:left} }
+
+.slide .a { opacity: 0; }
+.slide.active .a { animation-fill-mode: both; }
+
+/* === SLIDE 1 — COVER === */
+#s1 .frame { display: grid; grid-template-columns: 1fr 1.5fr; }
+#s1 .left { padding: 8% 6% 8% 7%; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid var(--line); }
+#s1 .issue { font-family: 'Space Mono', monospace; font-size: clamp(7px, 0.9vw, 10px); color: var(--fainter); text-transform: uppercase; letter-spacing: 0.2em; }
+#s1 .mega { font-family: 'Inter', sans-serif; font-weight: 900; font-size: clamp(60px, 10vw, 120px); line-height: 0.86; color: var(--ink); letter-spacing: -0.045em; }
+#s1 .subtext { font-family: 'Inter', sans-serif; font-size: clamp(9px, 1.1vw, 12px); color: var(--mid); line-height: 1.7; max-width: 80%; }
+#s1 .right { padding: 8% 7%; display: flex; flex-direction: column; justify-content: center; }
+#s1 .article-row { padding: 3% 0; border-bottom: 1px solid var(--line); }
+#s1 .article-row:first-child { padding-top: 0; }
+#s1 .article-row:last-child { border-bottom: none; padding-bottom: 0; }
+#s1 .art-num { font-family: 'Space Mono', monospace; font-size: clamp(6px, 0.75vw, 9px); color: var(--fainter); margin-bottom: 6px; letter-spacing: 0.15em; }
+#s1 .art-title { font-family: 'Inter', sans-serif; font-weight: 700; font-size: clamp(12px, 1.6vw, 18px); color: var(--ink); line-height: 1.25; margin-bottom: 4px; letter-spacing: -0.01em; }
+#s1 .art-body { font-family: 'Inter', sans-serif; font-size: clamp(9px, 1.05vw, 12px); color: var(--faint); line-height: 1.55; }
+.slide#s1.active .issue   { animation: fadeDown 0.5s ease 0.15s both; }
+.slide#s1.active .mega    { animation: slideR 0.8s cubic-bezier(.16,1,.3,1) 0.3s both; }
+.slide#s1.active .subtext { animation: fadeUp 0.6s ease 0.65s both; }
+.slide#s1.active .article-row:nth-child(1){ animation: slideL 0.5s ease 0.5s both; }
+.slide#s1.active .article-row:nth-child(2){ animation: slideL 0.5s ease 0.65s both; }
+.slide#s1.active .article-row:nth-child(3){ animation: slideL 0.5s ease 0.8s both; }
+
+/* === SLIDE 2 — STATEMENT === */
+#s2 .frame { padding: 0; }
+#s2 .content { position: absolute; inset: 18% 7% 15% 7%; display: grid; grid-template-columns: 1fr 1fr; gap: 6%; align-items: center; }
+#s2 .quote { font-family: 'Inter', sans-serif; font-weight: 900; font-size: clamp(32px, 5.2vw, 60px); line-height: 1.05; color: var(--ink); letter-spacing: -0.025em; }
+#s2 .quote .highlight { display: inline-block; background: var(--ink); color: var(--paper); padding: 0 8px; }
+#s2 .body { font-family: 'Inter', sans-serif; font-size: clamp(10px, 1.25vw, 14px); line-height: 1.9; color: var(--mid); }
+#s2 .body p + p { margin-top: 1em; }
+#s2 .body strong { color: var(--ink); font-weight: 600; }
+.slide#s2.active .sys-bar { animation: fadeIn 0.5s ease 0.15s both; }
+.slide#s2.active .foot-bar { animation: fadeIn 0.5s ease 0.9s both; }
+.slide#s2.active .quote    { animation: slideR 0.8s cubic-bezier(.16,1,.3,1) 0.3s both; }
+.slide#s2.active .body     { animation: slideL 0.6s ease 0.55s both; }
+
+/* === SLIDE 3 — THREE SIGNALS === */
+#s3 .content, #s7 .content, #s8 .content, #s9 .content, #s6 .content, #s4 .content {
+  position: absolute; inset: 17% 7% 14% 7%; display: flex; flex-direction: column;
+}
+.head-block { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 5%; padding-bottom: 3%; border-bottom: 1px solid var(--line); }
+.head-title { font-family: 'Inter', sans-serif; font-weight: 900; font-size: clamp(26px, 4.6vw, 52px); line-height: 1; letter-spacing: -0.03em; color: var(--ink); }
+.head-tag { font-family: 'Space Mono', monospace; font-size: clamp(6px, 0.8vw, 9px); color: var(--fainter); letter-spacing: 0.2em; text-transform: uppercase; padding-bottom: 4px; }
+
+#s3 .col-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4%; flex: 1; }
+#s3 .col { display: flex; flex-direction: column; gap: 12px; }
+#s3 .col-num { font-family: 'Space Mono', monospace; font-size: clamp(7px, 0.85vw, 10px); color: var(--fainter); letter-spacing: 0.15em; }
+#s3 .col-title { font-family: 'Inter', sans-serif; font-weight: 700; font-size: clamp(14px, 1.9vw, 22px); line-height: 1.2; color: var(--ink); letter-spacing: -0.015em; }
+#s3 .col-body { font-family: 'Inter', sans-serif; font-size: clamp(9px, 1.05vw, 12px); color: var(--mid); line-height: 1.75; }
+.slide#s3.active .sys-bar { animation: fadeIn 0.5s ease 0.15s both; }
+.slide#s3.active .foot-bar { animation: fadeIn 0.5s ease 0.9s both; }
+.slide#s3.active .head-block { animation: fadeDown 0.5s ease 0.2s both; }
+.slide#s3.active .col:nth-child(1){ animation: fadeUp 0.55s ease 0.4s both; }
+.slide#s3.active .col:nth-child(2){ animation: fadeUp 0.55s ease 0.55s both; }
+.slide#s3.active .col:nth-child(3){ animation: fadeUp 0.55s ease 0.7s both; }
+
+/* === SLIDE 4 — PRODUCT === */
+#s4 .product-row { display: grid; grid-template-columns: 1fr 1.2fr; gap: 6%; flex: 1; align-items: stretch; }
+#s4 .product-left { display: flex; flex-direction: column; justify-content: space-between; padding-right: 4%; border-right: 1px solid var(--line); }
+#s4 .p-eyebrow { font-family: 'Space Mono', monospace; font-size: clamp(7px, 0.85vw, 10px); color: var(--fainter); letter-spacing: 0.2em; text-transform: uppercase; }
+#s4 .p-headline { font-family: 'Inter', sans-serif; font-weight: 900; font-size: clamp(28px, 4.4vw, 56px); line-height: 0.96; letter-spacing: -0.03em; color: var(--ink); margin-top: 14px; }
+#s4 .p-headline .highlight { background: var(--ink); color: var(--paper); padding: 0 6px; }
+#s4 .p-body { font-family: 'Inter', sans-serif; font-size: clamp(10px, 1.15vw, 13px); color: var(--mid); line-height: 1.85; max-width: 85%; }
+#s4 .product-right { display: flex; flex-direction: column; gap: 14px; }
+#s4 .feature-row { display: grid; grid-template-columns: 32px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+#s4 .feature-row:last-child { border-bottom: none; }
+#s4 .f-num { font-family: 'Space Mono', monospace; font-size: clamp(7px, 0.85vw, 10px); color: var(--fainter); padding-top: 2px; letter-spacing: 0.15em; }
+#s4 .f-title { font-family: 'Inter', sans-serif; font-weight: 700; font-size: clamp(12px, 1.4vw, 16px); color: var(--ink); margin-bottom: 4px; letter-spacing: -0.01em; }
+#s4 .f-body { font-family: 'Inter', sans-serif; font-size: clamp(9px, 1.05vw, 12px); color: var(--mid); line-height: 1.65; }
+.slide#s4.active .sys-bar { animation: fadeIn 0.5s ease 0.15s both; }
+.slide#s4.active .foot-bar { animation: fadeIn 0.5s ease 0.95s both; }
+.slide#s4.active .p-eyebrow { animation: fadeDown 0.5s ease 0.2s both; }
+.slide#s4.active .p-headline { animation: slideR 0.7s cubic-bezier(.16,1,.3,1) 0.3s both; }
+.slide#s4.active .p-body { animation: fadeUp 0.5s ease 0.55s both; }
+.slide#s4.active .feature-row:nth-child(1){ animation: slideL 0.5s ease 0.45s both; }
+.slide#s4.active .feature-row:nth-child(2){ animation: slideL 0.5s ease 0.6s both; }
+.slide#s4.active .feature-row:nth-child(3){ animation: slideL 0.5s ease 0.75s both; }
+.slide#s4.active .feature-row:nth-child(4){ animation: slideL 0.5s ease 0.9s both; }
+
+/* === SLIDE 5 — TRACTION === */
+#s5 .content { position: absolute; inset: 17% 7% 14% 7%; display: flex; flex-direction: column; }
+#s5 .big-title { font-family: 'Inter', sans-serif; font-weight: 900; font-size: clamp(48px, 8.5vw, 96px); line-height: 0.92; letter-spacing: -0.04em; color: var(--ink); margin-bottom: 6%; }
+#s5 .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5%; flex: 1; }
+#s5 .metric { border-top: 1px solid var(--line); padding-top: 4%; display: flex; flex-direction: column; gap: 10px; }
+#s5 .m-label { font-family: 'Space Mono', monospace; font-size: clamp(6px, 0.8vw, 9px); color: var(--fainter); text-transform: uppercase; letter-spacing: 0.15em; }
+#s5 .m-num { font-family: 'Inter', sans-serif; font-weight: 900; font-size: clamp(36px, 5.8vw, 68px); line-height: 1; color: var(--ink); letter-spacing: -0.03em; }
+#s5 .m-note { font-family: 'Inter', sans-serif; font-size: clamp(9px, 1.05vw, 12px); color: var(--mid); line-height: 1.55; }
+.slide#s5.active .sys-bar { animation: fadeIn 0.5s ease 0.15s both; }
+.slide#s5.active .foot-bar { animation: fadeIn 0.5s ease 0.9s both; }
+.slide#s5.active .big-title { animation: slideR 0.8s cubic-bezier(.16,1,.3,1) 0.25s both; }
+.slide#s5.active .metric:nth-child(1){ animation: fadeUp 0.5s ease 0.55s both; }
+.slide#s5.active .metric:nth-child(2){ animation: fadeUp 0.5s ease 0.7s both; }
+.slide#s5.active .metric:nth-child(3){ animation: fadeUp 0.5s ease 0.85s both; }
+
+/* === SLIDE 6 — MARKET === */
+#s6 .frame { display: grid; grid-template-columns: 1fr 1fr; }
+#s6 .s6-left { padding: 8% 6% 8% 7%; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid var(--line); background: rgba(0,0,0,0.02); }
+#s6 .m-label { font-family: 'Space Mono', monospace; font-size: clamp(7px, 0.85vw, 10px); color: var(--fainter); text-transform: uppercase; letter-spacing: 0.2em; }
+#s6 .m-num { font-family: 'Inter', sans-serif; font-weight: 900; font-size: clamp(64px, 11vw, 128px); line-height: 0.88; letter-spacing: -0.05em; color: var(--ink); }
+#s6 .m-desc { font-family: 'Inter', sans-serif; font-size: clamp(9px, 1.15vw, 13px); color: var(--mid); line-height: 1.75; }
+#s6 .s6-right { padding: 8% 7%; display: flex; flex-direction: column; justify-content: center; gap: 6%; }
+#s6 .seg { display: flex; flex-direction: column; gap: 6px; padding-bottom: 5%; border-bottom: 1px solid var(--line); }
+#s6 .seg:last-child { border-bottom: none; padding-bottom: 0; }
+#s6 .seg-label { font-family: 'Space Mono', monospace; font-size: clamp(6px, 0.75vw, 9px); color: var(--fainter); letter-spacing: 0.2em; text-transform: uppercase; }
+#s6 .seg-num { font-family: 'Inter', sans-serif; font-weight: 900; font-size: clamp(22px, 3.2vw, 36px); color: var(--ink); line-height: 1; letter-spacing: -0.02em; }
+#s6 .seg-bar-wrap { height: 3px; background: rgba(0,0,0,0.06); }
+#s6 .seg-bar { height: 100%; background: var(--accent); transform-origin: left; }
+.slide#s6.active .m-label { animation: fadeIn 0.5s ease 0.15s both; }
+.slide#s6.active .m-num   { animation: scaleIn 0.7s cubic-bezier(.16,1,.3,1) 0.3s both; }
+.slide#s6.active .m-desc  { animation: fadeUp 0.5s ease 0.65s both; }
+.slide#s6.active .seg:nth-child(1){ animation: slideL 0.5s ease 0.5s both; }
+.slide#s6.active .seg:nth-child(2){ animation: slideL 0.5s ease 0.65s both; }
+.slide#s6.active .seg:nth-child(3){ animation: slideL 0.5s ease 0.8s both; }
+.slide#s6.active .seg:nth-child(1) .seg-bar { animation: drawX 0.7s ease 0.6s both; }
+.slide#s6.active .seg:nth-child(2) .seg-bar { animation: drawX 0.7s ease 0.75s both; }
+.slide#s6.active .seg:nth-child(3) .seg-bar { animation: drawX 0.7s ease 0.9s both; }
+
+/* === SLIDE 7 — COMPETITION === */
+#s7 .comp-table { width: 100%; flex: 1; display: flex; flex-direction: column; }
+#s7 .comp-row { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr; gap: 0; padding: 14px 12px; border-bottom: 1px solid var(--line); align-items: center; }
+#s7 .comp-row:last-child { border-bottom: none; }
+#s7 .comp-row.head { background: rgba(0,0,0,0.02); border-bottom: 1px solid var(--ink); padding-bottom: 12px; }
+#s7 .comp-row.head .cell { font-family: 'Space Mono', monospace; font-size: clamp(6px, 0.8vw, 9px); color: var(--fainter); text-transform: uppercase; letter-spacing: 0.18em; }
+#s7 .comp-row.us { background: rgba(0,0,0,0.05); }
+#s7 .comp-row.us .cell:first-child { font-weight: 900; }
+#s7 .cell { font-family: 'Inter', sans-serif; font-size: clamp(11px, 1.25vw, 14px); color: var(--ink); padding: 0 8px; }
+#s7 .cell.attr { font-weight: 700; letter-spacing: -0.01em; }
+#s7 .check { display: inline-block; width: 14px; height: 14px; border-radius: 50%; }
+#s7 .check.yes { background: var(--ink); }
+#s7 .check.no { background: transparent; border: 1.5px solid var(--fainter); }
+#s7 .check.partial { background: linear-gradient(90deg, var(--ink) 50%, transparent 50%); border: 1.5px solid var(--ink); }
+.slide#s7.active .sys-bar { animation: fadeIn 0.5s ease 0.15s both; }
+.slide#s7.active .foot-bar { animation: fadeIn 0.5s ease 1s both; }
+.slide#s7.active .head-block { animation: fadeDown 0.5s ease 0.2s both; }
+.slide#s7.active .comp-row.head { animation: fadeUp 0.5s ease 0.4s both; }
+.slide#s7.active .comp-row:nth-of-type(2){ animation: fadeUp 0.45s ease 0.5s both; }
+.slide#s7.active .comp-row:nth-of-type(3){ animation: fadeUp 0.45s ease 0.6s both; }
+.slide#s7.active .comp-row:nth-of-type(4){ animation: fadeUp 0.45s ease 0.7s both; }
+.slide#s7.active .comp-row:nth-of-type(5){ animation: fadeUp 0.45s ease 0.8s both; }
+.slide#s7.active .comp-row:nth-of-type(6){ animation: fadeUp 0.45s ease 0.9s both; }
+
+/* === SLIDE 8 — TIMELINE === */
+#s8 .axis-stage { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 6% 0; }
+#s8 .axis { position: relative; height: 120px; }
+#s8 .axis .line { position: absolute; left: 4%; right: 4%; top: 50%; height: 1px; background: var(--ink); }
+#s8 .tick { position: absolute; top: 50%; transform: translate(-50%, -50%); }
+#s8 .tick .dot { width: 10px; height: 10px; background: var(--ink); border-radius: 50%; margin: 0 auto; }
+#s8 .tick .lbl { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); font-family: 'Inter', sans-serif; font-weight: 700; font-size: clamp(12px, 1.3vw, 15px); white-space: nowrap; color: var(--ink); }
+#s8 .tick .lbl-sub { display: block; font-weight: 400; font-size: clamp(9px, 1vw, 11px); color: var(--mid); margin-top: 4px; }
+#s8 .tick .y { font-family: 'Space Mono', monospace; font-size: clamp(7px, 0.85vw, 10px); letter-spacing: 0.18em; color: var(--fainter); margin-top: 18px; text-align: center; text-transform: uppercase; }
+.slide#s8.active .sys-bar { animation: fadeIn 0.5s ease 0.15s both; }
+.slide#s8.active .foot-bar { animation: fadeIn 0.5s ease 1s both; }
+.slide#s8.active .head-block { animation: fadeDown 0.5s ease 0.2s both; }
+.slide#s8.active .axis .line { animation: drawX 0.9s ease 0.4s both; }
+.slide#s8.active .tick:nth-child(2){ animation: scaleIn 0.5s ease 0.5s both; }
+.slide#s8.active .tick:nth-child(3){ animation: scaleIn 0.5s ease 0.6s both; }
+.slide#s8.active .tick:nth-child(4){ animation: scaleIn 0.5s ease 0.7s both; }
+.slide#s8.active .tick:nth-child(5){ animation: scaleIn 0.5s ease 0.8s both; }
+.slide#s8.active .tick:nth-child(6){ animation: scaleIn 0.5s ease 0.9s both; }
+
+/* === SLIDE 9 — MASTHEAD === */
+#s9 .team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4%; flex: 1; align-content: start; }
+#s9 .member { display: flex; flex-direction: column; gap: 8px; }
+#s9 .avatar { width: 100%; aspect-ratio: 1; background: rgba(0,0,0,0.05); position: relative; overflow: hidden; border: 1px solid var(--line); }
+#s9 .avatar-initials { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; font-weight: 900; font-size: clamp(18px, 2.6vw, 30px); color: rgba(0,0,0,0.18); letter-spacing: -0.02em; }
+#s9 .member-name { font-family: 'Inter', sans-serif; font-weight: 700; font-size: clamp(11px, 1.25vw, 14px); color: var(--ink); letter-spacing: -0.01em; }
+#s9 .member-role { font-family: 'Space Mono', monospace; font-size: clamp(6px, 0.75vw, 9px); color: var(--fainter); text-transform: uppercase; letter-spacing: 0.12em; }
+#s9 .member-bg { font-family: 'Inter', sans-serif; font-size: clamp(8px, 0.95vw, 11px); color: var(--mid); line-height: 1.55; margin-top: 2px; }
+.slide#s9.active .sys-bar { animation: fadeIn 0.5s ease 0.15s both; }
+.slide#s9.active .foot-bar { animation: fadeIn 0.5s ease 0.9s both; }
+.slide#s9.active .head-block { animation: fadeDown 0.5s ease 0.2s both; }
+.slide#s9.active .member:nth-child(1){ animation: fadeUp 0.5s ease 0.4s both; }
+.slide#s9.active .member:nth-child(2){ animation: fadeUp 0.5s ease 0.52s both; }
+.slide#s9.active .member:nth-child(3){ animation: fadeUp 0.5s ease 0.64s both; }
+.slide#s9.active .member:nth-child(4){ animation: fadeUp 0.5s ease 0.76s both; }
+
+/* === SLIDE 10 — CLOSER === */
+#s10 .frame { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 8%; text-align: center; }
+#s10 .label { font-family: 'Space Mono', monospace; font-size: clamp(7px, 0.9vw, 10px); color: var(--fainter); letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 5%; }
+#s10 .amount { font-family: 'Inter', sans-serif; font-weight: 900; font-size: clamp(64px, 11vw, 124px); line-height: 0.9; letter-spacing: -0.05em; color: var(--ink); margin-bottom: 3%; }
+#s10 .amount .highlight { background: var(--ink); color: var(--paper); padding: 0 10px; }
+#s10 .rule-sm { width: 48px; height: 1px; background: rgba(0,0,0,0.15); margin: 1% 0 4%; }
+#s10 .sub { font-family: 'Inter', sans-serif; font-size: clamp(10px, 1.25vw, 14px); color: var(--mid); line-height: 1.8; max-width: 55%; margin-bottom: 5%; }
+#s10 .contact { font-family: 'Space Mono', monospace; font-size: clamp(7px, 0.85vw, 10px); color: var(--faint); letter-spacing: 0.18em; text-transform: uppercase; line-height: 1.9; }
+.slide#s10.active .sys-bar { animation: fadeIn 0.5s ease 0.15s both; }
+.slide#s10.active .foot-bar { animation: fadeIn 0.5s ease 1.1s both; }
+.slide#s10.active .label   { animation: fadeIn 0.5s ease 0.25s both; }
+.slide#s10.active .amount  { animation: scaleIn 0.8s cubic-bezier(.16,1,.3,1) 0.4s both; }
+.slide#s10.active .rule-sm { animation: drawX 0.6s ease 0.75s both; }
+.slide#s10.active .sub     { animation: fadeUp 0.55s ease 0.85s both; }
+.slide#s10.active .contact { animation: fadeUp 0.5s ease 1.0s both; }
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+<div id="counter">01 / 10</div>
+
+<!-- 1. COVER -->
+<div class="slide active" id="s1">
+  <div class="frame">
+    <div class="left">
+      <div class="issue a">Vol.03 · 2026 · Issue 01</div>
+      <div class="mega a">WHY<br>NOW</div>
+      <div class="subtext a">The window is open. The question is whether you're already inside.</div>
+    </div>
+    <div class="right">
+      <div class="article-row a"><div class="art-num">01 — Timing</div><div class="art-title">Market timing is a myth you tell after the fact</div><div class="art-body">Every successful entry looks obvious in retrospect. The ones still open don't.</div></div>
+      <div class="article-row a"><div class="art-num">02 — Signals</div><div class="art-title">Three signals that don't lie</div><div class="art-body">Regulatory shift, infrastructure maturity, buyer behavior.</div></div>
+      <div class="article-row a"><div class="art-num">03 — Thesis</div><div class="art-title">What we're building into</div><div class="art-body">Not a trend. A structural gap.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. STATEMENT -->
+<div class="slide" id="s2">
+  <div class="frame">
+    <div class="sys-bar a"><div class="sys-label">The Problem — 02</div><div class="sys-label">Editorial / Investor Brief</div></div>
+    <div class="content">
+      <div class="quote a">Most tools are built for<br><span class="highlight">yesterday's</span><br>workflow.</div>
+      <div class="body a">
+        <p>Teams have adopted new ways of working — async, distributed, AI-assisted — but the underlying infrastructure hasn't caught up.</p>
+        <p><strong>The gap isn't technical.</strong> It's architectural. Existing platforms were designed around assumptions that no longer hold.</p>
+        <p>That's the opening.</p>
+      </div>
+    </div>
+    <div class="foot-bar a"><div class="foot-label">Editorial · Series A</div><div class="foot-label">02 / 10</div></div>
+  </div>
+</div>
+
+<!-- 3. THREE SIGNALS -->
+<div class="slide" id="s3">
+  <div class="frame">
+    <div class="sys-bar a"><div class="sys-label">Feature — 03</div><div class="sys-label">Three Signals</div></div>
+    <div class="content">
+      <div class="head-block">
+        <div class="head-title">THREE<br>SIGNALS</div>
+        <div class="head-tag">The structural gap</div>
+      </div>
+      <div class="col-grid">
+        <div class="col a"><div class="col-num">01 — REGULATORY</div><div class="col-title">Policy moved. Tools didn't.</div><div class="col-body">Compliance frameworks shifted in 2024. Legacy platforms are still retrofitting. Greenfield wins.</div></div>
+        <div class="col a"><div class="col-num">02 — INFRASTRUCTURE</div><div class="col-title">The AI layer finally holds weight.</div><div class="col-body">Model costs dropped 80% in 18 months. What was a demo in 2023 is a dependency in 2026.</div></div>
+        <div class="col a"><div class="col-num">03 — BUYER</div><div class="col-title">Budget moved to outcomes.</div><div class="col-body">CFOs stopped buying seats. They're buying results. Usage-based pricing stops being optional.</div></div>
+      </div>
+    </div>
+    <div class="foot-bar a"><div class="foot-label">Editorial · Series A</div><div class="foot-label">03 / 10</div></div>
+  </div>
+</div>
+
+<!-- 4. PRODUCT -->
+<div class="slide" id="s4">
+  <div class="frame">
+    <div class="sys-bar a"><div class="sys-label">Feature — 04</div><div class="sys-label">Product</div></div>
+    <div class="content">
+      <div class="product-row">
+        <div class="product-left">
+          <div>
+            <div class="p-eyebrow a">04 — The Product</div>
+            <div class="p-headline a">One platform.<br><span class="highlight">Four</span> jobs.</div>
+          </div>
+          <div class="p-body a">
+            We replaced four legacy tools — workflow, knowledge, comms and approvals — with one shared layer. Customers cut context-switch time by an average of 38%.
+          </div>
+        </div>
+        <div class="product-right">
+          <div class="feature-row a"><div class="f-num">01</div><div><div class="f-title">Workflow Studio</div><div class="f-body">Drag-and-drop pipelines that compile to typed code. Audit-friendly by default.</div></div></div>
+          <div class="feature-row a"><div class="f-num">02</div><div><div class="f-title">Shared Knowledge</div><div class="f-body">Every artifact is searchable, citeable and versioned across teams.</div></div></div>
+          <div class="feature-row a"><div class="f-num">03</div><div><div class="f-title">Embedded Comms</div><div class="f-body">Threads attach to the work, not the inbox. No more shoulder-tap interrupts.</div></div></div>
+          <div class="feature-row a"><div class="f-num">04</div><div><div class="f-title">Policy & Approvals</div><div class="f-body">Approvals route by rule, log by default and stay enforceable in audit.</div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bar a"><div class="foot-label">Editorial · Series A</div><div class="foot-label">04 / 10</div></div>
+  </div>
+</div>
+
+<!-- 5. TRACTION -->
+<div class="slide" id="s5">
+  <div class="frame">
+    <div class="sys-bar a"><div class="sys-label">Feature — 05</div><div class="sys-label">Traction</div></div>
+    <div class="content">
+      <div class="big-title a">TRACTION</div>
+      <div class="metrics">
+        <div class="metric a">
+          <div class="m-label">Annual Recurring Revenue</div>
+          <div class="m-num" data-target="4.2" data-prefix="$" data-suffix="M">$4.2M</div>
+          <div class="m-note">Up from $900K twelve months ago. Growth compounding quarter over quarter.</div>
+        </div>
+        <div class="metric a">
+          <div class="m-label">Enterprise Clients</div>
+          <div class="m-num" data-target="320">320</div>
+          <div class="m-note">Including four publicly listed logos signed in the last two quarters.</div>
+        </div>
+        <div class="metric a">
+          <div class="m-label">12-Month Retention</div>
+          <div class="m-num" data-target="94" data-suffix="%">94%</div>
+          <div class="m-note">Industry average sits at 71%. Net retention above 120% on expansion accounts.</div>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bar a"><div class="foot-label">Editorial · Series A</div><div class="foot-label">05 / 10</div></div>
+  </div>
+</div>
+
+<!-- 6. MARKET -->
+<div class="slide" id="s6">
+  <div class="frame">
+    <div class="s6-left">
+      <div class="m-label a">Total Addressable Market</div>
+      <div class="m-num a" data-target="84" data-prefix="$" data-suffix="B">$84B</div>
+      <div class="m-desc a">Enterprise workflow automation is the fastest-growing segment in B2B SaaS. The window is open — but not for long.</div>
+    </div>
+    <div class="s6-right">
+      <div class="seg a"><div class="seg-label">TAM — Total Market</div><div class="seg-num">$84B</div><div class="seg-bar-wrap"><div class="seg-bar" style="width:100%"></div></div></div>
+      <div class="seg a"><div class="seg-label">SAM — Serviceable</div><div class="seg-num">$18B</div><div class="seg-bar-wrap"><div class="seg-bar" style="width:21%"></div></div></div>
+      <div class="seg a"><div class="seg-label">SOM — Obtainable (5 yr)</div><div class="seg-num">$2.4B</div><div class="seg-bar-wrap"><div class="seg-bar" style="width:2.9%"></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 7. COMPETITION -->
+<div class="slide" id="s7">
+  <div class="frame">
+    <div class="sys-bar a"><div class="sys-label">Feature — 07</div><div class="sys-label">Competition</div></div>
+    <div class="content">
+      <div class="head-block">
+        <div class="head-title">WHY US</div>
+        <div class="head-tag">Where competitors stop</div>
+      </div>
+      <div class="comp-table">
+        <div class="comp-row head"><div class="cell">Capability</div><div class="cell">Legacy Suite</div><div class="cell">Point Tool A</div><div class="cell">Point Tool B</div><div class="cell">Us</div></div>
+        <div class="comp-row a"><div class="cell attr">One shared data layer</div><div class="cell"><span class="check no"></span></div><div class="cell"><span class="check no"></span></div><div class="cell"><span class="check partial"></span></div><div class="cell"><span class="check yes"></span></div></div>
+        <div class="comp-row us a"><div class="cell attr">Audit-grade by default</div><div class="cell"><span class="check partial"></span></div><div class="cell"><span class="check no"></span></div><div class="cell"><span class="check no"></span></div><div class="cell"><span class="check yes"></span></div></div>
+        <div class="comp-row a"><div class="cell attr">Sub-week deployment</div><div class="cell"><span class="check no"></span></div><div class="cell"><span class="check partial"></span></div><div class="cell"><span class="check partial"></span></div><div class="cell"><span class="check yes"></span></div></div>
+        <div class="comp-row a"><div class="cell attr">Outcome-priced contracts</div><div class="cell"><span class="check no"></span></div><div class="cell"><span class="check no"></span></div><div class="cell"><span class="check no"></span></div><div class="cell"><span class="check yes"></span></div></div>
+        <div class="comp-row a"><div class="cell attr">Open API + SDK</div><div class="cell"><span class="check partial"></span></div><div class="cell"><span class="check yes"></span></div><div class="cell"><span class="check partial"></span></div><div class="cell"><span class="check yes"></span></div></div>
+      </div>
+    </div>
+    <div class="foot-bar a"><div class="foot-label">Editorial · Series A</div><div class="foot-label">07 / 10</div></div>
+  </div>
+</div>
+
+<!-- 8. TIMELINE -->
+<div class="slide" id="s8">
+  <div class="frame">
+    <div class="sys-bar a"><div class="sys-label">Feature — 08</div><div class="sys-label">Timeline</div></div>
+    <div class="content">
+      <div class="head-block">
+        <div class="head-title">ROADMAP</div>
+        <div class="head-tag">Eighteen months out</div>
+      </div>
+      <div class="axis-stage">
+        <div class="axis">
+          <div class="line"></div>
+          <div class="tick" style="left: 6%;"><span class="lbl">Today<span class="lbl-sub">$4.2M ARR</span></span><div class="dot"></div><div class="y">M00</div></div>
+          <div class="tick" style="left: 28%;"><span class="lbl">SOC 2 Type II<span class="lbl-sub">Enterprise unlock</span></span><div class="dot"></div><div class="y">M03</div></div>
+          <div class="tick" style="left: 50%;"><span class="lbl">EU Launch<span class="lbl-sub">First overseas region</span></span><div class="dot"></div><div class="y">M09</div></div>
+          <div class="tick" style="left: 72%;"><span class="lbl">$15M ARR<span class="lbl-sub">Series B ready</span></span><div class="dot"></div><div class="y">M14</div></div>
+          <div class="tick" style="left: 94%;"><span class="lbl">Platform v2<span class="lbl-sub">Open ecosystem</span></span><div class="dot"></div><div class="y">M18</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bar a"><div class="foot-label">Editorial · Series A</div><div class="foot-label">08 / 10</div></div>
+  </div>
+</div>
+
+<!-- 9. MASTHEAD -->
+<div class="slide" id="s9">
+  <div class="frame">
+    <div class="sys-bar a"><div class="sys-label">Masthead — 09</div><div class="sys-label">Team</div></div>
+    <div class="content">
+      <div class="head-block">
+        <div class="head-title">MASTHEAD</div>
+        <div class="head-tag">Built to execute</div>
+      </div>
+      <div class="team-grid">
+        <div class="member a"><div class="avatar"><div class="avatar-initials">AR</div></div><div class="member-name">A. R.</div><div class="member-role">CEO · Co-founder</div><div class="member-bg">Ex infra lead at a top-three payments company. Two prior founder exits.</div></div>
+        <div class="member a"><div class="avatar"><div class="avatar-initials">MK</div></div><div class="member-name">M. K.</div><div class="member-role">CTO · Co-founder</div><div class="member-bg">Distributed systems PhD. Built data pipeline core at a Fortune 500 platform.</div></div>
+        <div class="member a"><div class="avatar"><div class="avatar-initials">DJ</div></div><div class="member-name">D. J.</div><div class="member-role">VP Sales</div><div class="member-bg">Closed $50M ARR at a previous workflow SaaS. Enterprise specialist.</div></div>
+        <div class="member a"><div class="avatar"><div class="avatar-initials">SL</div></div><div class="member-name">S. L.</div><div class="member-role">Head of Product</div><div class="member-bg">Early product manager at a major design platform. Led 0→1 across three product lines.</div></div>
+      </div>
+    </div>
+    <div class="foot-bar a"><div class="foot-label">Editorial · Series A</div><div class="foot-label">09 / 10</div></div>
+  </div>
+</div>
+
+<!-- 10. CLOSER -->
+<div class="slide" id="s10">
+  <div class="frame">
+    <div class="sys-bar a"><div class="sys-label">Closer — 10</div><div class="sys-label">The Ask</div></div>
+    <div class="label a">Series A Round</div>
+    <div class="amount a"><span class="highlight" data-target="8" data-prefix="$" data-suffix="M">$8M</span></div>
+    <div class="rule-sm a"></div>
+    <div class="sub a">18-month runway to product-market fit in the enterprise segment, with a clear path to $20M ARR and Series B readiness.</div>
+    <div class="contact a">hello [at] example.com<br>editorial-deck.example</div>
+    <div class="foot-bar a"><div class="foot-label">Editorial · Series A</div><div class="foot-label">10 / 10</div></div>
+  </div>
+</div>
+
+<div id="nav">
+  <button class="nav-btn" id="prev">←</button>
+  <div class="dots" id="dots"></div>
+  <button class="nav-btn" id="next">→</button>
+</div>
+
+<script>
+(function(){
+  const canvas = document.getElementById('bg');
+  const gl = canvas.getContext('webgl2') || canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) { canvas.style.background = '#d8d4cc'; return; }
+  const vert = `attribute vec2 p; void main(){ gl_Position=vec4(p,0,1); }`;
+  const frag = `
+    precision mediump float;
+    uniform float t; uniform vec2 res;
+    float h(vec2 p){ return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453); }
+    float n(vec2 p){
+      vec2 i=floor(p), f=fract(p); vec2 u=f*f*(3.-2.*f);
+      return mix(mix(h(i),h(i+vec2(1,0)),u.x), mix(h(i+vec2(0,1)),h(i+vec2(1,1)),u.x), u.y);
+    }
+    float fbm(vec2 p){ float v=0.,a=.5; for(int i=0;i<6;i++){v+=a*n(p);p=p*2.1+vec2(3.7,1.9);a*=.5;} return v; }
+    void main(){
+      vec2 uv=gl_FragCoord.xy/res;
+      float s=t*.03;
+      vec2 q=vec2(fbm(uv*2.+s),fbm(uv*2.+vec2(5.2,1.3)));
+      vec2 r=vec2(fbm(uv*2.+4.*q+vec2(1.7,9.2)+.1*s), fbm(uv*2.+4.*q+vec2(8.3,2.8)+.08*s));
+      float f=fbm(uv*1.8+3.5*r+.05*s);
+      vec3 c0=vec3(.815,.805,.780);
+      vec3 c1=vec3(.855,.846,.820);
+      vec3 c2=vec3(.895,.888,.865);
+      vec3 c3=vec3(.928,.920,.900);
+      vec3 col=mix(c0,c1,smoothstep(0.,.38,f));
+      col=mix(col,c2,smoothstep(.38,.62,f));
+      col=mix(col,c3,smoothstep(.62,1.,f));
+      float vg=1.-.2*length((uv-.5)*vec2(1.5,.9));
+      col*=vg;
+      gl_FragColor=vec4(col,1.);
+    }`;
+  function sh(type,src){ const s=gl.createShader(type); gl.shaderSource(s,src); gl.compileShader(s); return s; }
+  const prog=gl.createProgram();
+  gl.attachShader(prog,sh(gl.VERTEX_SHADER,vert));
+  gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,frag));
+  gl.linkProgram(prog); gl.useProgram(prog);
+  const buf=gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+  const loc=gl.getAttribLocation(prog,'p');
+  gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+  const uT=gl.getUniformLocation(prog,'t');
+  const uR=gl.getUniformLocation(prog,'res');
+  function resize(){ canvas.width=innerWidth; canvas.height=innerHeight; gl.viewport(0,0,canvas.width,canvas.height); }
+  resize(); addEventListener('resize',resize);
+  let t0=null;
+  function draw(ts){ if(!t0)t0=ts; const t=(ts-t0)/1000; gl.uniform1f(uT,t); gl.uniform2f(uR,canvas.width,canvas.height); gl.drawArrays(gl.TRIANGLE_STRIP,0,4); requestAnimationFrame(draw); }
+  requestAnimationFrame(draw);
+})();
+
+const slides = Array.from(document.querySelectorAll('.slide'));
+const total = slides.length;
+let cur = 0;
+const dotsEl = document.getElementById('dots');
+slides.forEach((_,i)=>{
+  const d = document.createElement('div');
+  d.className = 'dot' + (i===0?' active':'');
+  d.addEventListener('click', ()=>goTo(i));
+  dotsEl.appendChild(d);
+});
+function goTo(idx){
+  if(idx===cur) return;
+  slides[cur].classList.remove('active');
+  cur = idx;
+  slides[cur].classList.add('active');
+  dotsEl.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active', i===cur));
+  document.getElementById('counter').textContent = String(cur+1).padStart(2,'0') + ' / ' + String(total).padStart(2,'0');
+  triggerCountUp(slides[cur]);
+}
+document.getElementById('prev').addEventListener('click', ()=> goTo((cur-1+total)%total));
+document.getElementById('next').addEventListener('click', ()=> goTo((cur+1)%total));
+document.addEventListener('keydown', e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' ') goTo((cur+1)%total);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') goTo((cur-1+total)%total);
+});
+let tx=0;
+document.addEventListener('touchstart', e=>{ tx=e.touches[0].clientX; });
+document.addEventListener('touchend', e=>{
+  const dx = e.changedTouches[0].clientX - tx;
+  if(Math.abs(dx)>40){ goTo(dx<0 ? (cur+1)%total : (cur-1+total)%total); }
+});
+
+const counted = new Set();
+function triggerCountUp(slide){
+  if(counted.has(slide.id)) return;
+  counted.add(slide.id);
+  slide.querySelectorAll('[data-target]').forEach(el=>{
+    const target = parseFloat(el.dataset.target);
+    const suffix = el.dataset.suffix||'';
+    const prefix = el.dataset.prefix||'';
+    const isFloat = !Number.isInteger(target);
+    const delay = 700, dur = 1100;
+    setTimeout(()=>{
+      const t0 = performance.now();
+      function step(now){
+        const p = Math.min((now-t0)/dur, 1);
+        const e = 1-Math.pow(1-p,3);
+        const v = target*e;
+        el.textContent = prefix + (isFloat ? v.toFixed(1) : Math.round(v)) + suffix;
+        if(p<1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }, delay);
+  });
+}
+triggerCountUp(slides[0]);
+</script>
+</body>
+</html>

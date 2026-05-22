@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GPT-5.5 Review — Precision Evaluation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red:    #E8382A;
+    --coral:  #F05A3E;
+    --orange: #F4845F;
+    --black:  #111110;
+    --grey:   #F2F0EC;
+    --grey-2: #E6E4E0;
+    --text:   #1A1A18;
+    --muted:  #7A7A72;
+  }
+
+  html {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: #000;
+  }
+
+  .deck {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+  .deck::-webkit-scrollbar { display: none; }
+
+  .slide {
+    flex: 0 0 100vw;
+    width: 100vw;
+    height: 100vh;
+    scroll-snap-align: start;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .slide-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 48px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .slide-body {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 64px 48px;
+  }
+
+  /* === SHARED === */
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 12px;
+  }
+  .h-light { color: rgba(255,255,255,0.7) !important; }
+  .h-light .slide-header { color: rgba(255,255,255,0.7); }
+
+  /* === SLIDE 1 — Cover === */
+  .s1 { background: linear-gradient(135deg, #E83028 0%, #F05540 35%, #F0834A 65%, #F4A96A 100%); }
+  .s1 .slide-header { color: rgba(255,255,255,0.75); }
+  .s1 .slide-body { flex-direction: column; justify-content: center; align-items: center; text-align: center; padding-top: 0; }
+  .s1-logo { font-size: clamp(80px, 12vw, 140px); font-weight: 800; color: #fff; letter-spacing: -0.03em; line-height: 1; margin-bottom: 20px; }
+  .s1-tagline { font-size: clamp(16px, 2vw, 22px); font-weight: 400; color: rgba(255,255,255,0.88); letter-spacing: 0.05em; }
+  .s1-dot { margin: 0 6px; opacity: 0.6; }
+
+  /* === SLIDE 2 — Problem === */
+  .s2 { background: linear-gradient(160deg, #E83028 0%, #F05A3E 40%, #F4845F 80%, #f8a07a 100%); }
+  .s2 .slide-header { color: rgba(255,255,255,0.7); }
+  .s2 .slide-body { align-items: flex-end; justify-content: center; padding-bottom: 72px; }
+  .s2-card { background: var(--black); color: #fff; padding: 56px 64px 60px; max-width: 760px; width: 100%; border-left: 4px solid rgba(255,255,255,0.25); }
+  .s2-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 28px; }
+  .s2-headline { font-size: clamp(36px, 5vw, 60px); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 24px; }
+  .s2-body { font-size: 18px; font-weight: 400; color: rgba(255,255,255,0.65); line-height: 1.6; }
+
+  /* === SLIDE 3 — Opportunity (stat grid on grey) === */
+  .s3 { background: var(--grey); }
+  .s3 .slide-header { color: var(--muted); }
+  .s3 .slide-body { align-items: flex-start; flex-direction: column; gap: 48px; max-width: 1180px; margin: 0 auto; width: 100%; }
+  .s3-headline { font-size: clamp(28px, 3.6vw, 48px); font-weight: 700; letter-spacing: -0.025em; line-height: 1.15; color: var(--text); max-width: 720px; }
+  .s3-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; width: 100%; }
+  .s3-stat { background: #fff; padding: 32px 30px; }
+  .s3-stat-num { font-size: 13px; font-weight: 700; color: var(--coral); letter-spacing: 0.04em; margin-bottom: 10px; }
+  .s3-stat-label { font-size: 22px; font-weight: 700; color: var(--text); line-height: 1.2; margin-bottom: 10px; }
+  .s3-stat-desc { font-size: 13px; color: var(--muted); line-height: 1.55; }
+  .s3-callout { background: var(--black); padding: 32px 30px; }
+  .s3-callout .s3-stat-num { color: var(--orange); }
+  .s3-callout .s3-stat-label { color: #fff; }
+  .s3-callout .s3-stat-desc { color: rgba(255,255,255,0.5); }
+
+  /* === SLIDE 4 — Solution (white) === */
+  .s4 { background: #fff; }
+  .s4 .slide-header { color: var(--muted); }
+  .s4 .slide-body { flex-direction: column; align-items: flex-start; gap: 36px; max-width: 1180px; margin: 0 auto; width: 100%; }
+  .s4-headline { font-size: clamp(30px, 4vw, 56px); font-weight: 700; letter-spacing: -0.025em; line-height: 1.15; color: var(--text); max-width: 820px; }
+  .s4-headline em { color: var(--coral); font-style: normal; }
+  .s4-grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 2px; width: 100%; background: var(--grey-2); }
+  .s4-cell { background: #fff; padding: 32px; }
+  .s4-cell.dark { background: var(--black); color: #fff; }
+  .s4-cell.dark .s4-cell-label { color: rgba(255,255,255,0.4); }
+  .s4-cell.dark .s4-cell-desc { color: rgba(255,255,255,0.6); }
+  .s4-cell-label { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--coral); margin-bottom: 14px; }
+  .s4-cell-title { font-size: 22px; font-weight: 700; line-height: 1.2; margin-bottom: 12px; letter-spacing: -0.01em; }
+  .s4-cell-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  /* === SLIDE 5 — How It Works === */
+  .s5 { background: var(--grey); }
+  .s5 .slide-header { color: var(--muted); }
+  .s5 .slide-body { flex-direction: column; align-items: flex-start; gap: 32px; max-width: 1180px; margin: 0 auto; width: 100%; }
+  .s5-headline { font-size: clamp(28px, 3.6vw, 48px); font-weight: 700; letter-spacing: -0.025em; line-height: 1.15; color: var(--text); max-width: 720px; }
+  .s5-flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; width: 100%; }
+  .s5-step { background: #fff; padding: 28px 26px 32px; position: relative; }
+  .s5-step-num { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--coral); margin-bottom: 10px; }
+  .s5-step-title { font-size: 18px; font-weight: 700; color: var(--text); line-height: 1.25; margin-bottom: 10px; }
+  .s5-step-desc { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+  .s5-step::after {
+    content: '→';
+    position: absolute;
+    right: -10px; top: 36px;
+    font-size: 18px; color: var(--coral);
+    font-weight: 700; z-index: 1;
+  }
+  .s5-step:last-child::after { display: none; }
+
+  /* === SLIDE 6 — Traction === */
+  .s6 { background: #fff; }
+  .s6 .slide-header { color: var(--muted); }
+  .s6 .slide-body { flex-direction: column; align-items: flex-start; gap: 36px; max-width: 1180px; margin: 0 auto; width: 100%; }
+  .s6-headline { font-size: clamp(30px, 4vw, 52px); font-weight: 700; letter-spacing: -0.025em; line-height: 1.15; color: var(--text); max-width: 720px; }
+  .s6-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; width: 100%; }
+  .s6-card { background: var(--grey); padding: 28px 26px 32px; }
+  .s6-card-label { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .s6-card-value { font-size: clamp(40px, 4.5vw, 60px); font-weight: 800; color: var(--coral); letter-spacing: -0.03em; line-height: 1; }
+  .s6-card-unit { font-size: 13px; color: var(--muted); font-weight: 500; margin-top: 8px; }
+  .s6-card-desc { font-size: 12.5px; color: var(--text); line-height: 1.55; margin-top: 14px; }
+  .s6-quote { background: var(--black); color: #fff; padding: 28px 32px; border-left: 3px solid var(--coral); width: 100%; }
+  .s6-quote-text { font-size: 17px; line-height: 1.55; font-weight: 400; }
+  .s6-quote-source { font-size: 11px; color: rgba(255,255,255,0.55); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 14px; }
+
+  /* === SLIDE 7 — Why Us === */
+  .s7 { background: #fff; }
+  .s7 .slide-header { color: var(--muted); }
+  .s7 .slide-body { flex-direction: column; align-items: flex-start; gap: 40px; max-width: 1180px; margin: 0 auto; width: 100%; }
+  .s7-headline { font-size: clamp(26px, 3.2vw, 42px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; color: var(--text); max-width: 620px; }
+  .s7-metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; width: 100%; }
+  .s7-metric { background: var(--grey); padding: 28px 28px 32px; display: flex; flex-direction: column; gap: 6px; }
+  .s7-metric-title { font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.3; margin-bottom: 4px; }
+  .s7-metric-desc { font-size: 11.5px; color: var(--muted); line-height: 1.5; flex: 1; }
+  .s7-metric-value { font-size: clamp(36px, 4vw, 52px); font-weight: 800; color: var(--coral); letter-spacing: -0.03em; line-height: 1; margin-top: 16px; }
+  .s7-metric-unit { font-size: 14px; color: var(--muted); font-weight: 500; margin-top: 2px; }
+
+  /* === SLIDE 8 — Competition === */
+  .s8 { background: var(--grey); }
+  .s8 .slide-header { color: var(--muted); }
+  .s8 .slide-body { flex-direction: column; align-items: flex-start; gap: 32px; max-width: 1180px; margin: 0 auto; width: 100%; }
+  .s8-headline { font-size: clamp(28px, 3.6vw, 48px); font-weight: 700; letter-spacing: -0.025em; line-height: 1.15; color: var(--text); max-width: 720px; }
+  .s8-table { width: 100%; background: #fff; }
+  .s8-row { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr; border-bottom: 1px solid var(--grey-2); }
+  .s8-row:last-child { border-bottom: none; }
+  .s8-row.header { background: var(--black); color: #fff; }
+  .s8-row.header .s8-cell { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.85); }
+  .s8-row.us { background: rgba(240,90,62,0.08); }
+  .s8-cell { padding: 18px 22px; font-size: 13.5px; color: var(--text); display: flex; align-items: center; }
+  .s8-cell:first-child { font-weight: 700; }
+  .s8-row.us .s8-cell:first-child { color: var(--coral); }
+  .s8-mark { width: 18px; height: 18px; border-radius: 50%; display: inline-block; }
+  .s8-mark.yes { background: var(--coral); }
+  .s8-mark.no  { background: transparent; border: 1.5px solid var(--grey-2); }
+  .s8-mark.partial { background: linear-gradient(90deg, var(--coral) 50%, transparent 50%); border: 1.5px solid var(--coral); }
+
+  /* === SLIDE 9 — Team === */
+  .s9 { background: #fff; }
+  .s9 .slide-header { color: var(--muted); }
+  .s9 .slide-body { flex-direction: column; align-items: flex-start; gap: 32px; max-width: 1180px; margin: 0 auto; width: 100%; }
+  .s9-headline { font-size: clamp(28px, 3.6vw, 48px); font-weight: 700; letter-spacing: -0.025em; line-height: 1.15; color: var(--text); max-width: 720px; }
+  .s9-team { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; width: 100%; }
+  .s9-member { background: var(--grey); padding: 32px 28px; }
+  .s9-avatar { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--red), var(--orange)); margin-bottom: 18px; }
+  .s9-name { font-size: 17px; font-weight: 700; color: var(--text); line-height: 1.2; margin-bottom: 4px; }
+  .s9-role { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--coral); margin-bottom: 14px; }
+  .s9-bio { font-size: 12.5px; color: var(--muted); line-height: 1.6; }
+  .s9-advisors { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; width: 100%; background: var(--grey-2); padding: 1px; }
+  .s9-advisor { background: #fff; padding: 18px 22px; }
+  .s9-advisor-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--coral); font-weight: 600; margin-bottom: 6px; }
+  .s9-advisor-name { font-size: 14px; font-weight: 700; color: var(--text); }
+  .s9-advisor-meta { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+
+  /* === SLIDE 10 — Ask === */
+  .s10 { background: var(--grey); }
+  .s10 .slide-header { color: var(--muted); }
+  .s10 .slide-body { flex-direction: column; align-items: flex-start; gap: 36px; max-width: 1180px; margin: 0 auto; width: 100%; }
+  .s10-headline { font-size: clamp(28px, 3.6vw, 44px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; color: var(--text); max-width: 760px; }
+  .s10-meta { display: flex; gap: 2px; width: 100%; }
+  .s10-meta-item { flex: 1; background: #fff; padding: 22px 28px; }
+  .s10-meta-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .s10-meta-value { font-size: 18px; font-weight: 700; color: var(--text); }
+  .s10-funds-title { font-size: 13px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+  .s10-funds { width: 100%; display: flex; flex-direction: column; gap: 8px; }
+  .s10-fund-row { display: flex; align-items: center; gap: 20px; }
+  .s10-fund-bar-wrap { flex: 1; height: 36px; background: #E6E4E0; position: relative; overflow: hidden; }
+  .s10-fund-bar { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange)); display: flex; align-items: center; padding-left: 14px; }
+  .s10-fund-bar.grey { background: #C8C6C2; }
+  .s10-fund-bar.light { background: #DDDBD7; }
+  .s10-fund-pct { font-size: 13px; font-weight: 800; color: #fff; }
+  .s10-fund-pct.dark { color: var(--text); }
+  .s10-fund-info { width: 280px; flex-shrink: 0; }
+  .s10-fund-name { font-size: 13px; font-weight: 700; color: var(--text); }
+  .s10-fund-desc { font-size: 11px; color: var(--muted); line-height: 1.4; margin-top: 2px; }
+
+  /* === Nav dots === */
+  .nav { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 100; }
+  .nav-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.35); cursor: pointer; transition: all 0.3s; border: none; padding: 0; }
+  .nav-dot.active { background: rgba(255,255,255,0.9); transform: scale(1.3); }
+  .nav.dark .nav-dot { background: rgba(0,0,0,0.2); }
+  .nav.dark .nav-dot.active { background: var(--coral); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  .anim { opacity: 0; }
+  .anim.visible { animation: fadeUp 0.6s ease forwards; }
+  .anim-d1.visible { animation-delay: 0.1s; }
+  .anim-d2.visible { animation-delay: 0.2s; }
+  .anim-d3.visible { animation-delay: 0.3s; }
+  .anim-d4.visible { animation-delay: 0.45s; }
+  .anim-d5.visible { animation-delay: 0.6s; }
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- 1. COVER -->
+  <section class="slide s1" data-index="0">
+    <div class="slide-header"><span>Model Review</span><span>GPT-5.5 Special</span><span>2026</span></div>
+    <div class="slide-body">
+      <div class="s1-logo anim anim-d1">GPT-5.5</div>
+      <div class="s1-tagline anim anim-d2">Deep Review<span class="s1-dot">·</span>Reasoning<span class="s1-dot">·</span>Production Ready</div>
+    </div>
+  </section>
+
+  <!-- 2. PROBLEM -->
+  <section class="slide s2" data-index="1">
+    <div class="slide-header"><span>The Problem</span><span>02 / 10</span></div>
+    <div class="slide-body">
+      <div class="s2-card">
+        <div class="s2-eyebrow anim anim-d1">Evaluation Focus</div>
+        <div class="s2-headline anim anim-d2">A stronger model<br>is not enough.</div>
+        <div class="s2-body anim anim-d3">The question is whether GPT-5.5 can move real work forward with less drift, better planning, and fewer loops.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. OPPORTUNITY -->
+  <section class="slide s3" data-index="2">
+    <div class="slide-header"><span>Review Frame</span><span>03 / 10</span></div>
+    <div class="slide-body">
+      <div class="anim anim-d1" style="width:100%;">
+        <div class="eyebrow">Four Dimensions</div>
+        <div class="s3-headline">We measure not just intelligence, but whether it can survive production work.</div>
+      </div>
+      <div class="s3-grid anim anim-d2">
+        <div class="s3-stat">
+          <div class="s3-stat-num">↑ CLEAR GAIN</div>
+          <div class="s3-stat-label">Reasoning &<br>Planning</div>
+          <div class="s3-stat-desc">It holds constraints better and breaks down ambiguous tasks earlier.</div>
+        </div>
+        <div class="s3-stat">
+          <div class="s3-stat-num">LESS REWORK</div>
+          <div class="s3-stat-label">Code & Tool<br>Execution</div>
+          <div class="s3-stat-desc">Long coding tasks drift less and more often include verification steps.</div>
+        </div>
+        <div class="s3-stat">
+          <div class="s3-stat-num">STEADIER</div>
+          <div class="s3-stat-label">Writing &<br>Structure</div>
+          <div class="s3-stat-desc">Long-form outputs keep audience, tone, and hierarchy more consistently.</div>
+        </div>
+        <div class="s3-callout">
+          <div class="s3-stat-num">STILL BOUNDED</div>
+          <div class="s3-stat-label">Facts &<br>Safety</div>
+          <div class="s3-stat-desc">High-stakes claims still need sources, tests, and human review.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. SOLUTION -->
+  <section class="slide s4" data-index="3">
+    <div class="slide-header"><span>Core Takeaway</span><span>04 / 10</span></div>
+    <div class="slide-body">
+      <div class="anim anim-d1">
+        <div class="eyebrow">One-Line Judgment</div>
+        <div class="s4-headline">GPT-5.5 feels less like a chat window and more like a teammate that keeps moving.</div>
+      </div>
+      <div class="s4-grid anim anim-d2">
+        <div class="s4-cell dark">
+          <div class="s4-cell-label">Strength One</div>
+          <div class="s4-cell-title">Plans Before<br>Acting</div>
+          <div class="s4-cell-desc">For complex requests, it tends to build a task shape before writing or editing.</div>
+        </div>
+        <div class="s4-cell">
+          <div class="s4-cell-label">Strength Two</div>
+          <div class="s4-cell-title">Holds Context<br>Longer</div>
+          <div class="s4-cell-desc">Across iterations, it forgets fewer constraints and follows late user corrections better.</div>
+        </div>
+        <div class="s4-cell">
+          <div class="s4-cell-label">Limit</div>
+          <div class="s4-cell-title">Still Needs<br>Verification</div>
+          <div class="s4-cell-desc">It is more proactive, but production work still needs tests, citations, and human judgment.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. HOW IT WORKS -->
+  <section class="slide s5" data-index="4">
+    <div class="slide-header"><span>Test Flow</span><span>05 / 10</span></div>
+    <div class="slide-body">
+      <div class="anim anim-d1">
+        <div class="eyebrow">Evaluation Design</div>
+        <div class="s5-headline">Four linked task types reveal whether the model can finish the work.</div>
+      </div>
+      <div class="s5-flow anim anim-d2">
+        <div class="s5-step">
+          <div class="s5-step-num">STEP 01</div>
+          <div class="s5-step-title">Frame</div>
+          <div class="s5-step-desc">Give an ambiguous goal and observe whether it clarifies, decomposes, and prioritizes.</div>
+        </div>
+        <div class="s5-step">
+          <div class="s5-step-num">STEP 02</div>
+          <div class="s5-step-title">Execute</div>
+          <div class="s5-step-desc">Ask for code, copy, analysis, and formatting work; track drift and rework.</div>
+        </div>
+        <div class="s5-step">
+          <div class="s5-step-num">STEP 03</div>
+          <div class="s5-step-title">Verify</div>
+          <div class="s5-step-desc">Require tests, source checks, output comparisons, and uncertainty notes.</div>
+        </div>
+        <div class="s5-step">
+          <div class="s5-step-num">STEP 04</div>
+          <div class="s5-step-title">Deliver</div>
+          <div class="s5-step-desc">Check whether the final response lets a human act immediately.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. TRACTION -->
+  <section class="slide s6" data-index="5">
+    <div class="slide-header"><span>Results</span><span>06 / 10</span></div>
+    <div class="slide-body">
+      <div class="anim anim-d1">
+        <div class="eyebrow">Sample Scores</div>
+        <div class="s6-headline">The biggest gains show up in complex task stability and follow-through.</div>
+      </div>
+      <div class="s6-grid anim anim-d2">
+        <div class="s6-card">
+          <div class="s6-card-label">Planning</div>
+          <div class="s6-card-value">A-</div>
+          <div class="s6-card-unit">Task framing</div>
+          <div class="s6-card-desc">Finds dependencies earlier and reduces wrong-first-draft behavior.</div>
+        </div>
+        <div class="s6-card">
+          <div class="s6-card-label">Coding</div>
+          <div class="s6-card-value">A</div>
+          <div class="s6-card-unit">End-to-end fixes</div>
+          <div class="s6-card-desc">Reads local patterns better and keeps edits more tightly scoped.</div>
+        </div>
+        <div class="s6-card">
+          <div class="s6-card-label">Writing</div>
+          <div class="s6-card-value">B+</div>
+          <div class="s6-card-unit">Tone control</div>
+          <div class="s6-card-desc">Good structure, with final taste and positioning still best handled by humans.</div>
+        </div>
+        <div class="s6-card">
+          <div class="s6-card-label">Factuality</div>
+          <div class="s6-card-value">B</div>
+          <div class="s6-card-unit">Needs sources</div>
+          <div class="s6-card-desc">For current prices, dates, policy, and research, browse and cite.</div>
+        </div>
+      </div>
+      <div class="s6-quote anim anim-d3">
+        <div class="s6-quote-text">"GPT-5.5's biggest change is not better answers. It is better follow-through."</div>
+        <div class="s6-quote-source">— Sample review note</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. WHY US -->
+  <section class="slide s7" data-index="6">
+    <div class="slide-header"><span>Best Uses</span><span>07 / 10</span></div>
+    <div class="slide-body">
+      <div class="anim anim-d1">
+        <div class="eyebrow">How To Use It</div>
+        <div class="s7-headline">Treat GPT-5.5 as a collaborator responsible for progress, not a single-turn answer box.</div>
+      </div>
+      <div class="s7-metrics">
+        <div class="s7-metric anim anim-d2">
+          <div class="s7-metric-title">Complex Coding</div>
+          <div class="s7-metric-desc">Good for reading projects, fixing bugs, adding tests, and explaining code.</div>
+          <div class="s7-metric-value">High</div>
+          <div class="s7-metric-unit">Engineering value</div>
+        </div>
+        <div class="s7-metric anim anim-d3">
+          <div class="s7-metric-title">Long-Form Structure</div>
+          <div class="s7-metric-desc">Turns scattered material into outlines, reports, scripts, and decks.</div>
+          <div class="s7-metric-value">Steady</div>
+          <div class="s7-metric-unit">Information design</div>
+        </div>
+        <div class="s7-metric anim anim-d4">
+          <div class="s7-metric-title">Research Drafts</div>
+          <div class="s7-metric-desc">Useful for frameworks and questions; facts still need verification.</div>
+          <div class="s7-metric-value">Useful</div>
+          <div class="s7-metric-unit">Verify sources</div>
+        </div>
+        <div class="s7-metric anim anim-d5">
+          <div class="s7-metric-title">Workflow Automation</div>
+          <div class="s7-metric-desc">Good for repeated processes, monitoring tasks, and tool orchestration.</div>
+          <div class="s7-metric-value">High</div>
+          <div class="s7-metric-unit">Process value</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. COMPETITION -->
+  <section class="slide s8" data-index="7">
+    <div class="slide-header"><span>Model Comparison</span><span>08 / 10</span></div>
+    <div class="slide-body">
+      <div class="anim anim-d1">
+        <div class="eyebrow">Relative Position</div>
+        <div class="s8-headline">GPT-5.5's edge concentrates in long tasks, tool use, and finish quality.</div>
+      </div>
+      <div class="s8-table anim anim-d2">
+        <div class="s8-row header">
+          <div class="s8-cell">Capability</div>
+          <div class="s8-cell">Small Model</div>
+          <div class="s8-cell">Chat Model</div>
+          <div class="s8-cell">Prior Strong Model</div>
+          <div class="s8-cell">GPT-5.5</div>
+        </div>
+        <div class="s8-row">
+          <div class="s8-cell">Long-task progress</div>
+          <div class="s8-cell"><span class="s8-mark no"></span></div>
+          <div class="s8-cell"><span class="s8-mark no"></span></div>
+          <div class="s8-cell"><span class="s8-mark partial"></span></div>
+          <div class="s8-cell"><span class="s8-mark yes"></span></div>
+        </div>
+        <div class="s8-row us">
+          <div class="s8-cell">Cross-file coding</div>
+          <div class="s8-cell"><span class="s8-mark no"></span></div>
+          <div class="s8-cell"><span class="s8-mark no"></span></div>
+          <div class="s8-cell"><span class="s8-mark no"></span></div>
+          <div class="s8-cell"><span class="s8-mark yes"></span></div>
+        </div>
+        <div class="s8-row">
+          <div class="s8-cell">Tone stability</div>
+          <div class="s8-cell"><span class="s8-mark no"></span></div>
+          <div class="s8-cell"><span class="s8-mark partial"></span></div>
+          <div class="s8-cell"><span class="s8-mark partial"></span></div>
+          <div class="s8-cell"><span class="s8-mark yes"></span></div>
+        </div>
+        <div class="s8-row">
+          <div class="s8-cell">Self-verification</div>
+          <div class="s8-cell"><span class="s8-mark no"></span></div>
+          <div class="s8-cell"><span class="s8-mark no"></span></div>
+          <div class="s8-cell"><span class="s8-mark partial"></span></div>
+          <div class="s8-cell"><span class="s8-mark yes"></span></div>
+        </div>
+        <div class="s8-row">
+          <div class="s8-cell">Low-cost fast response</div>
+          <div class="s8-cell"><span class="s8-mark partial"></span></div>
+          <div class="s8-cell"><span class="s8-mark no"></span></div>
+          <div class="s8-cell"><span class="s8-mark partial"></span></div>
+          <div class="s8-cell"><span class="s8-mark yes"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. TEAM -->
+  <section class="slide s9" data-index="8">
+    <div class="slide-header"><span>Usage Advice</span><span>09 / 10</span></div>
+    <div class="slide-body">
+      <div class="anim anim-d1">
+        <div class="eyebrow">Human / Model Split</div>
+        <div class="s9-headline">Let the model drive progress; let humans own judgment and final responsibility.</div>
+      </div>
+      <div class="s9-team anim anim-d2">
+        <div class="s9-member">
+          <div class="s9-avatar"></div>
+          <div class="s9-name">Step One</div>
+          <div class="s9-role">Give context</div>
+          <div class="s9-bio">Share goal, audience, constraints, available material, and non-goals upfront.</div>
+        </div>
+        <div class="s9-member">
+          <div class="s9-avatar"></div>
+          <div class="s9-name">Step Two</div>
+          <div class="s9-role">Ask for a plan</div>
+          <div class="s9-bio">Have it state steps, risks, and verification before execution.</div>
+        </div>
+        <div class="s9-member">
+          <div class="s9-avatar"></div>
+          <div class="s9-name">Step Three</div>
+          <div class="s9-role">Make it finish</div>
+          <div class="s9-bio">Ask for files, tests, screenshots, checklists, or direct deliverables.</div>
+        </div>
+        <div class="s9-member">
+          <div class="s9-avatar"></div>
+          <div class="s9-name">Step Four</div>
+          <div class="s9-role">Human decides</div>
+          <div class="s9-bio">Facts, taste, business judgment, and release responsibility stay with people.</div>
+        </div>
+      </div>
+      <div class="s9-advisors anim anim-d3">
+        <div class="s9-advisor"><div class="s9-advisor-label">Tip</div><div class="s9-advisor-name">Give examples</div><div class="s9-advisor-meta">Specific beats abstract</div></div>
+        <div class="s9-advisor"><div class="s9-advisor-label">Tip</div><div class="s9-advisor-name">Require checks</div><div class="s9-advisor-meta">Do not accept vibes</div></div>
+        <div class="s9-advisor"><div class="s9-advisor-label">Tip</div><div class="s9-advisor-name">Ship in stages</div><div class="s9-advisor-meta">Long tasks get safer</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. ASK -->
+  <section class="slide s10" data-index="9">
+    <div class="slide-header"><span>Final Judgment</span><span>10 / 10</span></div>
+    <div class="slide-body">
+      <div class="anim anim-d1">
+        <div class="eyebrow">Verdict</div>
+        <div class="s10-headline">GPT-5.5 is worth the upgrade when the task has context and clear acceptance criteria.</div>
+      </div>
+      <div class="s10-meta anim anim-d2">
+        <div class="s10-meta-item"><div class="s10-meta-label">Best For</div><div class="s10-meta-value">Creators / Engineers</div></div>
+        <div class="s10-meta-item"><div class="s10-meta-label">Best Task</div><div class="s10-meta-value">Complex execution</div></div>
+        <div class="s10-meta-item"><div class="s10-meta-label">Watch For</div><div class="s10-meta-value">Fact checking</div></div>
+        <div class="s10-meta-item"><div class="s10-meta-label">Verdict</div><div class="s10-meta-value">Strong trial</div></div>
+      </div>
+      <div class="anim anim-d3" style="width:100%">
+        <div class="s10-funds-title">Capability Mix</div>
+        <div class="s10-funds">
+          <div class="s10-fund-row">
+            <div class="s10-fund-bar-wrap" style="max-width:580px"><div class="s10-fund-bar" style="width:60%"><span class="s10-fund-pct">60%</span></div></div>
+            <div class="s10-fund-info"><div class="s10-fund-name">Task Execution</div><div class="s10-fund-desc">The clearest upgrade: it reads, acts, and verifies.</div></div>
+          </div>
+          <div class="s10-fund-row">
+            <div class="s10-fund-bar-wrap" style="max-width:580px"><div class="s10-fund-bar grey" style="width:30%"><span class="s10-fund-pct dark">30%</span></div></div>
+            <div class="s10-fund-info"><div class="s10-fund-name">Content Work</div><div class="s10-fund-desc">Strong structure, with final taste still human-owned.</div></div>
+          </div>
+          <div class="s10-fund-row">
+            <div class="s10-fund-bar-wrap" style="max-width:580px"><div class="s10-fund-bar light" style="width:10%"><span class="s10-fund-pct dark">10%</span></div></div>
+            <div class="s10-fund-info"><div class="s10-fund-name">External Facts</div><div class="s10-fund-desc">Current information still needs search and source checks.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="nav" id="nav">
+  <button class="nav-dot active" onclick="goTo(0)"></button>
+  <button class="nav-dot" onclick="goTo(1)"></button>
+  <button class="nav-dot" onclick="goTo(2)"></button>
+  <button class="nav-dot" onclick="goTo(3)"></button>
+  <button class="nav-dot" onclick="goTo(4)"></button>
+  <button class="nav-dot" onclick="goTo(5)"></button>
+  <button class="nav-dot" onclick="goTo(6)"></button>
+  <button class="nav-dot" onclick="goTo(7)"></button>
+  <button class="nav-dot" onclick="goTo(8)"></button>
+  <button class="nav-dot" onclick="goTo(9)"></button>
+</div>
+
+<script>
+  const deck = document.getElementById('deck');
+  const dots = document.querySelectorAll('.nav-dot');
+  const nav = document.getElementById('nav');
+  const slides = document.querySelectorAll('.slide');
+  const lightSlides = [2, 3, 4, 5, 6, 7, 8, 9];
+
+  function goTo(i) { deck.scrollTo({ left: i * window.innerWidth, behavior: 'smooth' }); }
+  function updateNav(i) {
+    dots.forEach((d, idx) => d.classList.toggle('active', idx === i));
+    if (lightSlides.includes(i)) nav.classList.add('dark'); else nav.classList.remove('dark');
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.anim').forEach(el => el.classList.add('visible'));
+        updateNav(parseInt(entry.target.dataset.index));
+      } else {
+        entry.target.querySelectorAll('.anim').forEach(el => el.classList.remove('visible'));
+      }
+    });
+  }, { threshold: 0.55 });
+  slides.forEach(s => observer.observe(s));
+
+  document.addEventListener('keydown', e => {
+    const cur = Math.round(deck.scrollLeft / window.innerWidth);
+    if (e.key === 'ArrowRight' && cur < slides.length - 1) goTo(cur + 1);
+    if (e.key === 'ArrowLeft' && cur > 0) goTo(cur - 1);
+  });
+</script>
+</body>
+</html>

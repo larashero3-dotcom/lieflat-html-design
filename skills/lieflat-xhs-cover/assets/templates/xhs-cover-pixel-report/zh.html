@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content="Lieflat XHS Cover" />
+<meta name="template-origin" content="Lieflat XHS Cover template">
+<title>Pixel Report 封面</title>
+<style>
+:root {
+  --black: #000;
+  --bg: #070909;
+  --white: #f6f7f3;
+  --muted: rgba(246, 247, 243, 0.58);
+  --line: rgba(246, 247, 243, 0.16);
+  --line-strong: rgba(246, 247, 243, 0.34);
+  --teal: #8faab2;
+  --acid: #c7f75a;
+  --amber: #f4be64;
+  --red: #ff6d5d;
+  --font: "Roboto Condensed", "Arial Narrow", "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --mono: "Courier New", "Lucida Console", monospace;
+}
+
+* { box-sizing: border-box; }
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  background: #000;
+  color: var(--white);
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+h1,
+p {
+  margin: 0;
+  letter-spacing: 0;
+}
+
+.card {
+  position: relative;
+  width: 600px;
+  height: 800px;
+  max-width: calc(100vw - 24px);
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    radial-gradient(circle at 18% 10%, rgba(143, 170, 178, 0.24), transparent 24%),
+    radial-gradient(circle at 86% 72%, rgba(199, 247, 90, 0.12), transparent 21%),
+    linear-gradient(160deg, #000 0%, #060808 48%, #101515 100%);
+  background-size: 42px 42px, 42px 42px, auto, auto, auto;
+  box-shadow: 0 28px 76px rgba(0, 0, 0, 0.72);
+  isolation: isolate;
+}
+
+/* The cover keeps the source deck's HUD grid and scan texture, but removes slide navigation. */
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0.23;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 5px 5px, 11px 11px;
+  mix-blend-mode: screen;
+}
+
+.frame {
+  position: absolute;
+  inset: 34px;
+  z-index: 1;
+  border: 1px solid var(--line);
+}
+
+.frame::before,
+.frame::after {
+  content: "";
+  position: absolute;
+  background: var(--line-strong);
+}
+
+.frame::before {
+  left: 0;
+  right: 0;
+  top: 142px;
+  height: 1px;
+}
+
+.frame::after {
+  top: 0;
+  bottom: 0;
+  right: 116px;
+  width: 1px;
+}
+
+.scan {
+  position: absolute;
+  z-index: 3;
+  left: 34px;
+  top: 34px;
+  bottom: 34px;
+  width: 1px;
+  overflow: hidden;
+  background: rgba(246, 247, 243, 0.08);
+}
+
+.scan i {
+  display: block;
+  width: 100%;
+  height: 24%;
+  background: linear-gradient(180deg, transparent, var(--acid), transparent);
+  animation: scan 2.8s cubic-bezier(0.19, 1, 0.22, 1) infinite;
+}
+
+@keyframes scan {
+  from { transform: translateY(-120%); }
+  to { transform: translateY(540%); }
+}
+
+.top {
+  position: absolute;
+  z-index: 4;
+  top: 46px;
+  left: 64px;
+  right: 64px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  font-family: var(--mono);
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.mark {
+  display: grid;
+  grid-template-columns: repeat(2, 10px);
+  gap: 3px;
+}
+
+.mark i {
+  display: block;
+  height: 10px;
+  border: 1px solid var(--teal);
+  background: rgba(143, 170, 178, 0.12);
+}
+
+.mark i:nth-child(2) {
+  border-color: var(--acid);
+  border-radius: 50%;
+  background: var(--acid);
+}
+
+.code {
+  text-align: right;
+  color: rgba(246, 247, 243, 0.48);
+}
+
+.hero {
+  position: absolute;
+  z-index: 4;
+  left: 64px;
+  right: 54px;
+  top: 184px;
+}
+
+.model {
+  display: inline-block;
+  margin-bottom: 18px;
+  padding: 7px 10px;
+  border: 1px solid var(--line-strong);
+  color: var(--acid);
+  font-family: var(--mono);
+  font-size: 18px;
+  line-height: 1;
+  text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.8);
+  box-shadow: 5px 5px 0 rgba(199, 247, 90, 0.14);
+}
+
+.title {
+  max-width: 460px;
+  color: var(--white);
+  font-size: 64px;
+  font-weight: 900;
+  line-height: 1.0;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.title .pixel {
+  color: var(--acid);
+  font-family: var(--mono);
+  text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.9);
+}
+
+.lead {
+  max-width: 432px;
+  margin-top: 22px;
+  color: var(--muted);
+  font-size: 22px;
+  font-weight: 300;
+  line-height: 1.52;
+}
+
+.panel {
+  position: absolute;
+  z-index: 4;
+  left: 64px;
+  right: 64px;
+  bottom: 146px;
+  padding: 18px 19px;
+  border: 1px solid var(--line-strong);
+  background: rgba(0, 0, 0, 0.42);
+  box-shadow: 6px 6px 0 rgba(199, 247, 90, 0.14);
+}
+
+.panel b {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--acid);
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+.panel p {
+  color: var(--white);
+  font-size: 20px;
+  line-height: 1.55;
+}
+
+.stats {
+  position: absolute;
+  z-index: 4;
+  left: 64px;
+  right: 64px;
+  bottom: 54px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 9px;
+}
+
+.stat {
+  min-height: 74px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.stat b {
+  display: block;
+  color: var(--acid);
+  font-family: var(--mono);
+  font-size: 25px;
+  line-height: 1;
+}
+
+.stat span {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+@media (max-width: 650px) {
+  body { padding: 10px; }
+  .card { width: 100%; height: auto; aspect-ratio: 3 / 4; }
+}
+</style>
+</head>
+<body>
+<main class="card" aria-label="Pixel Report 封面">
+  <div class="frame" aria-hidden="true"></div>
+  <div class="scan" aria-hidden="true"><i></i></div>
+  <header class="top">
+    <div class="brand"><span class="mark"><i></i><i></i><i></i><i></i></span><span>PX-RPT<br>实测档案</span></div>
+    <div class="code">BUILD 2026.05<br>STATUS / TESTED</div>
+  </header>
+  <section class="hero">
+    <span class="model">CODEX FIELD TEST</span>
+    <h1 class="title"><span class="pixel">Codex</span><br>最新版<br>实测</h1>
+    <p class="lead">把它当作能执行任务的本地工作台，而不是只会回答问题的聊天窗口。</p>
+  </section>
+  <section class="panel" aria-label="结论">
+    <b>TL;DR</b>
+    <p>真正的升级感，在于读项目、做文件、跑预览，并把最后一公里收掉。</p>
+  </section>
+  <section class="stats" aria-label="测评信号">
+    <div class="stat"><b>9.2</b><span>上下文理解</span></div>
+    <div class="stat"><b>8.8</b><span>产物完成度</span></div>
+    <div class="stat"><b>8.3</b><span>视觉跟随度</span></div>
+  </section>
+</main>
+</body>
+</html>

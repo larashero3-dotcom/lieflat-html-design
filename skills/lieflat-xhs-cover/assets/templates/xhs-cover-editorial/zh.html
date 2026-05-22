@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content="Lieflat XHS Cover" />
+<meta name="template-origin" content="Lieflat XHS Cover template">
+<title>Editorial 封面</title>
+<style>
+:root {
+  --paper: #faf8f3;
+  --ink: #111;
+  --mid: #555;
+  --faint: #8d8a84;
+  --line: #e4e0d7;
+  --cream: #d8d4cc;
+  --display: "Songti SC", "Noto Serif SC", "STSong", Georgia, serif;
+  --body: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", Arial, sans-serif;
+  --mono: "SFMono-Regular", "Menlo", "Consolas", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  background:
+    radial-gradient(900px 620px at 50% -10%, rgba(250, 248, 243, 0.24), transparent 64%),
+    linear-gradient(135deg, #232321, #34322d 50%, #191917);
+  color: var(--ink);
+  font-family: var(--body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+p {
+  margin: 0;
+  letter-spacing: 0;
+}
+
+.card {
+  position: relative;
+  width: 600px;
+  height: 800px;
+  max-width: calc(100vw - 24px);
+  overflow: hidden;
+  border-radius: 10px;
+  background:
+    linear-gradient(90deg, transparent 0 76px, rgba(17, 17, 17, 0.08) 76px 77px, transparent 77px),
+    linear-gradient(180deg, rgba(17, 17, 17, 0.035) 0 1px, transparent 1px 48px),
+    var(--paper);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.42), 0 10px 30px rgba(0, 10, 20, 0.3), 0 5px 15px rgba(0, 5, 15, 0.24);
+  isolation: isolate;
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+}
+
+.mast {
+  position: absolute;
+  top: 42px;
+  left: 48px;
+  right: 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 14px;
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 9px;
+  line-height: 1.8;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.issue {
+  position: absolute;
+  left: 48px;
+  right: 48px;
+  top: 132px;
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 20px;
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: 30px;
+}
+
+.issue-no {
+  justify-self: start;
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  writing-mode: vertical-rl;
+}
+
+.mega {
+  max-width: 400px;
+  font-family: var(--display);
+  font-size: 71px;
+  font-weight: 900;
+  line-height: 1.1;
+  color: var(--ink);
+}
+
+.deckline {
+  grid-column: 2;
+  max-width: 355px;
+  margin-top: 18px;
+  color: var(--mid);
+  font-size: 19px;
+  font-weight: 300;
+  line-height: 1.78;
+}
+
+.articles {
+  position: absolute;
+  left: 48px;
+  right: 48px;
+  bottom: 80px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.article {
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+
+.article b {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+}
+
+.article span {
+  display: block;
+  font-family: var(--display);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.footer {
+  position: absolute;
+  left: 48px;
+  right: 48px;
+  bottom: 34px;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 650px) {
+  body { padding: 10px; }
+  .card { width: 100%; height: auto; aspect-ratio: 3 / 4; }
+}
+</style>
+</head>
+<body>
+<main class="card" aria-label="Editorial 封面">
+  <header class="mast">
+    <span>Editorial System<br />Issue 05</span>
+    <span>2026.05<br />Creator Notes</span>
+  </header>
+  <section class="issue" aria-labelledby="cover-title">
+    <div class="issue-no">NO. 01 / WORKFLOW</div>
+    <h1 class="mega" id="cover-title">新版 Codex 使用手记</h1>
+    <p class="deckline">不是更大的聊天框，而是更小的管理负担。</p>
+  </section>
+  <section class="articles" aria-label="内容提示">
+    <div class="article"><b>001</b><span>从想法到文件</span></div>
+    <div class="article"><b>002</b><span>把风格读进去</span></div>
+    <div class="article"><b>003</b><span>验收比生成重要</span></div>
+  </section>
+  <footer class="footer">
+    <span>工作流手记</span>
+    <span>示例文件</span>
+  </footer>
+</main>
+</body>
+</html>

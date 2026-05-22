@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="Lieflat XHS Cover">
+<meta name="template-origin" content="Lieflat XHS Cover template">
+<title>Story Field 封面</title>
+<style>
+:root {
+  --sand: #a89474;
+  --stone: #2c2824;
+  --light: #f4efe6;
+  --soft: rgba(44, 40, 36, .62);
+  --line: rgba(44, 40, 36, .28);
+  --body: "PingFang SC", "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif;
+  --display: "Songti SC", "Noto Serif CJK SC", "STSong", "Times New Roman", serif;
+}
+
+* { box-sizing: border-box; }
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  background: linear-gradient(135deg, #2c2824, #6f624d 52%, #201d1a);
+  color: var(--stone);
+  font-family: var(--body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+h1,
+p { margin: 0; letter-spacing: 0; }
+
+.card {
+  position: relative;
+  width: 600px;
+  height: 800px;
+  max-width: calc(100vw - 24px);
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--sand);
+  box-shadow: 0 28px 76px rgba(0, 0, 0, .38);
+  isolation: isolate;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(44, 40, 36, .06) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(44, 40, 36, .05) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.frame {
+  position: absolute;
+  inset: 38px;
+  border: 1px solid rgba(44, 40, 36, .35);
+  background: rgba(244, 239, 230, .18);
+  padding: 24px;
+}
+
+.hero {
+  position: absolute;
+  left: 62px;
+  right: 62px;
+  top: 144px;
+  z-index: 2;
+}
+
+.title {
+  max-width: 470px;
+  font-family: var(--display);
+  font-size: 66px;
+  font-weight: 400;
+  line-height: .94;
+  letter-spacing: -.045em;
+  text-transform: uppercase;
+}
+
+.lead {
+  max-width: 420px;
+  margin-top: 24px;
+  color: var(--soft);
+  font-size: 23px;
+  line-height: 1.5;
+  font-weight: 300;
+}
+
+.map {
+  position: absolute;
+  z-index: 1;
+  left: 62px;
+  right: 62px;
+  bottom: 176px;
+  height: 158px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(circle at 28% 32%, rgba(244, 239, 230, .48), transparent 18%),
+    radial-gradient(circle at 76% 72%, rgba(44, 40, 36, .18), transparent 20%),
+    rgba(244, 239, 230, .12);
+}
+
+.map svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.pin {
+  position: absolute;
+  width: 86px;
+  color: var(--stone);
+  font-size: 10px;
+  line-height: 1.35;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.pin::before {
+  content: "";
+  display: block;
+  width: 9px;
+  height: 9px;
+  margin-bottom: 7px;
+  border-radius: 50%;
+  background: var(--stone);
+}
+
+.p1 { left: 42px; top: 40px; }
+.p2 { left: 218px; top: 94px; }
+.p3 { right: 34px; bottom: 32px; }
+
+.verdict {
+  position: absolute;
+  left: 62px;
+  right: 62px;
+  bottom: 84px;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 118px 1fr;
+  gap: 18px;
+  border-top: 1px solid var(--stone);
+  padding-top: 18px;
+}
+
+.verdict b {
+  font-family: var(--display);
+  font-size: 27px;
+  font-weight: 400;
+  letter-spacing: -.02em;
+}
+
+.verdict p {
+  color: var(--soft);
+  font-size: 18px;
+  line-height: 1.55;
+  font-weight: 300;
+}
+
+</style>
+</head>
+<body>
+<main class="card" aria-label="叙事地图风封面">
+  <div class="frame" aria-hidden="true"></div>
+  <section class="hero">
+    <h1 class="title">一轮任务<br>如何被<br>真正收完</h1>
+    <p class="lead">不是工具清单，而是一条工作现场路线：从模糊需求，到可交付页面。</p>
+  </section>
+  <div class="map" aria-hidden="true">
+    <svg viewBox="0 0 476 210" fill="none">
+      <path d="M44 55 C132 26 170 112 234 106 C314 96 322 178 418 154" stroke="rgba(44,40,36,.55)" stroke-width="2"/>
+      <path d="M44 55 C132 26 170 112 234 106 C314 96 322 178 418 154" stroke="rgba(244,239,230,.65)" stroke-width="8" opacity=".25"/>
+    </svg>
+    <div class="pin p1">read context</div>
+    <div class="pin p2">build file</div>
+    <div class="pin p3">qa loop</div>
+  </div>
+  <section class="verdict">
+    <b>封面判断</b>
+    <p>适合项目复盘、故事化案例、创作路线图。重点是让读者一眼看到“路径”。</p>
+  </section>
+</main>
+</body>
+</html>

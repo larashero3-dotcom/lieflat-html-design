@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content="Lieflat XHS Cover" />
+<meta name="template-origin" content="Lieflat XHS Cover template">
+<title>Clean Review 封面</title>
+<style>
+:root {
+  --red: #e8382a;
+  --coral: #f05a3e;
+  --orange: #f4845f;
+  --cream: #f2f0ec;
+  --cream-2: #e6e4e0;
+  --black: #111110;
+  --text: #1a1a18;
+  --muted: #77766e;
+  --sans: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  background: linear-gradient(135deg, #1b1513, #3a1712 45%, #140f0d);
+  color: var(--text);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+p {
+  margin: 0;
+  letter-spacing: 0;
+}
+
+.card {
+  position: relative;
+  width: 600px;
+  height: 800px;
+  max-width: calc(100vw - 24px);
+  overflow: hidden;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.42), 0 10px 30px rgba(0, 10, 20, 0.3), 0 5px 15px rgba(0, 5, 15, 0.25);
+  isolation: isolate;
+}
+
+.hero {
+  position: absolute;
+  inset: 0 0 260px;
+  padding: 30px 34px 40px;
+  display: block;
+  color: #fff;
+  background:
+    radial-gradient(circle at 78% 18%, rgba(255, 255, 255, 0.2), transparent 21%),
+    radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.13), transparent 28%),
+    linear-gradient(135deg, #e83028 0%, #f05a3e 44%, #f4a96a 100%);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.12) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.09) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mix-blend-mode: screen;
+  opacity: 0.28;
+}
+
+.top {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.badge {
+  border: 1px solid rgba(255, 255, 255, 0.48);
+  padding: 6px 9px;
+}
+
+.title-wrap {
+  position: absolute;
+  z-index: 1;
+  left: 34px;
+  right: 34px;
+  top: 224px;
+}
+
+.model {
+  display: block;
+  margin-bottom: 18px;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 52px;
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+}
+
+.title {
+  max-width: 500px;
+  color: #fff;
+  font-size: 58px;
+  font-weight: 900;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+
+.summary {
+  position: absolute;
+  z-index: 2;
+  left: 48px;
+  right: 48px;
+  top: 506px;
+  padding: 26px 24px 27px;
+  background: rgba(36, 33, 31, 0.68);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-left: 5px solid var(--coral);
+  border-radius: 12px;
+  box-shadow: 0 16px 34px rgba(35, 16, 10, 0.18);
+  backdrop-filter: blur(5px);
+}
+
+.summary b {
+  display: block;
+  margin-bottom: 9px;
+  color: var(--coral);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.summary p {
+  max-width: 455px;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 19px;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+.metrics {
+  position: absolute;
+  left: 34px;
+  right: 34px;
+  bottom: 48px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  background: var(--cream-2);
+}
+
+.metric {
+  min-height: 100px;
+  padding: 18px 16px;
+  background: #fff;
+}
+
+.metric b {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--coral);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+}
+
+.metric span {
+  display: block;
+  color: var(--text);
+  font-size: 19px;
+  font-weight: 900;
+  line-height: 1.22;
+}
+
+.metric small {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.42;
+}
+
+@media (max-width: 650px) {
+  body { padding: 10px; }
+  .card { width: 100%; height: auto; aspect-ratio: 3 / 4; }
+}
+</style>
+</head>
+<body>
+<main class="card" aria-label="Clean Review 封面">
+  <section class="hero">
+    <div class="top"><span>测评封面 / 清晰版</span><span class="badge">2026.05</span></div>
+    <div class="title-wrap">
+      <span class="model">GPT-5.5</span>
+      <h1 class="title">到底值不值得升级？</h1>
+    </div>
+  </section>
+  <section class="summary" aria-label="结论">
+    <b>结论先行</b>
+    <p>真正的变化不是更会回答，而是更会把任务推进到可交付。</p>
+  </section>
+  <section class="metrics" aria-label="关键信号">
+    <div class="metric"><b>01</b><span>读项目</span><small>先理解结构与边界</small></div>
+    <div class="metric"><b>02</b><span>做产物</span><small>把需求落成文件</small></div>
+    <div class="metric"><b>03</b><span>会验收</span><small>预览、检查、继续修</small></div>
+  </section>
+</main>
+</body>
+</html>

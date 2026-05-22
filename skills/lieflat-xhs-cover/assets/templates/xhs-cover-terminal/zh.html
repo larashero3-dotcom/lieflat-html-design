@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="Lieflat XHS Cover">
+<meta name="template-origin" content="Lieflat XHS Cover template">
+<title>Terminal 封面</title>
+<style>
+:root {
+  --frame: #252524;
+  --paper: #e8e6e2;
+  --paper-hot: #f3f2ef;
+  --ink: #2f2f2f;
+  --soft: rgba(47, 47, 47, 0.58);
+  --faint: rgba(47, 47, 47, 0.34);
+  --line: rgba(47, 47, 47, 0.08);
+  --line-strong: rgba(47, 47, 47, 0.22);
+  --mono: "SFMono-Regular", Consolas, Menlo, Monaco, "Courier New", "PingFang SC", "Microsoft YaHei", monospace;
+  --sans: "Arial Black", "Helvetica Neue", Arial, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  background: #111;
+  color: var(--ink);
+  font-family: var(--mono);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+p {
+  margin: 0;
+  letter-spacing: 0;
+}
+
+.card {
+  position: relative;
+  width: 600px;
+  height: 800px;
+  max-width: calc(100vw - 24px);
+  overflow: hidden;
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.065), transparent 18%),
+    repeating-linear-gradient(0deg, rgba(232,230,226,0.025) 0 1px, transparent 1px 4px),
+    radial-gradient(circle at 50% 44%, rgba(232,230,226,0.06), transparent 46%),
+    radial-gradient(circle at 50% 120%, rgba(0,0,0,0.48), transparent 48%),
+    var(--frame);
+  box-shadow:
+    0 30px 86px rgba(0, 0, 0, 0.54),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+  isolation: isolate;
+}
+
+.paper {
+  position: absolute;
+  inset: 52px 42px 54px;
+  overflow: hidden;
+  border: 1px solid rgba(47, 47, 47, 0.22);
+  border-radius: 7px;
+  background:
+    radial-gradient(circle at 18% 10%, rgba(255,255,255,0.68), transparent 32%),
+    radial-gradient(circle at 80% 68%, rgba(210,208,202,0.36), transparent 28%),
+    linear-gradient(180deg, var(--paper-hot), var(--paper) 58%, #dedbd5);
+  box-shadow:
+    0 24px 60px rgba(0,0,0,0.38),
+    inset 0 0 56px rgba(0,0,0,0.09),
+    inset 0 1px 0 rgba(255,255,255,0.78);
+}
+
+.paper::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.12;
+  background:
+    repeating-linear-gradient(0deg, rgba(47,47,47,0.04) 0 1px, transparent 1px 5px);
+}
+
+.top {
+  position: absolute;
+  z-index: 2;
+  top: 36px;
+  left: 36px;
+  right: 36px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  color: var(--soft);
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.32;
+}
+
+.top small {
+  display: block;
+  margin-top: 2px;
+  color: var(--soft);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.date {
+  text-align: right;
+  letter-spacing: 0.04em;
+}
+
+.hero {
+  position: absolute;
+  z-index: 2;
+  left: 36px;
+  right: 34px;
+  top: 168px;
+}
+
+.intro {
+  margin-bottom: 24px;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 27px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
+.intro span {
+  margin-left: 26px;
+  color: var(--ink);
+  font-family: var(--sans);
+}
+
+.title {
+  max-width: 470px;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 58px;
+  font-weight: 900;
+  line-height: 1.11;
+  letter-spacing: -0.01em;
+}
+
+.terminal-row {
+  position: absolute;
+  z-index: 2;
+  left: 36px;
+  right: 36px;
+  bottom: 126px;
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 34px;
+  align-items: end;
+}
+
+.login {
+  color: var(--soft);
+  font-size: 12px;
+  line-height: 1.72;
+}
+
+.continue {
+  color: var(--soft);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.keyline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 58px;
+  height: 25px;
+  padding: 0 9px;
+  border-radius: 2px;
+  color: #f0eee9;
+  background: #292929;
+  box-shadow: inset 0 -2px 0 rgba(255,255,255,0.08);
+  font-family: var(--sans);
+  font-size: 20px;
+  line-height: 1;
+}
+
+.footer {
+  position: absolute;
+  z-index: 2;
+  left: 36px;
+  right: 36px;
+  bottom: 32px;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line-strong);
+  color: var(--soft);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.footer b {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.1;
+}
+
+.frame-notes {
+  position: absolute;
+  left: 26px;
+  right: 26px;
+  bottom: 19px;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  color: rgba(232,230,226,0.62);
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+@media (max-width: 650px) {
+  body { padding: 10px; }
+  .card { width: 100%; height: auto; aspect-ratio: 3 / 4; }
+}
+</style>
+</head>
+<body>
+<main class="card" aria-label="Terminal 封面">
+  <section class="paper" aria-label="Codex 技术测评封面">
+    <header class="top">
+      <div>技术测评<small>GEEK RPT / TERMINAL</small></div>
+      <div class="date">2026.05<br>No.06</div>
+    </header>
+
+    <section class="hero" aria-labelledby="terminal-title">
+      <p class="intro">CODEX <span>测评:</span></p>
+      <h1 class="title" id="terminal-title">从写提示词，到任务执行。</h1>
+    </section>
+
+    <section class="terminal-row" aria-label="终端提示">
+      <p class="login">Last login: 2026-05-22<br>mode: 极客报告 / 任务执行<br>canvas: 600 x 800</p>
+      <div class="continue">
+        <div class="keyline"><span class="key">enter</span><span>继续</span></div>
+        <p>一份宣言式 Codex 工作流测评：读项目、改文件、跑预览与交付收尾。</p>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div><b>任务执行报告</b>3:4 cover / reverse engineered from Geek Report deck grammar</div>
+      <div>Lieflat HTML<br>Design</div>
+    </footer>
+  </section>
+  <div class="frame-notes"><span>FRAME / TERMINAL</span><span>TTY SESSION</span></div>
+</main>
+</body>
+</html>

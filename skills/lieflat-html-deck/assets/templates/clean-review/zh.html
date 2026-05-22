@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GPT-5.5 测评 — 精密评估</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red: #E8382A;
+    --coral: #F05A3E;
+    --orange: #F4845F;
+    --black: #111110;
+    --grey: #F2F0EC;
+    --grey-2: #E6E4E0;
+    --text: #1A1A18;
+    --muted: #7A7A72;
+  }
+
+  html {
+    font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: #000;
+  }
+
+  .deck {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+  .deck::-webkit-scrollbar { display: none; }
+
+  .slide {
+    flex: 0 0 100vw;
+    width: 100vw;
+    height: 100vh;
+    scroll-snap-align: start;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .slide-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 48px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+  }
+
+  .slide-body {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 64px 48px;
+  }
+
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    color: var(--coral);
+    margin-bottom: 12px;
+  }
+
+  /* === 1 封面 === */
+  .s1 { background: linear-gradient(135deg, #E83028 0%, #F05540 35%, #F0834A 65%, #F4A96A 100%); }
+  .s1 .slide-header { color: rgba(255,255,255,0.75); }
+  .s1 .slide-body { flex-direction: column; justify-content: center; align-items: center; text-align: center; padding-top: 0; }
+  .s1-logo { font-size: clamp(80px, 12vw, 140px); font-weight: 800; color: #fff; letter-spacing: -0.02em; line-height: 1; margin-bottom: 20px; }
+  .s1-tagline { font-size: clamp(16px, 2vw, 22px); font-weight: 400; color: rgba(255,255,255,0.88); letter-spacing: 0.05em; }
+  .s1-dot { margin: 0 8px; opacity: 0.6; }
+
+  /* === 2 问题 === */
+  .s2 { background: linear-gradient(160deg, #E83028 0%, #F05A3E 40%, #F4845F 80%, #f8a07a 100%); }
+  .s2 .slide-header { color: rgba(255,255,255,0.7); }
+  .s2 .slide-body { align-items: flex-end; justify-content: center; padding-bottom: 72px; }
+  .s2-card { background: var(--black); color: #fff; padding: 56px 64px 60px; max-width: 760px; width: 100%; border-left: 4px solid rgba(255,255,255,0.25); }
+  .s2-eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.16em; color: rgba(255,255,255,0.45); margin-bottom: 28px; }
+  .s2-headline { font-size: clamp(36px, 5vw, 60px); font-weight: 700; line-height: 1.15; letter-spacing: -0.01em; margin-bottom: 24px; }
+  .s2-body { font-size: 18px; font-weight: 400; color: rgba(255,255,255,0.65); line-height: 1.75; }
+
+  /* === 3 机会 === */
+  .s3 { background: var(--grey); }
+  .s3 .slide-header { color: var(--muted); }
+  .s3 .slide-body { align-items: flex-start; flex-direction: column; gap: 48px; max-width: 1180px; margin: 0 auto; width: 100%; }
+  .s3-headline { font-size: clamp(28px, 3.6vw, 48px); font-weight: 700; letter-spacing: -0.01em; line-height: 1.3; color: var(--text); max-width: 720px; }
+  .s3-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; width: 100%; }
+  .s3-stat { background: #fff; padding: 32px 30px; }
+  .s3-stat-num { font-size: 13px; font-weight: 700; color: var(--coral); letter-spacing: 0.04em; margin-bottom: 10px; }
+  .s3-stat-label { font-size: 22px; font-weight: 700; color: var(--text); line-height: 1.3; margin-bottom: 12px; }
+  .s3-stat-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
+  .s3-callout { background: var(--black); padding: 32px 30px; }
+  .s3-callout .s3-stat-num { color: var(--orange); }
+  .s3-callout .s3-stat-label { color: #fff; }
+  .s3-callout .s3-stat-desc { color: rgba(255,255,255,0.5); }
+
+  /* === 4 方案 === */
+  .s4 { background: #fff; }
+  .s4 .slide-header { color: var(--muted); }
+  .s4 .slide-body { flex-direction: column; align-items: flex-start; gap: 36px; max-width: 1180px; margin: 0 auto; width: 100%; }
+  .s4-headline { font-size: clamp(30px, 4vw, 56px); font-weight: 700; letter-spacing: -0.01em; line-height: 1.3; color: var(--text); max-width: 820px; }
+  .s4-headline em { color: var(--coral); font-style: normal; }
+  .s4-grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 2px; width: 100%; background: var(--grey-2); }
+  .s4-cell { background: #fff; padding: 32px; }
+  .s4-cell.dark { background: var(--black); color: #fff; }
+  .s4-cell.dark .s4-cell-label { color: rgba(255,255,255,0.4); }
+  .s4-cell.dark .s4-cell-desc { color: rgba(255,255,255,0.6); }
+  .s4-cell-label { font-size: 12px; font-weight: 600; letter-spacing: 0.16em; color: var(--coral); margin-bottom: 14px; }
+  .s4-cell-title { font-size: 22px; font-weight: 700; line-height: 1.3; margin-bottom: 12px; }
+  .s4-cell-desc { font-size: 13.5px; color: var(--muted); line-height: 1.75; }
+
+  /* === 5 工作原理 === */
+  .s5 { background: var(--grey); }
+  .s5 .slide-header { color: var(--muted); }
+  .s5 .slide-body { flex-direction: column; align-items: flex-start; gap: 32px; max-width: 1180px; margin: 0 auto; width: 100%; }
+  .s5-headline { font-size: clamp(28px, 3.6vw, 48px); font-weight: 700; letter-spacing: -0.01em; line-height: 1.3; color: var(--text); max-width: 720px; }
+  .s5-flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; width: 100%; }
+  .s5-step { background: #fff; padding: 28px 26px 32px; position: relative; }
+  .s5-step-num { font-size: 12px; font-weight: 700; letter-spacing: 0.16em; color: var(--coral); margin-bottom: 12px; }
+  .s5-step-title { font-size: 18px; font-weight: 700; color: var(--text); line-height: 1.3; margin-bottom: 12px; }
+  .s5-step-desc { font-size: 13px; color: var(--muted); line-height: 1.75; }
+  .s5-step::after { content: '→'; position: absolute; right: -10px; top: 36px; font-size: 18px; color: var(--coral); font-weight: 700; z-index: 1; }
+  .s5-step:last-child::after { display: none; }
+
+  /* === 6 数据进展 === */
+  .s6 { background: #fff; }
+  .s6 .slide-header { color: var(--muted); }
+  .s6 .slide-body { flex-direction: column; align-items: flex-start; gap: 36px; max-width: 1180px; margin: 0 auto; width: 100%; }
+  .s6-headline { font-size: clamp(30px, 4vw, 52px); font-weight: 700; letter-spacing: -0.01em; line-height: 1.3; color: var(--text); max-width: 720px; }
+  .s6-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; width: 100%; }
+  .s6-card { background: var(--grey); padding: 28px 26px 32px; }
+  .s6-card-label { font-size: 12px; font-weight: 600; letter-spacing: 0.16em; color: var(--muted); margin-bottom: 12px; }
+  .s6-card-value { font-size: clamp(40px, 4.5vw, 60px); font-weight: 800; color: var(--coral); letter-spacing: -0.03em; line-height: 1; }
+  .s6-card-unit { font-size: 13px; color: var(--muted); font-weight: 500; margin-top: 8px; }
+  .s6-card-desc { font-size: 13px; color: var(--text); line-height: 1.7; margin-top: 14px; }
+  .s6-quote { background: var(--black); color: #fff; padding: 28px 32px; border-left: 3px solid var(--coral); width: 100%; }
+  .s6-quote-text { font-size: 17px; line-height: 1.75; font-weight: 400; }
+  .s6-quote-source { font-size: 12px; color: rgba(255,255,255,0.55); letter-spacing: 0.12em; margin-top: 14px; }
+
+  /* === 7 优势 === */
+  .s7 { background: #fff; }
+  .s7 .slide-header { color: var(--muted); }
+  .s7 .slide-body { flex-direction: column; align-items: flex-start; gap: 40px; max-width: 1180px; margin: 0 auto; width: 100%; }
+  .s7-headline { font-size: clamp(26px, 3.2vw, 42px); font-weight: 700; letter-spacing: -0.01em; line-height: 1.3; color: var(--text); max-width: 620px; }
+  .s7-metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; width: 100%; }
+  .s7-metric { background: var(--grey); padding: 28px 28px 32px; display: flex; flex-direction: column; gap: 6px; }
+  .s7-metric-title { font-size: 14px; font-weight: 700; color: var(--text); line-height: 1.35; margin-bottom: 6px; }
+  .s7-metric-desc { font-size: 12px; color: var(--muted); line-height: 1.65; flex: 1; }
+  .s7-metric-value { font-size: clamp(36px, 4vw, 52px); font-weight: 800; color: var(--coral); letter-spacing: -0.03em; line-height: 1; margin-top: 16px; }
+  .s7-metric-unit { font-size: 14px; color: var(--muted); font-weight: 500; margin-top: 4px; }
+
+  /* === 8 竞争 === */
+  .s8 { background: var(--grey); }
+  .s8 .slide-header { color: var(--muted); }
+  .s8 .slide-body { flex-direction: column; align-items: flex-start; gap: 32px; max-width: 1180px; margin: 0 auto; width: 100%; }
+  .s8-headline { font-size: clamp(28px, 3.6vw, 48px); font-weight: 700; letter-spacing: -0.01em; line-height: 1.3; color: var(--text); max-width: 720px; }
+  .s8-table { width: 100%; background: #fff; }
+  .s8-row { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr; border-bottom: 1px solid var(--grey-2); }
+  .s8-row:last-child { border-bottom: none; }
+  .s8-row.header { background: var(--black); color: #fff; }
+  .s8-row.header .s8-cell { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; color: rgba(255,255,255,0.85); }
+  .s8-row.us { background: rgba(240,90,62,0.08); }
+  .s8-cell { padding: 18px 22px; font-size: 14px; color: var(--text); display: flex; align-items: center; }
+  .s8-cell:first-child { font-weight: 700; }
+  .s8-row.us .s8-cell:first-child { color: var(--coral); }
+  .s8-mark { width: 18px; height: 18px; border-radius: 50%; display: inline-block; }
+  .s8-mark.yes { background: var(--coral); }
+  .s8-mark.no { background: transparent; border: 1.5px solid var(--grey-2); }
+  .s8-mark.partial { background: linear-gradient(90deg, var(--coral) 50%, transparent 50%); border: 1.5px solid var(--coral); }
+
+  /* === 9 团队 === */
+  .s9 { background: #fff; }
+  .s9 .slide-header { color: var(--muted); }
+  .s9 .slide-body { flex-direction: column; align-items: flex-start; gap: 32px; max-width: 1180px; margin: 0 auto; width: 100%; }
+  .s9-headline { font-size: clamp(28px, 3.6vw, 48px); font-weight: 700; letter-spacing: -0.01em; line-height: 1.3; color: var(--text); max-width: 720px; }
+  .s9-team { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; width: 100%; }
+  .s9-member { background: var(--grey); padding: 32px 28px; }
+  .s9-avatar { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--red), var(--orange)); margin-bottom: 18px; }
+  .s9-name { font-size: 17px; font-weight: 700; color: var(--text); line-height: 1.3; margin-bottom: 4px; }
+  .s9-role { font-size: 12px; font-weight: 600; letter-spacing: 0.12em; color: var(--coral); margin-bottom: 14px; }
+  .s9-bio { font-size: 13px; color: var(--muted); line-height: 1.75; }
+  .s9-advisors { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; width: 100%; background: var(--grey-2); padding: 1px; }
+  .s9-advisor { background: #fff; padding: 18px 22px; }
+  .s9-advisor-label { font-size: 11px; letter-spacing: 0.16em; color: var(--coral); font-weight: 600; margin-bottom: 6px; }
+  .s9-advisor-name { font-size: 14px; font-weight: 700; color: var(--text); }
+  .s9-advisor-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  /* === 10 最终判断 === */
+  .s10 { background: var(--grey); }
+  .s10 .slide-header { color: var(--muted); }
+  .s10 .slide-body { flex-direction: column; align-items: flex-start; gap: 36px; max-width: 1180px; margin: 0 auto; width: 100%; }
+  .s10-headline { font-size: clamp(28px, 3.6vw, 44px); font-weight: 700; letter-spacing: -0.01em; line-height: 1.3; color: var(--text); max-width: 760px; }
+  .s10-meta { display: flex; gap: 2px; width: 100%; }
+  .s10-meta-item { flex: 1; background: #fff; padding: 22px 28px; }
+  .s10-meta-label { font-size: 12px; font-weight: 600; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 8px; }
+  .s10-meta-value { font-size: 18px; font-weight: 700; color: var(--text); }
+  .s10-funds-title { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 16px; }
+  .s10-funds { width: 100%; display: flex; flex-direction: column; gap: 8px; }
+  .s10-fund-row { display: flex; align-items: center; gap: 20px; }
+  .s10-fund-bar-wrap { flex: 1; height: 36px; background: #E6E4E0; position: relative; overflow: hidden; }
+  .s10-fund-bar { height: 100%; background: linear-gradient(90deg, var(--red), var(--orange)); display: flex; align-items: center; padding-left: 14px; }
+  .s10-fund-bar.grey { background: #C8C6C2; }
+  .s10-fund-bar.light { background: #DDDBD7; }
+  .s10-fund-pct { font-size: 13px; font-weight: 800; color: #fff; }
+  .s10-fund-pct.dark { color: var(--text); }
+  .s10-fund-info { width: 280px; flex-shrink: 0; }
+  .s10-fund-name { font-size: 14px; font-weight: 700; color: var(--text); }
+  .s10-fund-desc { font-size: 12px; color: var(--muted); line-height: 1.65; margin-top: 4px; }
+
+  .nav { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 100; }
+  .nav-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.35); cursor: pointer; transition: all 0.3s; border: none; padding: 0; }
+  .nav-dot.active { background: rgba(255,255,255,0.9); transform: scale(1.3); }
+  .nav.dark .nav-dot { background: rgba(0,0,0,0.2); }
+  .nav.dark .nav-dot.active { background: var(--coral); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  .anim { opacity: 0; }
+  .anim.visible { animation: fadeUp 0.6s ease forwards; }
+  .anim-d1.visible { animation-delay: 0.1s; }
+  .anim-d2.visible { animation-delay: 0.2s; }
+  .anim-d3.visible { animation-delay: 0.3s; }
+  .anim-d4.visible { animation-delay: 0.45s; }
+  .anim-d5.visible { animation-delay: 0.6s; }
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- 1. 封面 -->
+  <section class="slide s1" data-index="0">
+    <div class="slide-header"><span>模型测评</span><span>GPT-5.5 专题</span><span>2026 年</span></div>
+    <div class="slide-body">
+      <div class="s1-logo anim anim-d1">GPT-5.5</div>
+      <div class="s1-tagline anim anim-d2">深度测评<span class="s1-dot">·</span>推理增强<span class="s1-dot">·</span>生产可用</div>
+    </div>
+  </section>
+
+  <!-- 2. 问题 -->
+  <section class="slide s2" data-index="1">
+    <div class="slide-header"><span>核心问题</span><span>02 / 10</span></div>
+    <div class="slide-body">
+      <div class="s2-card">
+        <div class="s2-eyebrow anim anim-d1">评估焦点</div>
+        <div class="s2-headline anim anim-d2">强模型，<br>不等于好工作流。</div>
+        <div class="s2-body anim anim-d3">GPT-5.5 的关键不只是分数更高，而是它能否在真实任务里更稳、更会规划、更少返工。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. 机会 -->
+  <section class="slide s3" data-index="2">
+    <div class="slide-header"><span>测评框架</span><span>03 / 10</span></div>
+    <div class="slide-body">
+      <div class="anim anim-d1" style="width:100%;">
+        <div class="eyebrow">四个维度</div>
+        <div class="s3-headline">我们不只看聪明程度，而是看它能否稳定进入生产环境。</div>
+      </div>
+      <div class="s3-grid anim anim-d2">
+        <div class="s3-stat">
+          <div class="s3-stat-num">↑ 明显提升</div>
+          <div class="s3-stat-label">复杂推理<br>与规划</div>
+          <div class="s3-stat-desc">多约束任务里更愿意拆解问题，能保留目标和限制条件。</div>
+        </div>
+        <div class="s3-stat">
+          <div class="s3-stat-num">更低返工</div>
+          <div class="s3-stat-label">代码与工具<br>执行</div>
+          <div class="s3-stat-desc">长链路编码任务中，更少偏离上下文，也更愿意验证结果。</div>
+        </div>
+        <div class="s3-stat">
+          <div class="s3-stat-num">更稳</div>
+          <div class="s3-stat-label">写作与<br>结构化表达</div>
+          <div class="s3-stat-desc">长文不容易松散，能保持语气、受众和信息层级。</div>
+        </div>
+        <div class="s3-callout">
+          <div class="s3-stat-num">仍需边界</div>
+          <div class="s3-stat-label">事实性与<br>安全边界</div>
+          <div class="s3-stat-desc">高风险结论仍需要外部来源、测试数据和人工复核。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. 方案 -->
+  <section class="slide s4" data-index="3">
+    <div class="slide-header"><span>核心结论</span><span>04 / 10</span></div>
+    <div class="slide-body">
+      <div class="anim anim-d1">
+        <div class="eyebrow">一句话判断</div>
+        <div class="s4-headline">GPT-5.5 更像一个能持续推进任务的同事，而不是更会聊天的窗口。</div>
+      </div>
+      <div class="s4-grid anim anim-d2">
+        <div class="s4-cell dark">
+          <div class="s4-cell-label">优势一</div>
+          <div class="s4-cell-title">先规划<br>再行动</div>
+          <div class="s4-cell-desc">面对复杂需求时，它更倾向于建立任务结构，再逐步执行和校验。</div>
+        </div>
+        <div class="s4-cell">
+          <div class="s4-cell-label">优势二</div>
+          <div class="s4-cell-title">上下文<br>保持更长</div>
+          <div class="s4-cell-desc">多轮迭代里更少忘记前提，能持续贴合用户最后一次修正。</div>
+        </div>
+        <div class="s4-cell">
+          <div class="s4-cell-label">限制</div>
+          <div class="s4-cell-title">仍要<br>验证闭环</div>
+          <div class="s4-cell-desc">它会更主动，但真实发布前仍需要测试、引用来源和人工判断。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. 工作原理 -->
+  <section class="slide s5" data-index="4">
+    <div class="slide-header"><span>实测流程</span><span>05 / 10</span></div>
+    <div class="slide-body">
+      <div class="anim anim-d1">
+        <div class="eyebrow">测试设计</div>
+        <div class="s5-headline">四类任务串联测试，看模型能不能把事情做完。</div>
+      </div>
+      <div class="s5-flow anim anim-d2">
+        <div class="s5-step">
+          <div class="s5-step-num">第 01 步</div>
+          <div class="s5-step-title">拆题</div>
+          <div class="s5-step-desc">给出模糊目标，观察它能否主动澄清、拆解并排出优先级。</div>
+        </div>
+        <div class="s5-step">
+          <div class="s5-step-num">第 02 步</div>
+          <div class="s5-step-title">执行</div>
+          <div class="s5-step-desc">让它完成代码、文案、分析和格式化任务，记录偏航与返工次数。</div>
+        </div>
+        <div class="s5-step">
+          <div class="s5-step-num">第 03 步</div>
+          <div class="s5-step-title">验证</div>
+          <div class="s5-step-desc">要求它运行测试、检查引用、比对输出，并解释不确定性。</div>
+        </div>
+        <div class="s5-step">
+          <div class="s5-step-num">第 04 步</div>
+          <div class="s5-step-title">交付</div>
+          <div class="s5-step-desc">看最终回答是否能让人直接行动，而不是只停留在建议层面。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. 数据进展 -->
+  <section class="slide s6" data-index="5">
+    <div class="slide-header"><span>测评结果</span><span>06 / 10</span></div>
+    <div class="slide-body">
+      <div class="anim anim-d1">
+        <div class="eyebrow">样张数据</div>
+        <div class="s6-headline">最明显的提升，来自复杂任务的稳定性和连续推进能力。</div>
+      </div>
+      <div class="s6-grid anim anim-d2">
+        <div class="s6-card">
+          <div class="s6-card-label">规划质量</div>
+          <div class="s6-card-value">A-</div>
+          <div class="s6-card-unit">任务拆解</div>
+          <div class="s6-card-desc">能更早发现依赖关系，减少一上来就写错方向的概率。</div>
+        </div>
+        <div class="s6-card">
+          <div class="s6-card-label">代码任务</div>
+          <div class="s6-card-value">A</div>
+          <div class="s6-card-unit">端到端修复</div>
+          <div class="s6-card-desc">更擅长读现有项目，按本地模式做小范围改动。</div>
+        </div>
+        <div class="s6-card">
+          <div class="s6-card-label">写作表达</div>
+          <div class="s6-card-value">B+</div>
+          <div class="s6-card-unit">语气控制</div>
+          <div class="s6-card-desc">能保持风格，但高密度观点仍需要人来定稿。</div>
+        </div>
+        <div class="s6-card">
+          <div class="s6-card-label">事实可靠</div>
+          <div class="s6-card-value">B</div>
+          <div class="s6-card-unit">需外部校验</div>
+          <div class="s6-card-desc">遇到新信息、价格、日期和政策时，仍必须联网核对。</div>
+        </div>
+      </div>
+      <div class="s6-quote anim anim-d3">
+        <div class="s6-quote-text">"GPT-5.5 最大的变化不是更会答题，而是更像一个会收尾的执行者。"</div>
+        <div class="s6-quote-source">—— 示例测评结论</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. 优势 -->
+  <section class="slide s7" data-index="6">
+    <div class="slide-header"><span>适合场景</span><span>07 / 10</span></div>
+    <div class="slide-body">
+      <div class="anim anim-d1">
+        <div class="eyebrow">怎么用它</div>
+        <div class="s7-headline">把 GPT-5.5 当作负责推进的协作者，而不是单次问答工具。</div>
+      </div>
+      <div class="s7-metrics">
+        <div class="s7-metric anim anim-d2">
+          <div class="s7-metric-title">复杂编码</div>
+          <div class="s7-metric-desc">适合跨文件阅读、修 bug、补测试和解释本地项目。</div>
+          <div class="s7-metric-value">强</div>
+          <div class="s7-metric-unit">工程协作</div>
+        </div>
+        <div class="s7-metric anim anim-d3">
+          <div class="s7-metric-title">长文结构</div>
+          <div class="s7-metric-desc">适合把散乱材料整理成提纲、脚本、报告和 deck。</div>
+          <div class="s7-metric-value">稳</div>
+          <div class="s7-metric-unit">信息组织</div>
+        </div>
+        <div class="s7-metric anim anim-d4">
+          <div class="s7-metric-title">研究初稿</div>
+          <div class="s7-metric-desc">适合提出问题框架，但事实和引用必须继续核对。</div>
+          <div class="s7-metric-value">可用</div>
+          <div class="s7-metric-unit">需验证</div>
+        </div>
+        <div class="s7-metric anim anim-d5">
+          <div class="s7-metric-title">运营自动化</div>
+          <div class="s7-metric-desc">适合重复流程、监控任务和跨工具操作。</div>
+          <div class="s7-metric-value">高</div>
+          <div class="s7-metric-unit">流程价值</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. 竞争 -->
+  <section class="slide s8" data-index="7">
+    <div class="slide-header"><span>模型对比</span><span>08 / 10</span></div>
+    <div class="slide-body">
+      <div class="anim anim-d1">
+        <div class="eyebrow">相对位置</div>
+        <div class="s8-headline">GPT-5.5 的优势更集中在长任务、工具使用和收尾质量。</div>
+      </div>
+      <div class="s8-table anim anim-d2">
+        <div class="s8-row header">
+          <div class="s8-cell">能力维度</div>
+          <div class="s8-cell">轻量模型</div>
+          <div class="s8-cell">通用聊天</div>
+          <div class="s8-cell">上一代强模型</div>
+          <div class="s8-cell">GPT-5.5</div>
+        </div>
+        <div class="s8-row">
+          <div class="s8-cell">长任务推进</div>
+          <div class="s8-cell"><span class="s8-mark no"></span></div>
+          <div class="s8-cell"><span class="s8-mark no"></span></div>
+          <div class="s8-cell"><span class="s8-mark partial"></span></div>
+          <div class="s8-cell"><span class="s8-mark yes"></span></div>
+        </div>
+        <div class="s8-row us">
+          <div class="s8-cell">跨文件编码</div>
+          <div class="s8-cell"><span class="s8-mark no"></span></div>
+          <div class="s8-cell"><span class="s8-mark no"></span></div>
+          <div class="s8-cell"><span class="s8-mark no"></span></div>
+          <div class="s8-cell"><span class="s8-mark yes"></span></div>
+        </div>
+        <div class="s8-row">
+          <div class="s8-cell">语气稳定</div>
+          <div class="s8-cell"><span class="s8-mark no"></span></div>
+          <div class="s8-cell"><span class="s8-mark partial"></span></div>
+          <div class="s8-cell"><span class="s8-mark partial"></span></div>
+          <div class="s8-cell"><span class="s8-mark yes"></span></div>
+        </div>
+        <div class="s8-row">
+          <div class="s8-cell">主动验证</div>
+          <div class="s8-cell"><span class="s8-mark no"></span></div>
+          <div class="s8-cell"><span class="s8-mark no"></span></div>
+          <div class="s8-cell"><span class="s8-mark partial"></span></div>
+          <div class="s8-cell"><span class="s8-mark yes"></span></div>
+        </div>
+        <div class="s8-row">
+          <div class="s8-cell">低成本快速响应</div>
+          <div class="s8-cell"><span class="s8-mark partial"></span></div>
+          <div class="s8-cell"><span class="s8-mark no"></span></div>
+          <div class="s8-cell"><span class="s8-mark partial"></span></div>
+          <div class="s8-cell"><span class="s8-mark yes"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. 团队 -->
+  <section class="slide s9" data-index="8">
+    <div class="slide-header"><span>使用建议</span><span>09 / 10</span></div>
+    <div class="slide-body">
+      <div class="anim anim-d1">
+        <div class="eyebrow">人机分工</div>
+        <div class="s9-headline">让模型做推进，让人负责判断、取舍和最终责任。</div>
+      </div>
+      <div class="s9-team anim anim-d2">
+        <div class="s9-member">
+          <div class="s9-avatar"></div>
+          <div class="s9-name">第一步</div>
+          <div class="s9-role">给背景</div>
+          <div class="s9-bio">把目标、受众、限制、已有材料和不可做的事一次讲清楚。</div>
+        </div>
+        <div class="s9-member">
+          <div class="s9-avatar"></div>
+          <div class="s9-name">第二步</div>
+          <div class="s9-role">要计划</div>
+          <div class="s9-bio">先让它说清楚步骤、风险和验证方式，再进入执行。</div>
+        </div>
+        <div class="s9-member">
+          <div class="s9-avatar"></div>
+          <div class="s9-name">第三步</div>
+          <div class="s9-role">让它做完</div>
+          <div class="s9-bio">不要停在建议，请它完成文件、测试、截图、清单或可交付结果。</div>
+        </div>
+        <div class="s9-member">
+          <div class="s9-avatar"></div>
+          <div class="s9-name">第四步</div>
+          <div class="s9-role">人来裁决</div>
+          <div class="s9-bio">事实、风格、商业判断和发布责任，仍然要由人最终确认。</div>
+        </div>
+      </div>
+      <div class="s9-advisors anim anim-d3">
+        <div class="s9-advisor"><div class="s9-advisor-label">提示</div><div class="s9-advisor-name">给样例</div><div class="s9-advisor-meta">越具体越稳定</div></div>
+        <div class="s9-advisor"><div class="s9-advisor-label">提示</div><div class="s9-advisor-name">要求验证</div><div class="s9-advisor-meta">别只要答案</div></div>
+        <div class="s9-advisor"><div class="s9-advisor-label">提示</div><div class="s9-advisor-name">分段交付</div><div class="s9-advisor-meta">长任务更可靠</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. 最终判断 -->
+  <section class="slide s10" data-index="9">
+    <div class="slide-header"><span>最终判断</span><span>10 / 10</span></div>
+    <div class="slide-body">
+      <div class="anim anim-d1">
+        <div class="eyebrow">结论</div>
+        <div class="s10-headline">GPT-5.5 值得升级，但最适合给“有上下文、有验收标准”的任务。</div>
+      </div>
+      <div class="s10-meta anim anim-d2">
+        <div class="s10-meta-item"><div class="s10-meta-label">推荐人群</div><div class="s10-meta-value">创作者 / 工程师</div></div>
+        <div class="s10-meta-item"><div class="s10-meta-label">最佳任务</div><div class="s10-meta-value">复杂执行</div></div>
+        <div class="s10-meta-item"><div class="s10-meta-label">注意事项</div><div class="s10-meta-value">事实核查</div></div>
+        <div class="s10-meta-item"><div class="s10-meta-label">总体评价</div><div class="s10-meta-value">强烈推荐试用</div></div>
+      </div>
+      <div class="anim anim-d3" style="width:100%">
+        <div class="s10-funds-title">能力分布</div>
+        <div class="s10-funds">
+          <div class="s10-fund-row">
+            <div class="s10-fund-bar-wrap" style="max-width:580px"><div class="s10-fund-bar" style="width:60%"><span class="s10-fund-pct">60%</span></div></div>
+            <div class="s10-fund-info"><div class="s10-fund-name">任务执行</div><div class="s10-fund-desc">最值得升级的部分：能读、能做、能验证。</div></div>
+          </div>
+          <div class="s10-fund-row">
+            <div class="s10-fund-bar-wrap" style="max-width:580px"><div class="s10-fund-bar grey" style="width:30%"><span class="s10-fund-pct dark">30%</span></div></div>
+            <div class="s10-fund-info"><div class="s10-fund-name">内容表达</div><div class="s10-fund-desc">适合结构化长内容，仍需要人做最后审美判断。</div></div>
+          </div>
+          <div class="s10-fund-row">
+            <div class="s10-fund-bar-wrap" style="max-width:580px"><div class="s10-fund-bar light" style="width:10%"><span class="s10-fund-pct dark">10%</span></div></div>
+            <div class="s10-fund-info"><div class="s10-fund-name">外部事实</div><div class="s10-fund-desc">涉及最新信息时，必须接入搜索与来源校验。</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="nav" id="nav">
+  <button class="nav-dot active" onclick="goTo(0)"></button>
+  <button class="nav-dot" onclick="goTo(1)"></button>
+  <button class="nav-dot" onclick="goTo(2)"></button>
+  <button class="nav-dot" onclick="goTo(3)"></button>
+  <button class="nav-dot" onclick="goTo(4)"></button>
+  <button class="nav-dot" onclick="goTo(5)"></button>
+  <button class="nav-dot" onclick="goTo(6)"></button>
+  <button class="nav-dot" onclick="goTo(7)"></button>
+  <button class="nav-dot" onclick="goTo(8)"></button>
+  <button class="nav-dot" onclick="goTo(9)"></button>
+</div>
+
+<script>
+  const deck = document.getElementById('deck');
+  const dots = document.querySelectorAll('.nav-dot');
+  const nav = document.getElementById('nav');
+  const slides = document.querySelectorAll('.slide');
+  const lightSlides = [2, 3, 4, 5, 6, 7, 8, 9];
+
+  function goTo(i) { deck.scrollTo({ left: i * window.innerWidth, behavior: 'smooth' }); }
+  function updateNav(i) {
+    dots.forEach((d, idx) => d.classList.toggle('active', idx === i));
+    if (lightSlides.includes(i)) nav.classList.add('dark'); else nav.classList.remove('dark');
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.anim').forEach(el => el.classList.add('visible'));
+        updateNav(parseInt(entry.target.dataset.index));
+      } else {
+        entry.target.querySelectorAll('.anim').forEach(el => el.classList.remove('visible'));
+      }
+    });
+  }, { threshold: 0.55 });
+  slides.forEach(s => observer.observe(s));
+
+  document.addEventListener('keydown', e => {
+    const cur = Math.round(deck.scrollLeft / window.innerWidth);
+    if (e.key === 'ArrowRight' && cur < slides.length - 1) goTo(cur + 1);
+    if (e.key === 'ArrowLeft' && cur > 0) goTo(cur - 1);
+  });
+</script>
+</body>
+</html>

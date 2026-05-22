@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content="Lieflat XHS Cover" />
+<meta name="template-origin" content="Lieflat XHS Cover template">
+<title>Dot Matrix 封面</title>
+<style>
+:root {
+  color-scheme: light;
+  --paper: #deded9;
+  --paper-soft: #e8e7e1;
+  --ink: #24221f;
+  --stone: #3e4744;
+  --muted: rgba(36, 34, 31, 0.62);
+  --quiet: rgba(36, 34, 31, 0.18);
+  --hairline: rgba(36, 34, 31, 0.16);
+  --grid: rgba(36, 34, 31, 0.055);
+  --sand: #7d796f;
+  --warm: #8b7c6b;
+  --display: "Songti SC", "Noto Serif CJK SC", "STSong", "SimSun", serif;
+  --body: "PingFang SC", "Noto Sans CJK SC", "Microsoft YaHei", Arial, sans-serif;
+  --mono: "SFMono-Regular", "Consolas", "Liberation Mono", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  background: #c6c5bf;
+  font-family: var(--body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+p {
+  margin: 0;
+  letter-spacing: 0;
+}
+
+.card {
+  position: relative;
+  width: 600px;
+  height: 800px;
+  max-width: calc(100vw - 24px);
+  overflow: hidden;
+  border: 1px solid rgba(36, 34, 31, 0.12);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 73% 33%, rgba(142, 150, 148, 0.17), transparent 27%),
+    radial-gradient(circle at 43% 118%, rgba(125, 121, 111, 0.16), transparent 34%),
+    linear-gradient(90deg, rgba(251, 250, 246, 0.28), transparent 42%, rgba(222, 222, 217, 0.6)),
+    var(--paper);
+  color: var(--ink);
+  box-shadow: 0 26px 70px rgba(30, 28, 24, 0.2);
+  isolation: isolate;
+}
+
+/* The source deck relies on subtle instrumentation texture; this grid keeps that DNA in the vertical crop. */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+    linear-gradient(var(--grid) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(circle at 36% 44%, black, transparent 78%);
+}
+
+.scanline {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(36, 34, 31, 0.035) 1px, transparent 1px) 0 0 / 100% 12px,
+    radial-gradient(circle at 50% 52%, transparent 0, rgba(90, 86, 78, 0.1) 78%);
+  mix-blend-mode: multiply;
+  opacity: 0.5;
+}
+
+#field {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.meta {
+  position: absolute;
+  z-index: 4;
+  top: 42px;
+  left: 54px;
+  right: 54px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.kicker {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--stone);
+  white-space: nowrap;
+}
+
+.kicker::before {
+  content: "";
+  width: 64px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.72;
+}
+
+.system-code {
+  max-width: 190px;
+  text-align: right;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.45;
+  text-transform: uppercase;
+  opacity: 0.58;
+}
+
+.hero {
+  position: absolute;
+  z-index: 4;
+  left: 54px;
+  right: 42px;
+  top: 126px;
+}
+
+.model {
+  display: block;
+  font-family: var(--display);
+  font-size: 100px;
+  font-weight: 400;
+  line-height: 0.9;
+  color: var(--stone);
+}
+
+.title {
+  max-width: 440px;
+  margin-top: 28px;
+  font-family: var(--display);
+  font-size: 66px;
+  font-weight: 400;
+  line-height: 1.08;
+  color: var(--ink);
+}
+
+.summary {
+  position: absolute;
+  z-index: 4;
+  left: 54px;
+  right: 58px;
+  bottom: 206px;
+  max-width: 468px;
+  color: rgba(36, 34, 31, 0.64);
+  font-size: 21px;
+  line-height: 1.65;
+}
+
+.signal-panel {
+  position: absolute;
+  z-index: 4;
+  left: 54px;
+  right: 54px;
+  bottom: 74px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.metric {
+  min-height: 88px;
+  padding: 16px 16px 14px;
+  border: 1px solid var(--hairline);
+  background: rgba(251, 250, 246, 0.34);
+  backdrop-filter: blur(2px);
+}
+
+.metric b {
+  display: block;
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 29px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.metric span {
+  display: block;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+.footer {
+  position: absolute;
+  z-index: 4;
+  left: 54px;
+  right: 54px;
+  bottom: 34px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  border-top: 1px solid var(--hairline);
+  padding-top: 12px;
+  color: rgba(36, 34, 31, 0.48);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 650px) {
+  body {
+    padding: 10px;
+  }
+
+  .card {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 4;
+  }
+}
+</style>
+</head>
+<body>
+<main class="card" aria-label="Dot Matrix 封面">
+  <canvas id="field" aria-hidden="true"></canvas>
+  <div class="scanline" aria-hidden="true"></div>
+
+  <header class="meta">
+    <div class="kicker">OPENAI / GPT-5.5 / 2026-04-23</div>
+    <div class="system-code">MODEL: GPT-5.5<br />MODE: AGENTIC WORK<br />LENS: CAPABILITY + OPS</div>
+  </header>
+
+  <section class="hero" aria-labelledby="cover-title">
+    <span class="model">GPT-5.5</span>
+    <h1 class="title" id="cover-title">从回答模型，到执行系统。</h1>
+  </section>
+
+  <p class="summary">
+    它不是单纯“更会说”，而是在编码、工具使用、复杂任务推进中，开始减少人类的流程管理负担。
+  </p>
+
+  <section class="signal-panel" aria-label="关键信号">
+    <div class="metric"><b>82.7%</b><span>Terminal-Bench 2.0</span></div>
+    <div class="metric"><b>84.9%</b><span>GDPval wins / ties</span></div>
+    <div class="metric"><b>81.8%</b><span>CyberGym</span></div>
+  </section>
+
+  <footer class="footer">
+    <span>model brief / dot matrix signal field</span>
+    <span>01 / 01</span>
+  </footer>
+</main>
+
+<script>
+const canvas = document.getElementById("field");
+const ctx = canvas.getContext("2d");
+let w = 0;
+let h = 0;
+let dpr = 1;
+
+const palette = {
+  base: [36, 34, 31],
+  secondary: [120, 115, 106],
+  tertiary: [142, 150, 148],
+  glow: [58, 56, 51],
+  paper: "#deded9",
+};
+
+function fitCanvas() {
+  const rect = canvas.getBoundingClientRect();
+  dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+  w = Math.round(rect.width);
+  h = Math.round(rect.height);
+  canvas.width = Math.round(w * dpr);
+  canvas.height = Math.round(h * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+function seeded(x, y) {
+  const n = Math.sin(x * 41.13 + y * 97.77) * 43758.5453;
+  return n - Math.floor(n);
+}
+
+function rgba(rgb, a) {
+  return `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${a})`;
+}
+
+function drawBackground(t) {
+  ctx.fillStyle = palette.paper;
+  ctx.fillRect(0, 0, w, h);
+
+  ctx.font = `${Math.max(7, w * 0.014)}px "PingFang SC", "Microsoft YaHei", sans-serif`;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  const chars = [".", "·", "+", "×", "%", "#"];
+  const step = Math.max(18, w * 0.043);
+
+  for (let y = step * 0.5; y < h; y += step) {
+    for (let x = step * 0.5; x < w; x += step) {
+      const r = seeded(Math.round(x), Math.round(y));
+      const pulse = 0.52 + 0.48 * Math.sin(t * 0.001 + x * 0.011 + y * 0.004);
+      const a = (0.018 + r * 0.025) * pulse;
+      ctx.fillStyle = rgba(palette.base, a);
+      ctx.fillText(chars[Math.floor(r * chars.length)], x, y);
+    }
+  }
+}
+
+function drawDotGlobe(cx, cy, r, rgb, rot, alpha = 1) {
+  const step = Math.max(5, r / 22);
+  const fontSize = Math.max(5, r / 21);
+  const chars = ["#", "*", "×", "+", "·", "%"];
+  ctx.font = `${fontSize}px "PingFang SC", "Microsoft YaHei", sans-serif`;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+
+  for (let sx = -r; sx <= r; sx += step) {
+    for (let sy = -r; sy <= r; sy += step) {
+      if (sx * sx + sy * sy > r * r) continue;
+      const d = Math.hypot(sx, sy) / r;
+      const wave = Math.sin((sx + rot * 140) * 0.065) + Math.cos((sy - rot * 90) * 0.055);
+      const s = seeded(Math.round(sx * 4), Math.round(sy * 4));
+      const land = wave + s * 1.2 > 0.92;
+      const a = (land ? 0.7 : 0.28) * (1 - d * 0.18) * alpha;
+      ctx.fillStyle = rgba(rgb, a);
+      ctx.fillText(chars[Math.floor(s * chars.length)], cx + sx, cy + sy);
+    }
+  }
+}
+
+function drawOrbitSystem(t) {
+  const cx = w * 0.7;
+  const cy = h * 0.39;
+  const scale = Math.min(w, h);
+  const rot = t * 0.00032;
+
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.rotate(-0.28);
+
+  const lanes = [
+    { y: -scale * 0.16, width: scale * 0.7, bow: scale * 0.08 },
+    { y: -scale * 0.02, width: scale * 0.86, bow: -scale * 0.05 },
+    { y: scale * 0.12, width: scale * 0.76, bow: scale * 0.06 },
+  ];
+
+  lanes.forEach((lane, i) => {
+    ctx.beginPath();
+    ctx.moveTo(-lane.width * 0.5, lane.y);
+    ctx.bezierCurveTo(-lane.width * 0.2, lane.y + lane.bow, lane.width * 0.2, lane.y - lane.bow, lane.width * 0.5, lane.y);
+    ctx.strokeStyle = rgba(palette.base, 0.07 + i * 0.018);
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  });
+
+  for (let i = 0; i < 58; i++) {
+    const lane = lanes[i % lanes.length];
+    const p = (i * 0.618 + t * 0.00003) % 1;
+    const x = (p - 0.5) * lane.width;
+    const y = lane.y + Math.sin(p * Math.PI * 2 + i) * scale * 0.018 + Math.sin(p * Math.PI) * lane.bow * 0.55;
+    const s = seeded(i * 11, Math.round(t * 0.02));
+    ctx.fillStyle = rgba(s > 0.58 ? palette.glow : palette.secondary, 0.09 + s * 0.14);
+    ctx.fillRect(x, y, Math.max(1, scale * 0.003), Math.max(1, scale * 0.003));
+  }
+
+  ctx.restore();
+
+  const nodes = [
+    [cx - scale * 0.22, cy - scale * 0.08, scale * 0.052, palette.secondary],
+    [cx + scale * 0.02, cy - scale * 0.01, scale * 0.08, palette.base],
+    [cx + scale * 0.25, cy + scale * 0.12, scale * 0.05, palette.tertiary],
+    [cx - scale * 0.08, cy + scale * 0.24, scale * 0.044, palette.glow],
+  ];
+
+  ctx.beginPath();
+  nodes.forEach((node, i) => {
+    if (i === 0) ctx.moveTo(node[0], node[1]);
+    else ctx.lineTo(node[0], node[1]);
+  });
+  ctx.strokeStyle = rgba(palette.base, 0.1);
+  ctx.stroke();
+
+  nodes.forEach((node, i) => {
+    drawDotGlobe(node[0], node[1], node[2], node[3], rot * (i % 2 ? -1 : 1), 0.7);
+    ctx.beginPath();
+    ctx.arc(node[0], node[1], node[2] * 1.45, 0, Math.PI * 2);
+    ctx.strokeStyle = rgba(palette.base, 0.075);
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  });
+}
+
+function draw(t) {
+  drawBackground(t);
+  drawOrbitSystem(t);
+  requestAnimationFrame(draw);
+}
+
+window.addEventListener("resize", fitCanvas);
+fitCanvas();
+requestAnimationFrame(draw);
+</script>
+</body>
+</html>

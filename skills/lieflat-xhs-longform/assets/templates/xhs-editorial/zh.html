@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content="Lieflat XHS Longform" />
+<meta name="template-origin" content="Lieflat XHS Longform template">
+<title>Editorial 小红书长文模板</title>
+<style>
+  :root{
+    --paper:#faf8f3;
+    --ink:#111;
+    --mid:#555;
+    --faint:#8d8a84;
+    --line:#e4e0d7;
+    --accent:#111;
+    --cream:#d8d4cc;
+    --display:"Songti SC","Noto Serif SC","STSong",Georgia,serif;
+    --body:"PingFang SC","Noto Sans SC","Microsoft YaHei",Arial,sans-serif;
+    --mono:"SFMono-Regular","Menlo","Consolas",monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100%}
+  body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:32px;
+    background:
+      radial-gradient(900px 620px at 50% -10%, rgba(250,248,243,.24), transparent 64%),
+      linear-gradient(135deg,#232321,#34322d 50%,#191917);
+    color:var(--ink);
+    font-family:var(--body);
+    -webkit-font-smoothing:antialiased;
+  }
+  .card{
+    width:600px;
+    height:1000px;
+    max-width:calc(100vw - 24px);
+    overflow:hidden;
+    border-radius:10px;
+    background:var(--paper);
+    box-shadow:0 25px 50px rgba(0,0,0,.42),0 10px 30px rgba(0,10,20,.30),0 5px 15px rgba(0,5,15,.24);
+    position:relative;
+  }
+  .card::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  }
+  .article{
+    position:relative;
+    z-index:1;
+    height:100%;
+    overflow-y:auto;
+    padding:46px 48px 52px;
+    background:
+      linear-gradient(90deg, transparent 0 45px, rgba(17,17,17,.06) 45px 46px, transparent 46px),
+      linear-gradient(180deg, rgba(17,17,17,.035) 0 1px, transparent 1px 48px),
+      var(--paper);
+  }
+  .article::-webkit-scrollbar{width:8px}
+  .article::-webkit-scrollbar-track{background:rgba(0,0,0,.04)}
+  .article::-webkit-scrollbar-thumb{background:rgba(0,0,0,.22);border-radius:8px}
+  .mast{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    border-bottom:1px solid var(--line);
+    padding-bottom:14px;
+    margin-bottom:28px;
+    font-family:var(--mono);
+    font-size:9px;
+    line-height:1.8;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--faint);
+  }
+  .issue{
+    display:grid;
+    grid-template-columns:96px 1fr;
+    gap:18px;
+    border-bottom:1px solid var(--ink);
+    padding-bottom:20px;
+    margin-bottom:28px;
+  }
+  .issue-no{
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.18em;
+    color:var(--faint);
+    writing-mode:vertical-rl;
+    justify-self:start;
+  }
+  h1{
+    font-family:var(--display);
+    font-weight:900;
+    font-size:52px;
+    line-height:1.14;
+    letter-spacing:0;
+  }
+  .deckline{
+    grid-column:2;
+    max-width:360px;
+    margin-top:16px;
+    color:var(--mid);
+    font-size:18px;
+    line-height:1.75;
+    font-weight:300;
+  }
+  .toc{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+    margin:28px 0 34px;
+  }
+  .toc div{
+    border-top:1px solid var(--line);
+    padding-top:10px;
+  }
+  .toc b{
+    display:block;
+    font-family:var(--mono);
+    font-size:10px;
+    color:var(--faint);
+    margin-bottom:7px;
+  }
+  .toc span{
+    display:block;
+    font-family:var(--display);
+    font-size:17px;
+    line-height:1.45;
+    font-weight:700;
+  }
+  h2{
+    font-family:var(--display);
+    font-size:31px;
+    line-height:1.32;
+    font-weight:900;
+    margin:42px 0 17px;
+  }
+  h2::before{
+    content:"";
+    display:block;
+    width:44px;
+    height:1px;
+    background:var(--ink);
+    margin-bottom:18px;
+  }
+  p{
+    color:#333;
+    font-size:22px;
+    line-height:1.82;
+    font-weight:300;
+    margin-bottom:19px;
+  }
+  .drop:first-letter{
+    float:left;
+    font-family:var(--display);
+    font-size:72px;
+    line-height:.85;
+    padding:9px 10px 0 0;
+    font-weight:900;
+  }
+  strong{font-weight:700;color:#000}
+  mark{
+    background:#111;
+    color:#faf8f3;
+    padding:1px 7px 2px;
+  }
+  .quote{
+    margin:30px 0;
+    padding:20px 0 20px 24px;
+    border-left:3px solid var(--ink);
+    font-family:var(--display);
+    font-size:29px;
+    line-height:1.62;
+    font-weight:700;
+  }
+  .score{
+    margin:26px 0;
+    border-top:1px solid var(--ink);
+    border-bottom:1px solid var(--ink);
+  }
+  .score-row{
+    display:grid;
+    grid-template-columns:92px 1fr 40px;
+    align-items:center;
+    gap:14px;
+    padding:13px 0;
+    border-bottom:1px solid var(--line);
+    font-size:13px;
+    letter-spacing:.08em;
+    color:var(--mid);
+  }
+  .score-row:last-child{border-bottom:0}
+  .bar{height:7px;background:#e5e1d8;overflow:hidden}
+  .fill{display:block;height:100%;background:#111}
+  .side-note{
+    margin:28px 0;
+    padding:18px 20px;
+    background:#efebe2;
+    border:1px solid var(--line);
+    font-size:18px;
+    line-height:1.8;
+    color:var(--mid);
+  }
+  ul{margin:8px 0 24px 20px}
+  li{
+    font-size:21px;
+    line-height:1.75;
+    margin-bottom:8px;
+    color:#333;
+    font-weight:300;
+  }
+  .closing{
+    margin-top:46px;
+    padding-top:24px;
+    border-top:1px solid var(--line);
+    font-family:var(--mono);
+    font-size:10px;
+    line-height:1.9;
+    letter-spacing:.14em;
+    color:var(--faint);
+    text-transform:uppercase;
+  }
+  @media(max-width:650px){
+    body{padding:10px}
+    .card{width:100%;height:auto;min-height:80vh}
+    .article{height:auto;min-height:80vh;overflow:visible;padding:32px 30px}
+    .issue{grid-template-columns:1fr}
+    .issue-no{writing-mode:horizontal-tb}
+    h1{font-size:38px}
+    .deckline{grid-column:1}
+    p,li{font-size:20px}
+    .quote{font-size:24px}
+    .toc{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+  <main class="card">
+    <article class="article">
+      <div class="mast">
+        <span>Editorial Review / 工作流观察</span>
+        <span>2026.05.21</span>
+      </div>
+      <header class="issue">
+        <div class="issue-no">ISSUE 05<br>产品测评</div>
+        <div>
+          <h1>新版 Codex，<br>不只是会写代码。</h1>
+          <p class="deckline">它更像一个会读项目、会查资料、会打开预览、也愿意收尾的工作流编辑。</p>
+        </div>
+      </header>
+      <section class="toc">
+        <div><b>01</b><span>从代码助手到工作流同事</span></div>
+        <div><b>02</b><span>真正变强的是上下文</span></div>
+        <div><b>03</b><span>什么场景最值得用</span></div>
+      </section>
+      <p class="drop">我这次没有把 Codex 当聊天机器人测，而是把它放进一个完整任务里：读模板、理解风格、生成长文页面、跑本地预览，再根据截图修排版。</p>
+      <p>体感上，最新版 Codex 的变化不在“单句答案更漂亮”，而在它更愿意处理工作里的那些中间步骤。它会先看项目结构，再判断该用哪个文件；会在动手前吸收约束，也会在完成后补验证。</p>
+      <div class="quote">最明显的升级，是它不再只像一个答题者，而更像一个能把任务推到终点的人。</div>
+      <h2>一、它更懂“场地”</h2>
+      <p>真实项目最麻烦的地方，不是从零开始，而是<strong>已有风格不能被破坏</strong>。新版 Codex 在这点上更稳：它会更自然地先读模板、读目录、读已有命名方式，然后再决定怎么写。</p>
+      <p>这对设计和内容工作尤其重要。你给它一句“参考 Rain Note，但做成小红书长文”，它要同时理解两个方向：一边保留视觉气质，一边换成适合发布平台的阅读形态。</p>
+      <h2>二、我给它的体感分</h2>
+      <div class="score">
+        <div class="score-row"><span>项目理解</span><span class="bar"><span class="fill" style="width:92%"></span></span><span>9.2</span></div>
+        <div class="score-row"><span>任务推进</span><span class="bar"><span class="fill" style="width:88%"></span></span><span>8.8</span></div>
+        <div class="score-row"><span>排版收尾</span><span class="bar"><span class="fill" style="width:84%"></span></span><span>8.4</span></div>
+        <div class="score-row"><span>事实核查</span><span class="bar"><span class="fill" style="width:76%"></span></span><span>7.6</span></div>
+      </div>
+      <h2>三、最适合的用法</h2>
+      <p>我会把它用在三类任务里：工程杂活、内容生产、周期性检查。尤其是那些“人脑知道方向，但手上步骤很多”的工作，Codex 会明显省时间。</p>
+      <ul>
+        <li>让它读现有项目，再做最小必要改动。</li>
+        <li>让它生成可预览的 HTML、报告、长文卡片。</li>
+        <li>让它跑检查，把失败原因和修复一起带回来。</li>
+        <li>涉及最新事实、权限、账号操作时，仍然保留人工确认。</li>
+      </ul>
+      <div class="side-note">推荐提示词：先读现有风格，再做可交付版本。完成后打开预览检查，如果文字溢出、层级不清楚或首屏不完整，直接修到能发布。</div>
+      <h2>最后的判断</h2>
+      <p>如果你只是偶尔问几段代码，升级感可能有限。但如果你经常在本地项目、网页、文档和自动化之间来回切换，新版 Codex 的价值会很清楚：它把“想法到文件”的距离缩短了。</p>
+      <p>它还不是自动驾驶，但已经很适合坐在旁边，帮你把一轮工作安静地收起来。</p>
+      <footer class="closing">Source 二〇二六年五月二十一日核对 OpenAI Codex 官方开发者文档。 Editorial 小红书长文排版样张.</footer>
+    </article>
+  </main>
+</body>
+</html>

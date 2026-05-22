@@ -1,0 +1,29 @@
+{
+  "name": "lieflat-html-design",
+  "version": "0.1.0",
+  "private": false,
+  "description": "HTML design skill collection with presentation decks, Xiaohongshu longform cards, and Xiaohongshu cover templates.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "list": "npm run list:deck && npm run list:longform && npm run list:cover",
+    "list:deck": "node skills/lieflat-html-deck/scripts/list-templates.mjs",
+    "list:longform": "node skills/lieflat-xhs-longform/scripts/list-templates.mjs",
+    "list:cover": "node skills/lieflat-xhs-cover/scripts/list-templates.mjs",
+    "audit": "npm run audit:deck && npm run audit:longform && npm run audit:cover",
+    "audit:deck": "node skills/lieflat-html-deck/scripts/audit-assets.mjs skills/lieflat-html-deck/assets/templates",
+    "audit:longform": "node skills/lieflat-xhs-longform/scripts/audit-assets.mjs skills/lieflat-xhs-longform/assets/templates",
+    "audit:cover": "node skills/lieflat-xhs-cover/scripts/audit-assets.mjs skills/lieflat-xhs-cover/assets/templates",
+    "audit:languages": "node skills/lieflat-html-deck/scripts/audit-languages.mjs",
+    "preview:capture": "npm run preview:capture:zh && npm run preview:capture:en",
+    "preview:capture:zh": "node skills/lieflat-html-deck/scripts/capture-template-previews.mjs --lang zh --out previews/zh",
+    "preview:capture:en": "node skills/lieflat-html-deck/scripts/capture-template-previews.mjs --lang en --out previews/en",
+    "preview:capture:longform": "for f in skills/lieflat-xhs-longform/assets/templates/xhs-*/zh.html; do id=$(basename $(dirname \"$f\")); node skills/lieflat-xhs-longform/scripts/capture-xhs-card.mjs --html \"$f\" --out \"previews/zh/$id.png\"; done",
+    "preview:capture:cover": "for f in skills/lieflat-xhs-cover/assets/templates/xhs-cover-*/zh.html; do id=$(basename $(dirname \"$f\")); node skills/lieflat-xhs-cover/scripts/capture-xhs-card.mjs --html \"$f\" --out \"previews/zh/$id.png\"; done",
+    "preview:capture:xhs": "npm run preview:capture:longform && npm run preview:capture:cover",
+    "create:demo": "node skills/lieflat-html-deck/scripts/create-design.mjs --template editorial --lang zh --out output/editorial-demo.html"
+  },
+  "devDependencies": {
+    "playwright": ">=1.40.0"
+  }
+}

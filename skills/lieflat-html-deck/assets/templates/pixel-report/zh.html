@@ -1,0 +1,1817 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GPT-5.5 分析演示</title>
+  <style>
+    :root {
+      --black: #000000;
+      --black-2: #050606;
+      --black-3: #0d0f0f;
+      --white: #f6f7f3;
+      --muted: rgba(246, 247, 243, 0.56);
+      --dim: rgba(246, 247, 243, 0.18);
+      --line: rgba(246, 247, 243, 0.13);
+      --line-strong: rgba(246, 247, 243, 0.28);
+      --teal: #8faab2;
+      --teal-2: #5b949f;
+      --teal-3: #32555c;
+      --acid: #c7f75a;
+      --amber: #f4be64;
+      --red: #ff6d5d;
+      --slide-pad-x: 104px;
+      --slide-pad-y: 70px;
+      --ease: cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: var(--black);
+      color: var(--white);
+      font-family: "Roboto Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+      letter-spacing: 0;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+    }
+
+    body {
+      user-select: none;
+    }
+
+    button {
+      font: inherit;
+      color: inherit;
+      background: transparent;
+      border: 0;
+      padding: 0;
+    }
+
+    .backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(255,255,255,0.035) 1px, transparent 1px),
+        radial-gradient(circle at 18% 14%, rgba(143, 170, 178, 0.22), transparent 23%),
+        radial-gradient(circle at 84% 68%, rgba(199, 247, 90, 0.10), transparent 19%),
+        linear-gradient(160deg, var(--black) 0%, #060808 48%, #101515 100%);
+      background-size: 90px 90px, 90px 90px, auto, auto, auto;
+    }
+
+    .backdrop::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.21;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 5px 5px, 11px 11px;
+      mix-blend-mode: screen;
+    }
+
+    .scan {
+      position: fixed;
+      inset: 34px 54px;
+      z-index: 2;
+      pointer-events: none;
+      border: 1px solid var(--line);
+    }
+
+    .scan::before,
+    .scan::after {
+      content: "";
+      position: absolute;
+      background: var(--line-strong);
+    }
+
+    .scan::before {
+      top: 18%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+    }
+
+    .scan::after {
+      left: 79%;
+      top: 0;
+      width: 1px;
+      height: 100%;
+    }
+
+    .scan-line {
+      position: fixed;
+      left: 54px;
+      top: 34px;
+      bottom: 34px;
+      z-index: 3;
+      width: 1px;
+      pointer-events: none;
+      overflow: hidden;
+      background: rgba(246,247,243,0.08);
+    }
+
+    .scan-line i {
+      display: block;
+      width: 100%;
+      height: 24%;
+      background: linear-gradient(180deg, transparent, var(--acid), transparent);
+      animation: scan 2.8s var(--ease) infinite;
+    }
+
+    @keyframes scan {
+      0% { transform: translateY(-120%); }
+      100% { transform: translateY(540%); }
+    }
+
+    .brand {
+      position: fixed;
+      z-index: 20;
+      top: 42px;
+      left: 82px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      pointer-events: none;
+    }
+
+    .mark {
+      display: grid;
+      grid-template-columns: repeat(2, 9px);
+      grid-template-rows: repeat(2, 9px);
+      gap: 3px;
+      width: 21px;
+      height: 21px;
+    }
+
+    .mark span {
+      display: block;
+      border: 1px solid var(--teal);
+      background: rgba(143, 170, 178, 0.12);
+    }
+
+    .mark span:nth-child(2) {
+      border-radius: 50%;
+      background: var(--acid);
+      border-color: var(--acid);
+    }
+
+    .brand strong {
+      font-size: 17px;
+      line-height: 1;
+      font-weight: 700;
+    }
+
+    .brand small {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .deck {
+      position: relative;
+      z-index: 4;
+      width: 100vw;
+      height: 100vh;
+      isolation: isolate;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding: var(--slide-pad-y) var(--slide-pad-x);
+      opacity: 0;
+      pointer-events: none;
+      transform: none;
+      transition: opacity 260ms ease;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: none;
+    }
+
+    .slide.before {
+      transform: none;
+    }
+
+    .slide :is(
+      .eyebrow,
+      .meta-top,
+      .chapter-title,
+      .hero-visual,
+      .claim,
+      .flow-row,
+      .bar-row,
+      .delta-panel,
+      .use-card,
+      .spec-intro,
+      .spec,
+      .price > *,
+      .prompt-panel,
+      .risk > *,
+      .risk-cell,
+      .route,
+      .closing > *,
+      .kpi
+    ) {
+      opacity: 0;
+      filter: blur(4px);
+      transform: translate3d(var(--enter-x, 0), var(--enter-y, 28px), 0);
+      transition:
+        opacity 560ms ease,
+        filter 560ms ease,
+        transform 820ms var(--ease);
+      transition-delay: calc(var(--step, 0) * 82ms);
+      will-change: opacity, filter, transform;
+    }
+
+    .slide.active :is(
+      .eyebrow,
+      .meta-top,
+      .chapter-title,
+      .hero-visual,
+      .claim,
+      .flow-row,
+      .bar-row,
+      .delta-panel,
+      .use-card,
+      .spec-intro,
+      .spec,
+      .price > *,
+      .prompt-panel,
+      .risk > *,
+      .risk-cell,
+      .route,
+      .closing > *,
+      .kpi
+    ) {
+      opacity: 1;
+      filter: blur(0);
+      transform: translate3d(0, 0, 0);
+    }
+
+    .slide .eyebrow { --step: 0; --enter-y: -14px; }
+    .slide .meta-top { --step: 1; --enter-y: -14px; }
+    .slide :is(.chapter-title, .claim, .spec-intro, .price > :first-child, .risk > :first-child, .closing > :first-child) { --step: 2; --enter-x: -32px; --enter-y: 0; }
+    .slide :is(.hero-visual, .delta-panel, .price > :last-child, .closing > :last-child) { --step: 4; --enter-x: 36px; --enter-y: 0; }
+    .slide .prompt-panel:first-child { --step: 2; --enter-x: -28px; --enter-y: 0; }
+    .slide .prompt-panel:last-child { --step: 4; --enter-x: 28px; --enter-y: 0; }
+    .slide .risk > :last-child { --step: 3; --enter-x: 34px; --enter-y: 0; }
+    .slide .flow-row:nth-child(1),
+    .slide .bar-row:nth-child(1),
+    .slide .use-card:nth-child(1),
+    .slide .spec:nth-child(1),
+    .slide .risk-cell:nth-child(1),
+    .slide .route:nth-child(1),
+    .slide .kpi:nth-child(1) { --step: 3; }
+    .slide .flow-row:nth-child(2),
+    .slide .bar-row:nth-child(2),
+    .slide .use-card:nth-child(2),
+    .slide .spec:nth-child(2),
+    .slide .risk-cell:nth-child(2),
+    .slide .route:nth-child(2),
+    .slide .kpi:nth-child(2) { --step: 4; }
+    .slide .flow-row:nth-child(3),
+    .slide .bar-row:nth-child(3),
+    .slide .use-card:nth-child(3),
+    .slide .spec:nth-child(3),
+    .slide .risk-cell:nth-child(3),
+    .slide .route:nth-child(3),
+    .slide .kpi:nth-child(3) { --step: 5; }
+    .slide .flow-row:nth-child(4),
+    .slide .bar-row:nth-child(4),
+    .slide .use-card:nth-child(4),
+    .slide .spec:nth-child(4),
+    .slide .risk-cell:nth-child(4),
+    .slide .route:nth-child(4) { --step: 6; }
+    .slide .bar-row:nth-child(5),
+    .slide .use-card:nth-child(5),
+    .slide .spec:nth-child(5) { --step: 7; }
+    .slide .bar-row:nth-child(6),
+    .slide .spec:nth-child(6) { --step: 8; }
+
+    .slide.active [data-reveal-item].is-hidden {
+      opacity: 0;
+      filter: blur(4px);
+      transform: translate3d(0, 24px, 0);
+      pointer-events: none;
+      transition-delay: 0ms;
+    }
+
+    .slide.active [data-reveal-item].is-visible {
+      opacity: 1;
+      filter: blur(0);
+      transform: translate3d(0, 0, 0);
+    }
+
+    .slide-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      grid-template-rows: 78px 1fr 96px;
+      column-gap: 28px;
+      row-gap: 22px;
+    }
+
+    .eyebrow {
+      grid-column: 1 / 7;
+      align-self: end;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--teal);
+      font-size: 14px;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 44px;
+      height: 1px;
+      background: currentColor;
+    }
+
+    .meta-top {
+      grid-column: 9 / 13;
+      align-self: end;
+      display: flex;
+      justify-content: flex-end;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+      font-weight: 400;
+    }
+
+    .display {
+      font-size: 132px;
+      line-height: 0.86;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    .title {
+      font-size: 82px;
+      line-height: 0.92;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    .chapter-title {
+      grid-column: 1 / 8;
+      grid-row: 2;
+      align-self: center;
+    }
+
+    .copy {
+      color: rgba(246, 247, 243, 0.78);
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      font-size: 19px;
+      line-height: 1.52;
+      max-width: 680px;
+    }
+
+    .zh {
+      font-family: "Helvetica Neue", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+    }
+
+    .subcopy {
+      margin-top: 26px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.46;
+      max-width: 570px;
+    }
+
+    .accent {
+      color: var(--acid);
+    }
+
+    .teal {
+      color: var(--teal);
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.02)),
+        rgba(4, 6, 6, 0.72);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.035);
+    }
+
+    .hero-visual {
+      grid-column: 8 / 13;
+      grid-row: 2;
+      align-self: center;
+      height: 460px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 30px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 0 14px;
+      border: 1px solid rgba(143, 170, 178, 0.34);
+      border-radius: 999px;
+      color: rgba(246, 247, 243, 0.78);
+      background: rgba(143, 170, 178, 0.08);
+      font-size: 13px;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .chip.hot {
+      border-color: rgba(199, 247, 90, 0.55);
+      color: var(--acid);
+      background: rgba(199, 247, 90, 0.08);
+    }
+
+    .footer-note {
+      grid-column: 1 / 6;
+      grid-row: 3;
+      align-self: start;
+      display: none;
+      color: rgba(246,247,243,0.48);
+      font-size: 12px;
+      line-height: 1.35;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+    }
+
+    .kpi-strip {
+      grid-column: 6 / 13;
+      grid-row: 3;
+      align-self: start;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .kpi {
+      min-height: 72px;
+      padding: 14px 16px;
+      border-left: 1px solid var(--line-strong);
+    }
+
+    .kpi strong {
+      display: block;
+      color: var(--white);
+      font-size: 28px;
+      line-height: 1;
+      font-weight: 500;
+    }
+
+    .kpi span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.25;
+      text-transform: uppercase;
+    }
+
+    .orbit {
+      position: absolute;
+      inset: 28px;
+      border: 1px solid rgba(143, 170, 178, 0.18);
+    }
+
+    .orbit::before,
+    .orbit::after {
+      content: "";
+      position: absolute;
+      inset: 58px;
+      border: 1px solid rgba(246,247,243,0.12);
+      transform: rotate(45deg);
+    }
+
+    .orbit::after {
+      inset: 112px;
+      border-color: rgba(199,247,90,0.32);
+      transform: rotate(0deg);
+    }
+
+    .core {
+      position: absolute;
+      inset: 50%;
+      width: 154px;
+      height: 154px;
+      transform: translate(-50%, -50%);
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(199,247,90,0.72);
+      background: radial-gradient(circle, rgba(199,247,90,0.22), rgba(143,170,178,0.07) 52%, rgba(0,0,0,0.2));
+      color: var(--acid);
+      font-size: 32px;
+      line-height: 1;
+      font-weight: 500;
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 rgba(199,247,90,0); }
+      50% { box-shadow: 0 0 48px rgba(199,247,90,0.18); }
+    }
+
+    .node {
+      position: absolute;
+      width: 118px;
+      min-height: 52px;
+      padding: 12px;
+      border: 1px solid rgba(143,170,178,0.32);
+      background: rgba(0,0,0,0.64);
+      color: rgba(246,247,243,0.75);
+      font-size: 12px;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .node b {
+      display: block;
+      color: var(--white);
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .node.a { left: 18px; top: 40px; }
+    .node.b { right: 24px; top: 80px; }
+    .node.c { left: 70px; bottom: 54px; }
+    .node.d { right: 34px; bottom: 34px; }
+
+    .two-col {
+      grid-column: 1 / 13;
+      grid-row: 2;
+      display: grid;
+      grid-template-columns: 5fr 6fr;
+      gap: 56px;
+      align-items: center;
+    }
+
+    .claim {
+      font-size: 74px;
+      line-height: 0.94;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    .claim small {
+      display: block;
+      margin-bottom: 18px;
+      color: var(--teal);
+      font-size: 14px;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .claim .zh-line {
+      display: block;
+      margin-top: 28px;
+      color: rgba(246,247,243,0.74);
+      font-size: 26px;
+      line-height: 1.24;
+      text-transform: none;
+      font-family: "Helvetica Neue", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+    }
+
+    .flow {
+      display: grid;
+      gap: 13px;
+    }
+
+    .flow-row {
+      display: grid;
+      grid-template-columns: 108px 1fr 46px;
+      align-items: center;
+      gap: 15px;
+      min-height: 68px;
+      padding: 12px 16px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.035);
+    }
+
+    .flow-row .idx {
+      color: var(--teal);
+      font-size: 14px;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .flow-row h3 {
+      font-size: 26px;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .flow-row p {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.3;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+    }
+
+    .flow-row .dot {
+      width: 18px;
+      height: 18px;
+      justify-self: end;
+      border-radius: 50%;
+      background: var(--teal);
+    }
+
+    .flow-row.hot .dot,
+    .flow-row.hot {
+      border-color: rgba(199,247,90,0.42);
+    }
+
+    .flow-row.hot .dot {
+      background: var(--acid);
+    }
+
+    .bars {
+      grid-column: 1 / 13;
+      grid-row: 2;
+      align-self: center;
+      display: grid;
+      grid-template-columns: 3fr 2fr;
+      gap: 44px;
+    }
+
+    .bar-list {
+      display: grid;
+      gap: 15px;
+      align-content: center;
+    }
+
+    .bar-row {
+      display: grid;
+      grid-template-columns: 170px 1fr 72px;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .bar-label {
+      color: rgba(246,247,243,0.78);
+      font-size: 18px;
+      line-height: 1.08;
+    }
+
+    .track {
+      position: relative;
+      height: 18px;
+      border: 1px solid rgba(246,247,243,0.12);
+      background: rgba(255,255,255,0.035);
+      overflow: hidden;
+    }
+
+    .track::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: calc(var(--v) * 1%);
+      background: linear-gradient(90deg, var(--teal-3), var(--teal-2), var(--acid));
+    }
+
+    .bar-num {
+      color: var(--white);
+      font-size: 22px;
+      line-height: 1;
+      text-align: right;
+      font-weight: 500;
+    }
+
+    .delta-panel {
+      padding: 32px;
+      align-self: stretch;
+      display: grid;
+      align-content: space-between;
+    }
+
+    .delta-panel h3 {
+      font-size: 48px;
+      line-height: 0.96;
+      text-transform: uppercase;
+    }
+
+    .delta-panel p {
+      margin-top: 18px;
+      color: rgba(246,247,243,0.7);
+      font-size: 17px;
+      line-height: 1.45;
+      font-family: "Helvetica Neue", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+    }
+
+    .delta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 34px;
+    }
+
+    .mini-kpi {
+      padding: 15px;
+      border-top: 1px solid var(--line);
+    }
+
+    .mini-kpi strong {
+      display: block;
+      color: var(--acid);
+      font-size: 34px;
+      font-weight: 500;
+      line-height: 1;
+    }
+
+    .mini-kpi span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .matrix {
+      grid-column: 1 / 13;
+      grid-row: 2;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+      align-self: center;
+    }
+
+    .use-card {
+      min-height: 404px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.035);
+    }
+
+    .use-card svg {
+      width: 100%;
+      height: 128px;
+      color: var(--teal);
+      opacity: 0.92;
+    }
+
+    .use-card h3 {
+      font-size: 31px;
+      line-height: 0.96;
+      text-transform: uppercase;
+    }
+
+    .use-card p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.38;
+      font-family: "Helvetica Neue", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+    }
+
+    .spec-wrap {
+      grid-column: 1 / 13;
+      grid-row: 2;
+      align-self: center;
+      display: grid;
+      grid-template-columns: 4fr 7fr;
+      gap: 42px;
+    }
+
+    .spec-intro {
+      align-self: center;
+    }
+
+    .spec-intro .title {
+      font-size: 70px;
+    }
+
+    .spec-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .spec {
+      min-height: 146px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.035);
+    }
+
+    .spec b {
+      display: block;
+      color: var(--teal);
+      font-size: 13px;
+      line-height: 1;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .spec strong {
+      display: block;
+      margin-top: 16px;
+      font-size: 34px;
+      line-height: 0.98;
+      font-weight: 500;
+    }
+
+    .spec span {
+      display: block;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+      font-family: "Helvetica Neue", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+    }
+
+    .price {
+      grid-column: 1 / 13;
+      grid-row: 2;
+      display: grid;
+      grid-template-columns: 4fr 7fr;
+      gap: 42px;
+      align-items: center;
+    }
+
+    .price-board {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .price-cell {
+      min-height: 220px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.035);
+    }
+
+    .price-cell small {
+      display: block;
+      color: var(--teal);
+      font-size: 13px;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .price-cell strong {
+      display: block;
+      margin-top: 30px;
+      font-size: 78px;
+      line-height: 0.82;
+      font-weight: 500;
+    }
+
+    .price-cell span {
+      display: block;
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.3;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      text-transform: uppercase;
+    }
+
+    .price-cell.hot {
+      border-color: rgba(199,247,90,0.48);
+      background: rgba(199,247,90,0.06);
+    }
+
+    .axis-chart {
+      height: 270px;
+      margin-top: 28px;
+      border: 1px solid var(--line);
+      position: relative;
+      background:
+        linear-gradient(90deg, transparent 0 33%, var(--line) 33% calc(33% + 1px), transparent calc(33% + 1px) 66%, var(--line) 66% calc(66% + 1px), transparent calc(66% + 1px)),
+        linear-gradient(180deg, transparent 0 50%, var(--line) 50% calc(50% + 1px), transparent calc(50% + 1px));
+    }
+
+    .axis-chart .bubble {
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--acid);
+      box-shadow: 0 0 32px rgba(199,247,90,0.28);
+    }
+
+    .axis-chart .bubble.one { left: 18%; bottom: 22%; }
+    .axis-chart .bubble.two { left: 49%; bottom: 48%; background: var(--teal); }
+    .axis-chart .bubble.three { left: 76%; bottom: 72%; }
+
+    .axis-label {
+      position: absolute;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .axis-label.x { right: 14px; bottom: 12px; }
+    .axis-label.y { left: 14px; top: 12px; }
+
+    .prompt-table {
+      grid-column: 1 / 13;
+      grid-row: 2;
+      align-self: center;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+    }
+
+    .prompt-panel {
+      min-height: 440px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .prompt-panel h3 {
+      color: var(--teal);
+      font-size: 22px;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .prompt-panel pre {
+      margin: 24px 0 0;
+      white-space: pre-wrap;
+      color: rgba(246,247,243,0.76);
+      font: 16px / 1.5 "SFMono-Regular", Consolas, monospace;
+    }
+
+    .prompt-panel.good {
+      border-color: rgba(199,247,90,0.42);
+    }
+
+    .risk {
+      grid-column: 1 / 13;
+      grid-row: 2;
+      display: grid;
+      grid-template-columns: 4fr 7fr;
+      gap: 42px;
+      align-items: center;
+    }
+
+    .risk-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .risk-cell {
+      min-height: 168px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.035);
+    }
+
+    .risk-cell b {
+      display: block;
+      width: 38px;
+      height: 38px;
+      margin-bottom: 26px;
+      border-radius: 50%;
+      background: var(--teal);
+    }
+
+    .risk-cell.hot b {
+      background: var(--acid);
+    }
+
+    .risk-cell h3 {
+      font-size: 28px;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .risk-cell p {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.35;
+      font-family: "Helvetica Neue", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+    }
+
+    .router {
+      grid-column: 1 / 13;
+      grid-row: 2;
+      align-self: center;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .route {
+      min-height: 420px;
+      padding: 22px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.035);
+    }
+
+    .route small {
+      color: var(--teal);
+      font-size: 13px;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .route h3 {
+      margin-top: 30px;
+      font-size: 36px;
+      line-height: 0.96;
+      text-transform: uppercase;
+    }
+
+    .route p {
+      align-self: end;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.4;
+      font-family: "Helvetica Neue", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+    }
+
+    .route.hot {
+      border-color: rgba(199,247,90,0.48);
+      background: rgba(199,247,90,0.055);
+    }
+
+    .closing {
+      grid-column: 1 / 13;
+      grid-row: 2;
+      align-self: center;
+      display: grid;
+      grid-template-columns: 7fr 4fr;
+      gap: 58px;
+      align-items: center;
+    }
+
+    .closing .display {
+      font-size: 116px;
+    }
+
+    .source-list {
+      display: grid;
+      gap: 13px;
+      color: rgba(246,247,243,0.66);
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.42;
+    }
+
+    .source-list a {
+      color: var(--teal);
+      text-decoration: none;
+    }
+
+    .source-list a:hover {
+      color: var(--acid);
+    }
+
+    .footer {
+      position: fixed;
+      z-index: 20;
+      left: 82px;
+      right: 82px;
+      bottom: 42px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
+      pointer-events: none;
+    }
+
+    .scroll-hint {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      color: var(--teal);
+      font-size: 13px;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 52px;
+      background: rgba(143,170,178,0.24);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scroll-line::after {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: 0;
+      width: 1px;
+      height: 42%;
+      background: var(--acid);
+      animation: scrollTrace 1.7s ease-in-out infinite;
+    }
+
+    @keyframes scrollTrace {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(190px); }
+    }
+
+    .progress {
+      position: fixed;
+      z-index: 21;
+      right: 30px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: grid;
+      gap: 9px;
+    }
+
+    .progress button {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(246,247,243,0.24);
+      cursor: pointer;
+      pointer-events: auto;
+      transition: transform 200ms ease, background 200ms ease;
+    }
+
+    .progress button.active {
+      background: var(--acid);
+      transform: scale(1.45);
+    }
+
+    .audio {
+      width: 44px;
+      height: 18px;
+      color: var(--white);
+      opacity: 0.7;
+    }
+
+    @media (max-width: 1000px) {
+      :root {
+        --slide-pad-x: 30px;
+        --slide-pad-y: 112px;
+      }
+
+      html,
+      body {
+        overflow: hidden;
+      }
+
+      .deck {
+        height: 100vh;
+      }
+
+      .slide {
+        position: absolute;
+        min-height: 100vh;
+        opacity: 0;
+        transform: translate3d(0, 28px, 0);
+        pointer-events: none;
+        overflow-y: auto;
+      }
+
+      .slide.active {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+        pointer-events: auto;
+      }
+
+      .slide.before {
+        transform: translate3d(0, -28px, 0);
+      }
+
+      .slide-inner {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+      }
+
+      .eyebrow,
+      .meta-top,
+      .chapter-title,
+      .hero-visual,
+      .footer-note,
+      .kpi-strip,
+      .two-col,
+      .bars,
+      .matrix,
+      .spec-wrap,
+      .price,
+      .prompt-table,
+      .risk,
+      .router,
+      .closing {
+        grid-column: 1;
+        grid-row: auto;
+      }
+
+      .meta-top {
+        justify-content: flex-start;
+      }
+
+      .display {
+        font-size: 70px;
+      }
+
+      .title,
+      .claim,
+      .spec-intro .title {
+        font-size: 48px;
+      }
+
+      .hero-visual {
+        height: 330px;
+      }
+
+      .two-col,
+      .bars,
+      .spec-wrap,
+      .price,
+      .prompt-table,
+      .risk,
+      .closing {
+        grid-template-columns: 1fr;
+      }
+
+      .matrix,
+      .router,
+      .price-board,
+      .spec-grid,
+      .risk-grid,
+      .kpi-strip {
+        grid-template-columns: 1fr;
+      }
+
+      .use-card,
+      .route {
+        min-height: auto;
+      }
+
+      .brand,
+      .footer {
+        left: 30px;
+        right: 30px;
+      }
+
+      .scan,
+      .progress,
+      .scan-line,
+      .footer {
+        display: none;
+      }
+    }
+
+    @media print {
+      html,
+      body {
+        overflow: visible;
+        background: #000;
+      }
+
+      .brand,
+      .footer,
+      .progress,
+      .scan,
+      .scan-line {
+        display: none;
+      }
+
+      .deck {
+        height: auto;
+      }
+
+      .slide {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        opacity: 1;
+        transform: none;
+        page-break-after: always;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="backdrop" aria-hidden="true"></div>
+  <div class="scan" aria-hidden="true"></div>
+  <div class="scan-line" aria-hidden="true"><i></i></div>
+
+  <div class="brand" aria-label="演示品牌">
+    <i class="mark" aria-hidden="true"><span></span><span></span><span></span><span></span></i>
+    <div>
+      <strong>GPT-5.5</strong>
+      <small>模型智能分析</small>
+    </div>
+  </div>
+
+  <main class="deck" id="deck">
+    <section class="slide active" data-title="封面">
+      <div class="slide-inner">
+        <div class="eyebrow">OpenAI 分析 / 2026 年 4 月</div>
+        <div class="meta-top"><span>12 页</span><span>HTML 演示</span></div>
+        <div class="chapter-title">
+          <h1 class="display">GPT-5.5</h1>
+          <p class="subcopy zh">从回答模型，到执行系统。GPT-5.5 的真正变化不是单纯“更会说”，而是在编码、工具使用、复杂任务推进中，开始减少人类的流程管理负担。</p>
+          <div class="chip-row">
+            <span class="chip hot">代理式工作</span>
+            <span class="chip">代码</span>
+            <span class="chip">电脑操作</span>
+            <span class="chip">研究</span>
+            <span class="chip">长上下文</span>
+          </div>
+        </div>
+        <div class="hero-visual panel" aria-hidden="true">
+          <div class="orbit"></div>
+          <div class="core">5.5</div>
+          <div class="node a"><b>规划</b>拆解意图</div>
+          <div class="node b"><b>工具</b>路由 + 调用</div>
+          <div class="node c"><b>验证</b>self-check</div>
+          <div class="node d"><b>交付</b>产物输出</div>
+        </div>
+        <div class="footer-note">这组 deck 分析 GPT-5.5 的真正变化：它不是单纯“更会说”，而是在编码、工具使用、复杂任务推进中，开始减少人类的流程管理负担。</div>
+        <div class="kpi-strip">
+          <div class="kpi"><strong>82.7%</strong><span>Terminal-Bench 2.0</span></div>
+          <div class="kpi"><strong>84.9%</strong><span>GDPval wins/ties</span></div>
+          <div class="kpi"><strong>81.8%</strong><span>CyberGym</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="核心判断">
+      <div class="slide-inner">
+        <div class="eyebrow">01 / 核心判断</div>
+        <div class="meta-top"><span>信号</span><span>不只是智商</span></div>
+        <div class="two-col">
+          <div class="claim">
+            <small>管理层摘要</small>
+            核心变化：模型开始承担“过程”。
+            <span class="zh-line">过去的模型更像高质量函数调用：你拆任务、控步骤、校验结果。GPT-5.5 的差异在于它更早理解目标，更少请求引导，更稳定地规划、用工具、检查并继续。</span>
+          </div>
+          <div class="flow">
+            <div class="flow-row hot">
+              <div class="idx">阶段 01</div>
+              <div><h3>intent lock</h3><p>更早锁定目标与约束，减少用户逐步补丁式指挥。</p></div>
+              <i class="dot"></i>
+            </div>
+            <div class="flow-row">
+              <div class="idx">阶段 02</div>
+              <div><h3>tool precision</h3><p>工具调用更像稳定工作流：选择、执行、验证，再继续。</p></div>
+              <i class="dot"></i>
+            </div>
+            <div class="flow-row">
+              <div class="idx">阶段 03</div>
+              <div><h3>self-check</h3><p>对复杂任务更重视检查、回看、修正，而不是一次性答完。</p></div>
+              <i class="dot"></i>
+            </div>
+            <div class="flow-row">
+              <div class="idx">阶段 04</div>
+              <div><h3>prompt debt</h3><p>旧提示词债务下降：保留结果契约，删掉流程微管理。</p></div>
+              <i class="dot"></i>
+            </div>
+          </div>
+        </div>
+        <div class="footer-note">结论：价值不只来自“单次答案质量”，而来自更少的人工调度、更少的往返、更少的中途失控。</div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="公开评测">
+      <div class="slide-inner">
+        <div class="eyebrow">02 / 公开评测</div>
+        <div class="meta-top"><span>OpenAI 发布</span><span>GPT-5.5 对比 5.4</span></div>
+        <div class="bars">
+          <div class="bar-list">
+            <div class="bar-row"><div class="bar-label">Terminal-Bench 2.0</div><div class="track" style="--v:82.7"></div><div class="bar-num">82.7</div></div>
+            <div class="bar-row"><div class="bar-label">GDPval wins/ties</div><div class="track" style="--v:84.9"></div><div class="bar-num">84.9</div></div>
+            <div class="bar-row"><div class="bar-label">OSWorld Verified</div><div class="track" style="--v:78.7"></div><div class="bar-num">78.7</div></div>
+            <div class="bar-row"><div class="bar-label">BrowseComp</div><div class="track" style="--v:84.4"></div><div class="bar-num">84.4</div></div>
+            <div class="bar-row"><div class="bar-label">FrontierMath T4</div><div class="track" style="--v:35.4"></div><div class="bar-num">35.4</div></div>
+            <div class="bar-row"><div class="bar-label">CyberGym CTFs</div><div class="track" style="--v:81.8"></div><div class="bar-num">81.8</div></div>
+          </div>
+          <div class="delta-panel panel">
+            <div>
+              <h3>领先最明显的地方，是需要连续行动的任务。</h3>
+              <p class="zh">最值得关注的不是单轮问答，而是终端操作、真实软件工程、浏览研究和高难数学。它们共同指向同一件事：模型在持续操作环境里的稳定性上升。</p>
+            </div>
+            <div class="delta-grid">
+              <div class="mini-kpi"><strong>+7.6</strong><span>Terminal-Bench 增幅</span></div>
+              <div class="mini-kpi"><strong>+8.3</strong><span>FrontierMath T4 增幅</span></div>
+              <div class="mini-kpi"><strong>81.8</strong><span>CyberGym 信号</span></div>
+              <div class="mini-kpi"><strong>+3.7</strong><span>OSWorld 增幅</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="footer-note">Source: OpenAI, Introducing GPT-5.5, Apr 23 2026. Numbers are reported eval scores; they are not a universal product-quality guarantee.</div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="应用场景">
+      <div class="slide-inner">
+        <div class="eyebrow">03 / 高杠杆任务</div>
+        <div class="meta-top"><span>部署位置</span><span>第一波场景</span></div>
+        <div class="matrix">
+          <article class="use-card">
+            <svg viewBox="0 0 160 120" fill="none" stroke="currentColor" stroke-width="1">
+              <path d="M20 26h120v68H20z"/><path d="M20 46h120"/><path d="M42 70l18-16 18 16"/><path d="M99 56h24M99 70h18M99 84h28"/>
+            </svg>
+            <h3>代理式编程</h3>
+            <p>适合大型重构、跨文件修复、测试生成和调试闭环，重点看合并质量而不是单段代码漂亮程度。</p>
+          </article>
+          <article class="use-card">
+            <svg viewBox="0 0 160 120" fill="none" stroke="currentColor" stroke-width="1">
+              <rect x="28" y="20" width="104" height="74"/><path d="M44 38h72M44 56h54M44 74h72"/><path d="M112 88l18 18M130 106l8-19"/>
+            </svg>
+            <h3>电脑操作</h3>
+            <p>对 GUI、浏览器、后台系统和文档工具的操作能力更实用，但必须配权限、沙箱和人工确认点。</p>
+          </article>
+          <article class="use-card">
+            <svg viewBox="0 0 160 120" fill="none" stroke="currentColor" stroke-width="1">
+              <circle cx="70" cy="58" r="34"/><path d="M94 82l32 30"/><path d="M49 58h42M70 37v42"/>
+            </svg>
+            <h3>深度研究</h3>
+            <p>从“找资料”升级为“形成证据链”：搜索、读取、交叉验证、归纳和输出结构化判断。</p>
+          </article>
+          <article class="use-card">
+            <svg viewBox="0 0 160 120" fill="none" stroke="currentColor" stroke-width="1">
+              <path d="M30 92h100"/><path d="M42 78V45M68 78V28M94 78V58M120 78V36"/><path d="M34 28h24M80 28h52"/>
+            </svg>
+            <h3>数据 + 文档</h3>
+            <p>适合把非结构化输入变成表格、报告、演示和操作手册。关键评估指标是可复核性和格式保真。</p>
+          </article>
+          <article class="use-card">
+            <svg viewBox="0 0 160 120" fill="none" stroke="currentColor" stroke-width="1">
+              <path d="M80 20v80M40 34l80 52M120 34L40 86"/><circle cx="80" cy="60" r="16"/><circle cx="80" cy="20" r="6"/><circle cx="80" cy="100" r="6"/><circle cx="40" cy="34" r="6"/><circle cx="120" cy="34" r="6"/><circle cx="40" cy="86" r="6"/><circle cx="120" cy="86" r="6"/>
+            </svg>
+            <h3>科学 + 数学</h3>
+            <p>可用于假设生成、证明草稿、实验设计和代码验证，但高风险结论仍需要专家审查和外部验证。</p>
+          </article>
+        </div>
+        <div class="footer-note">原则：把 GPT-5.5 部署到“模糊性、工具、状态、验证”同时重要的任务上。</div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="API 能力面">
+      <div class="slide-inner">
+        <div class="eyebrow">04 / API 能力面</div>
+        <div class="meta-top"><span>模型页</span><span>实现视角</span></div>
+        <div class="spec-wrap">
+          <div class="spec-intro">
+            <h2 class="title">为长程工作设计，而不是小提示词。</h2>
+            <p class="subcopy zh">公开模型页把 GPT-5.5 放在旗舰推理模型位置：长上下文、高输出上限、可调 reasoning effort，并且面向工具调用和多模态输入。</p>
+          </div>
+          <div class="spec-grid">
+            <div class="spec"><b>模型 ID</b><strong>gpt-5.5</strong><span>API 中的通用旗舰模型。</span></div>
+            <div class="spec"><b>上下文</b><strong>1,050,000</strong><span>长上下文窗口，适合大项目、大文档和长会话。</span></div>
+            <div class="spec"><b>最大输出</b><strong>128,000</strong><span>长文档、代码包和复杂报告的输出空间。</span></div>
+            <div class="spec"><b>输入</b><strong>文本 + 图像</strong><span>可处理文本与图像输入。</span></div>
+            <div class="spec"><b>推理强度</b><strong>无到极高</strong><span>按任务难度调节推理投入。</span></div>
+            <div class="spec"><b>工具</b><strong>MCP + Shell + 搜索</strong><span>面向代理工作流的工具集合。</span></div>
+          </div>
+        </div>
+        <div class="footer-note">运营问题不是“它能不能回答”，而是“它需要哪些工具、记忆、权限和停止规则”。</div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="成本">
+      <div class="slide-inner">
+        <div class="eyebrow">05 / 成本现实</div>
+        <div class="meta-top"><span>API 经济性</span><span>谨慎路由</span></div>
+        <div class="price">
+          <div>
+            <h2 class="title">真正的成本项，是任务完成总成本。</h2>
+            <p class="subcopy zh">单 token 价格不是最后账单；失败重试、人工接管、工具乱用、上下文漂移才是隐性成本。</p>
+            <div class="axis-chart" aria-hidden="true">
+              <span class="axis-label y">任务价值</span>
+              <span class="axis-label x">模型成本</span>
+              <i class="bubble one"></i><i class="bubble two"></i><i class="bubble three"></i>
+            </div>
+          </div>
+          <div class="price-board">
+            <div class="price-cell"><small>输入</small><strong>$5</strong><span>每百万 token</span></div>
+            <div class="price-cell hot"><small>缓存输入</small><strong>$0.50</strong><span>每百万 token</span></div>
+            <div class="price-cell"><small>输出</small><strong>$30</strong><span>每百万 token</span></div>
+          </div>
+        </div>
+        <div class="footer-note">建议：用 eval 做路由，而不是用“最强模型”做默认答案。</div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="迁移">
+      <div class="slide-inner">
+        <div class="eyebrow">06 / 迁移姿态</div>
+        <div class="meta-top"><span>提示词升级</span><span>少管流程，多定结果</span></div>
+        <div class="two-col">
+          <div class="claim">
+            <small>迁移判断</small>
+            旧提示词需要瘦身，而不是继续堆叠。
+            <span class="zh-line">从“按步骤服从”转向“按结果负责”：保留结果契约、证据规则和输出形状，删除流程微管理。</span>
+          </div>
+          <div class="flow">
+            <div class="flow-row hot"><div class="idx">01</div><div><h3>先做减法</h3><p>从最小提示开始，避免旧模型遗留的“管太多”提示妨碍推理。</p></div><i class="dot"></i></div>
+            <div class="flow-row"><div class="idx">02</div><div><h3>调推理强度</h3><p>把 reasoning effort 当作成本/质量旋钮，而不是固定开到最高。</p></div><i class="dot"></i></div>
+            <div class="flow-row"><div class="idx">03</div><div><h3>约束工具</h3><p>给工具边界、写入范围、验证要求和需要人工确认的动作。</p></div><i class="dot"></i></div>
+            <div class="flow-row"><div class="idx">04</div><div><h3>衡量工作</h3><p>用任务完成率、回滚率、人工修正量和延迟成本评估。</p></div><i class="dot"></i></div>
+          </div>
+        </div>
+        <div class="footer-note">首批迁移对象：示例代码代理、分析师助手、可审查研究流程和高价值文档生成。</div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="提示词语法">
+      <div class="slide-inner">
+        <div class="eyebrow">07 / 提示词语法</div>
+        <div class="meta-top"><span>改写模式</span><span>结果契约</span></div>
+        <div class="prompt-table">
+          <div class="prompt-panel panel">
+            <h3>旧提示词风格</h3>
+            <pre>严格按这 37 个步骤执行。
+一定要认真思考。
+绝对不要犯错。
+先用工具 A，再用工具 B，然后问我。
+如果有任何不清楚，立即停止。
+最后返回一大段解释。</pre>
+            <p class="copy zh muted">旧提示常把流程写死，造成模型无法利用更强的规划能力，也让工具调用变成机械动作。</p>
+          </div>
+          <div class="prompt-panel panel good">
+            <h3>GPT-5.5 风格</h3>
+            <pre>目标：产出可验证交付物。
+成功标准：测试通过，关键结论有证据。
+工具：按需读取、编辑、运行、浏览。
+约束：不改无关内容。
+升级确认：破坏性动作或关键数据缺失。
+输出：简洁总结 + 验证结果。</pre>
+            <p class="copy zh muted">新提示更像工作合同：目标、成功标准、证据、权限、风险边界和交付格式。</p>
+          </div>
+        </div>
+        <div class="footer-note">更强的模型需要更少仪式感，和更清晰的责任边界。</div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="安全治理">
+      <div class="slide-inner">
+        <div class="eyebrow">08 / 安全 + 治理</div>
+        <div class="meta-top"><span>系统卡</span><span>企业控制</span></div>
+        <div class="risk">
+          <div>
+            <h2 class="title">能力越像执行者，治理就越要像系统工程。</h2>
+            <p class="subcopy zh">系统卡强调完整预部署评估、Preparedness Framework，以及针对网络安全和生物能力的红队测试；运行时仍需要权限边界、证据规则、确认点和审计日志。</p>
+          </div>
+          <div class="risk-grid">
+            <div class="risk-cell hot"><b></b><h3>权限范围</h3><p>给工具最小权限，写入、外发、删除和购买类动作需要确认。</p></div>
+            <div class="risk-cell"><b></b><h3>审计轨迹</h3><p>保留输入、工具调用、文件变更、来源证据和最终输出版本。</p></div>
+            <div class="risk-cell"><b></b><h3>评测框架</h3><p>用企业真实样本评估成功率、幻觉率、错误成本和安全事件。</p></div>
+            <div class="risk-cell"><b></b><h3>人工闸门</h3><p>对法律、医疗、金融、生产系统和高影响决策设置人工审批。</p></div>
+          </div>
+        </div>
+        <div class="footer-note">OpenAI 称 GPT-5.5 经历了其迄今最全面的安全测试；企业仍需要本地控制面。</div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="模型路由">
+      <div class="slide-inner">
+        <div class="eyebrow">09 / 模型路由</div>
+        <div class="meta-top"><span>选择框架</span><span>质量 vs 成本</span></div>
+        <div class="router">
+          <article class="route hot"><small>使用 GPT-5.5</small><h3>带工具的模糊工作</h3><p>复杂代码、研究、数据分析、跨应用操作、长上下文归纳和需要验证的交付物。</p></article>
+          <article class="route"><small>使用 Pro / xhigh</small><h3>最高精度任务</h3><p>可接受更高延迟和成本，追求更强推理深度、长输出、科学数学和高难工程。</p></article>
+          <article class="route"><small>使用 Instant / low</small><h3>高频常规任务</h3><p>客服草稿、分类、格式转换、短摘要、低风险模板化输出。</p></article>
+          <article class="route"><small>使用人工复核</small><h3>不可逆决策</h3><p>法律承诺、资金转移、医疗建议、生产删除、敏感外发和监管披露。</p></article>
+        </div>
+        <div class="footer-note">路由指标：更好完成带来的预期价值，减去额外 token、延迟和治理成本。</div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="市场影响">
+      <div class="slide-inner">
+        <div class="eyebrow">10 / 市场影响</div>
+        <div class="meta-top"><span>产品策略</span><span>下一代界面</span></div>
+        <div class="two-col">
+          <div class="claim">
+            <small>战略转向</small>
+            GPT-5.5 的竞争点，是工作流完成度。
+            <span class="zh-line">模型正在从“聪明文本层”下沉到“操作系统层”。差异化会来自工具面、上下文记忆、评测数据和人机交接设计。</span>
+          </div>
+          <div class="flow">
+            <div class="flow-row hot"><div class="idx">层级 01</div><div><h3>工作流记忆</h3><p>模型需要知道任务状态、历史决策、文件版本和下一步阻塞点。</p></div><i class="dot"></i></div>
+            <div class="flow-row"><div class="idx">层级 02</div><div><h3>工具图谱</h3><p>应用价值来自把浏览器、代码、数据库、文档和企业系统连成可控图谱。</p></div><i class="dot"></i></div>
+            <div class="flow-row"><div class="idx">层级 03</div><div><h3>评测循环</h3><p>每个业务都需要自己的任务集、评分器和回归测试。</p></div><i class="dot"></i></div>
+            <div class="flow-row"><div class="idx">层级 04</div><div><h3>信任界面</h3><p>用户需要看见证据、差异、风险和可撤销点，而不只是聊天气泡。</p></div><i class="dot"></i></div>
+          </div>
+        </div>
+        <div class="footer-note">机会：少做“AI 聊天”，多做可追责的工作队列，把模型执行藏在底层。</div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="收束">
+      <div class="slide-inner">
+        <div class="eyebrow">11 / 收束判断</div>
+        <div class="meta-top"><span>决策</span><span>有意图地部署</span></div>
+        <div class="closing">
+          <div>
+            <h2 class="display">不是更大的聊天框，而是更小的管理负担。</h2>
+            <p class="subcopy zh">GPT-5.5 的产品问题不是“它能不能回答”，而是“它能不能在你少操心的情况下，把复杂工作推进到可验收状态”。</p>
+            <div class="chip-row">
+              <span class="chip hot">选择性部署</span>
+              <span class="chip">本地评测</span>
+              <span class="chip">工具埋点</span>
+              <span class="chip">保留人工回路</span>
+            </div>
+          </div>
+          <div class="panel" style="padding: 28px;">
+            <h3 style="font-size: 34px; line-height: 1; margin: 0 0 24px; text-transform: uppercase;">来源</h3>
+            <div class="source-list">
+              <a href="https://openai.com/index/introducing-gpt-5-5/">OpenAI：GPT-5.5 发布页</a>
+              <a href="https://developers.openai.com/api/docs/guides/latest-model">OpenAI API 文档：最新模型指南</a>
+              <a href="https://developers.openai.com/api/docs/models/gpt-5.5">OpenAI API 文档：gpt-5.5 模型页</a>
+              <a href="https://openai.com/index/gpt-5-5-system-card/">OpenAI：GPT-5.5 系统卡</a>
+              <a href="https://openai.com/api/pricing/">OpenAI API 价格页</a>
+              <a href="https://www.8bit.ai/">视觉参考：8bit.ai 首页</a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-note">目标状态：GPT-5.5 处理复杂工作，轻量模型处理规模化任务，人类处理不可逆判断。</div>
+      </div>
+    </section>
+  </main>
+
+  <div class="progress" id="progress" aria-label="页码进度"></div>
+
+  <script>
+    const slides = Array.from(document.querySelectorAll(".slide"));
+    const progress = document.getElementById("progress");
+    const revealSelector = [
+      ".flow-row",
+      ".bar-row",
+      ".use-card",
+      ".spec",
+      ".price-cell",
+      ".prompt-panel",
+      ".risk-cell",
+      ".route",
+      ".kpi",
+      ".source-list a"
+    ].join(",");
+    let index = 0;
+    let lock = false;
+    let revealLevels = slides.map(() => 0);
+
+    slides.forEach((slide) => {
+      Array.from(slide.querySelectorAll(revealSelector)).forEach((item, itemIndex) => {
+        item.dataset.revealItem = "";
+        item.dataset.revealIndex = String(itemIndex);
+      });
+    });
+
+    slides.forEach((slide, i) => {
+      const dot = document.createElement("button");
+      dot.type = "button";
+      dot.setAttribute("aria-label", `跳到第 ${i + 1} 页：${slide.dataset.title}`);
+      dot.addEventListener("click", () => go(i));
+      progress.appendChild(dot);
+    });
+
+    const dots = Array.from(progress.querySelectorAll("button"));
+
+    function isTitleSlide(slideIndex) {
+      return slideIndex === 0;
+    }
+
+    function revealItems(slide) {
+      return Array.from(slide.querySelectorAll("[data-reveal-item]"));
+    }
+
+    function maxReveal(slide) {
+      return revealItems(slide).length;
+    }
+
+    function defaultReveal(slideIndex) {
+      if (isTitleSlide(slideIndex)) return maxReveal(slides[slideIndex]);
+      return maxReveal(slides[slideIndex]) > 0 ? 1 : 0;
+    }
+
+    function applyReveal(slideIndex) {
+      const slide = slides[slideIndex];
+      const level = revealLevels[slideIndex];
+      revealItems(slide).forEach((item, itemIndex) => {
+        const visible = itemIndex < level;
+        item.classList.toggle("is-visible", visible);
+        item.classList.toggle("is-hidden", !visible);
+        item.style.setProperty("--step", String(visible ? Math.min(itemIndex + 3, 8) : 0));
+      });
+    }
+
+    function syncUrl() {
+      const url = new URL(window.location.href);
+      url.searchParams.set("slide", index);
+      url.searchParams.set("step", revealLevels[index]);
+      window.history.replaceState({}, "", url);
+    }
+
+    function go(next, options = {}) {
+      index = Math.max(0, Math.min(slides.length - 1, next));
+      if (options.complete) {
+        revealLevels[index] = maxReveal(slides[index]);
+      } else if (typeof options.step === "number") {
+        revealLevels[index] = Math.max(0, Math.min(maxReveal(slides[index]), options.step));
+      } else {
+        revealLevels[index] = defaultReveal(index);
+      }
+      slides.forEach((slide, i) => {
+        slide.classList.toggle("active", i === index);
+        slide.classList.toggle("before", i < index);
+        applyReveal(i);
+      });
+      dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
+      syncUrl();
+    }
+
+    function advance(dir) {
+      if (lock) return;
+      lock = true;
+      const currentMax = maxReveal(slides[index]);
+      if (dir > 0 && revealLevels[index] < currentMax) {
+        revealLevels[index] += 1;
+        applyReveal(index);
+        syncUrl();
+      } else if (dir < 0 && revealLevels[index] > defaultReveal(index)) {
+        revealLevels[index] -= 1;
+        applyReveal(index);
+        syncUrl();
+      } else {
+        go(index + dir, dir < 0 ? { complete: true } : {});
+      }
+      window.setTimeout(() => { lock = false; }, 720);
+    }
+
+    window.addEventListener("keydown", (event) => {
+      if (["ArrowRight", "ArrowDown", "PageDown", " "].includes(event.key)) {
+        event.preventDefault();
+        advance(1);
+      }
+      if (["ArrowLeft", "ArrowUp", "PageUp"].includes(event.key)) {
+        event.preventDefault();
+        advance(-1);
+      }
+      if (event.key === "Home") go(0);
+      if (event.key === "End") go(slides.length - 1, { complete: true });
+    });
+
+    window.addEventListener("wheel", (event) => {
+      if (window.matchMedia("(max-width: 1000px)").matches) return;
+      if (Math.abs(event.deltaY) < 16) return;
+      event.preventDefault();
+      advance(event.deltaY > 0 ? 1 : -1);
+    }, { passive: false });
+
+    const params = new URLSearchParams(window.location.search);
+    const startSlide = Number(params.get("slide"));
+    const startStep = params.has("step") ? Number(params.get("step")) : NaN;
+    go(Number.isFinite(startSlide) ? startSlide : 0, Number.isFinite(startStep) ? { step: startStep } : {});
+  </script>
+</body>
+</html>

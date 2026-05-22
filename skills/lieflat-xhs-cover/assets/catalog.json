@@ -1,0 +1,596 @@
+[
+  {
+    "id": "xhs-cover-clean-review",
+    "name": "XHS Cover — Clean Review",
+    "format": "xhs-cover",
+    "languages": [
+      "zh"
+    ],
+    "files": {
+      "zh": "assets/templates/xhs-cover-clean-review/zh.html"
+    },
+    "best_for": [
+      "小红书封面",
+      "产品测评封面",
+      "结论先行封面",
+      "AI 工具测评",
+      "高对比中文封面"
+    ],
+    "avoid_for": [
+      "正文长图",
+      "温柔散文封面",
+      "照片主导封面"
+    ],
+    "style_tags": [
+      "小红书封面",
+      "clean review",
+      "red gradient",
+      "black verdict card",
+      "structured",
+      "analysis cover"
+    ],
+    "audience": [
+      "产品用户",
+      "技术内容读者",
+      "决策者",
+      "科技内容读者"
+    ],
+    "density": "medium",
+    "motion": "low",
+    "image_intensity": "low",
+    "image_slots": [],
+    "export": {
+      "css_size": "600x800",
+      "png_size": "1200x1600",
+      "ratio": "3:4"
+    },
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "template-adaptation",
+      "attribution": "Adapted from the Clean Review deck grammar into a Xiaohongshu cover title card."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "xhs-cover-editorial",
+    "name": "XHS Cover — Editorial",
+    "format": "xhs-cover",
+    "languages": [
+      "zh"
+    ],
+    "files": {
+      "zh": "assets/templates/xhs-cover-editorial/zh.html"
+    },
+    "best_for": [
+      "小红书封面",
+      "杂志感封面",
+      "观点文章封面",
+      "品牌随笔封面",
+      "留白克制中文封面"
+    ],
+    "avoid_for": [
+      "正文长图",
+      "高饱和活动海报",
+      "数据密集报告封面"
+    ],
+    "style_tags": [
+      "小红书封面",
+      "editorial",
+      "magazine",
+      "serif",
+      "essay",
+      "refined cover"
+    ],
+    "audience": [
+      "创作者",
+      "品牌团队",
+      "内容编辑",
+      "科技内容读者"
+    ],
+    "density": "medium",
+    "motion": "low",
+    "image_intensity": "low",
+    "image_slots": [],
+    "export": {
+      "css_size": "600x800",
+      "png_size": "1200x1600",
+      "ratio": "3:4"
+    },
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "template-adaptation",
+      "attribution": "Adapted from the Editorial deck grammar into a Xiaohongshu cover title card."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "xhs-cover-dot-matrix",
+    "name": "XHS Cover — Dot Matrix",
+    "format": "xhs-cover",
+    "languages": [
+      "zh"
+    ],
+    "files": {
+      "zh": "assets/templates/xhs-cover-dot-matrix/zh.html"
+    },
+    "best_for": [
+      "小红书封面",
+      "技术封面",
+      "AI 系统观察",
+      "模型发布解读",
+      "浅色技术封面"
+    ],
+    "avoid_for": [
+      "正文长图",
+      "高饱和娱乐海报",
+      "照片主视觉封面"
+    ],
+    "style_tags": [
+      "小红书封面",
+      "dot matrix",
+      "light mode",
+      "signal",
+      "data visual",
+      "technical cover"
+    ],
+    "audience": [
+      "AI 团队",
+      "产品团队",
+      "技术读者",
+      "科技内容读者"
+    ],
+    "density": "medium",
+    "motion": "medium",
+    "image_intensity": "low",
+    "image_slots": [],
+    "export": {
+      "css_size": "600x800",
+      "png_size": "1200x1600",
+      "ratio": "3:4"
+    },
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "template-adaptation",
+      "attribution": "Adapted from the Dot Matrix light deck grammar into a Xiaohongshu cover title card."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "xhs-cover-consulting-report",
+    "name": "XHS Cover — Consulting Report",
+    "format": "xhs-cover",
+    "languages": [
+      "zh"
+    ],
+    "files": {
+      "zh": "assets/templates/xhs-cover-consulting-report/zh.html"
+    },
+    "best_for": [
+      "小红书封面",
+      "咨询报告封面",
+      "行业研究封面",
+      "执行摘要封面",
+      "高信任中文封面"
+    ],
+    "avoid_for": [
+      "正文长图",
+      "潮流娱乐封面",
+      "温柔手账风封面"
+    ],
+    "style_tags": [
+      "小红书封面",
+      "consulting",
+      "navy report",
+      "executive summary",
+      "strategy",
+      "high trust cover"
+    ],
+    "audience": [
+      "管理者",
+      "投资人",
+      "策略团队",
+      "商业内容读者"
+    ],
+    "density": "medium",
+    "motion": "low",
+    "image_intensity": "low",
+    "image_slots": [],
+    "export": {
+      "css_size": "600x800",
+      "png_size": "1200x1600",
+      "ratio": "3:4"
+    },
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "template-adaptation",
+      "attribution": "Adapted from the Consulting Report deck grammar into a Xiaohongshu cover title card."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "xhs-cover-rain-notes",
+    "name": "XHS Cover — Rain Notes",
+    "format": "xhs-cover",
+    "languages": [
+      "zh"
+    ],
+    "files": {
+      "zh": "assets/templates/xhs-cover-rain-notes/zh.html"
+    },
+    "best_for": [
+      "小红书封面",
+      "雨中笔记封面",
+      "手账感封面",
+      "AI 工具观察",
+      "诗性中文封面"
+    ],
+    "avoid_for": [
+      "正文长图",
+      "硬核数据报告封面",
+      "高饱和促销海报"
+    ],
+    "style_tags": [
+      "小红书封面",
+      "rain notes",
+      "paper texture",
+      "serif",
+      "soft editorial",
+      "quiet cover"
+    ],
+    "audience": [
+      "创作者",
+      "AI 工具用户",
+      "内容编辑",
+      "科技内容读者"
+    ],
+    "density": "medium",
+    "motion": "medium",
+    "image_intensity": "low",
+    "image_slots": [],
+    "export": {
+      "css_size": "600x800",
+      "png_size": "1200x1600",
+      "ratio": "3:4"
+    },
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "template-adaptation",
+      "attribution": "Adapted from the Rain Notes deck grammar into a Xiaohongshu cover title card."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "xhs-cover-pixel-report",
+    "name": "XHS Cover — Pixel Report",
+    "format": "xhs-cover",
+    "languages": [
+      "zh"
+    ],
+    "files": {
+      "zh": "assets/templates/xhs-cover-pixel-report/zh.html"
+    },
+    "best_for": [
+      "小红书封面",
+      "像素风测评封面",
+      "技术产品封面",
+      "AI 工具实测",
+      "高对比中文封面"
+    ],
+    "avoid_for": [
+      "正文长图",
+      "奢华品牌封面",
+      "低饱和散文封面"
+    ],
+    "style_tags": [
+      "小红书封面",
+      "pixel UI",
+      "retro game",
+      "HUD",
+      "terminal",
+      "technical cover"
+    ],
+    "audience": [
+      "开发者",
+      "AI 用户",
+      "技术内容读者",
+      "科技内容创作者"
+    ],
+    "density": "medium-high",
+    "motion": "medium",
+    "image_intensity": "low",
+    "image_slots": [],
+    "export": {
+      "css_size": "600x800",
+      "png_size": "1200x1600",
+      "ratio": "3:4"
+    },
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "template-adaptation",
+      "attribution": "Adapted from the Pixel Report deck grammar into a Xiaohongshu cover title card."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "xhs-cover-sunrise",
+    "name": "XHS Cover — Sunrise",
+    "format": "xhs-cover",
+    "languages": [
+      "zh"
+    ],
+    "files": {
+      "zh": "assets/templates/xhs-cover-sunrise/zh.html"
+    },
+    "best_for": [
+      "小红书封面",
+      "高级感观点封面",
+      "伦理与品牌思考",
+      "思想札记封面",
+      "金色留白中文封面"
+    ],
+    "avoid_for": [
+      "正文长图",
+      "像素技术封面",
+      "高密度教程封面"
+    ],
+    "style_tags": [
+      "小红书封面",
+      "sunrise",
+      "gold serif",
+      "editorial",
+      "philosophy",
+      "premium cover"
+    ],
+    "audience": [
+      "品牌团队",
+      "创作者",
+      "产品负责人",
+      "科技内容读者"
+    ],
+    "density": "medium",
+    "motion": "low",
+    "image_intensity": "low",
+    "image_slots": [],
+    "export": {
+      "css_size": "600x800",
+      "png_size": "1200x1600",
+      "ratio": "3:4"
+    },
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "template-adaptation",
+      "attribution": "Adapted from the Sunrise deck grammar into a Xiaohongshu cover title card."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "xhs-cover-geek-report",
+    "name": "XHS Cover — Geek Report",
+    "format": "xhs-cover",
+    "languages": [
+      "zh"
+    ],
+    "files": {
+      "zh": "assets/templates/xhs-cover-geek-report/zh.html"
+    },
+    "best_for": [
+      "小红书封面",
+      "极客报告封面",
+      "本地工作流测评",
+      "AI 工具技术封面",
+      "终端风中文封面"
+    ],
+    "avoid_for": [
+      "正文长图",
+      "温柔手账封面",
+      "照片主视觉封面"
+    ],
+    "style_tags": [
+      "小红书封面",
+      "geek report",
+      "terminal",
+      "paper",
+      "monochrome",
+      "technical cover"
+    ],
+    "audience": [
+      "工程师",
+      "技术负责人",
+      "AI 构建者",
+      "科技内容读者"
+    ],
+    "density": "medium-high",
+    "motion": "low",
+    "image_intensity": "low",
+    "image_slots": [],
+    "export": {
+      "css_size": "600x800",
+      "png_size": "1200x1600",
+      "ratio": "3:4"
+    },
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "template-adaptation",
+      "attribution": "Adapted from the Geek Report deck grammar into a Xiaohongshu cover title card."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "xhs-cover-terminal",
+    "name": "XHS Cover — Terminal",
+    "format": "xhs-cover",
+    "languages": [
+      "zh"
+    ],
+    "files": {
+      "zh": "assets/templates/xhs-cover-terminal/zh.html"
+    },
+    "best_for": [
+      "小红书封面",
+      "终端风封面",
+      "极客报告封面",
+      "AI 工具技术封面",
+      "任务执行测评"
+    ],
+    "avoid_for": [
+      "正文长图",
+      "温柔手账封面",
+      "照片主视觉封面"
+    ],
+    "style_tags": [
+      "小红书封面",
+      "terminal",
+      "geek report",
+      "paper output",
+      "monochrome",
+      "command line"
+    ],
+    "audience": [
+      "工程师",
+      "技术负责人",
+      "AI 构建者",
+      "科技内容读者"
+    ],
+    "density": "medium",
+    "motion": "low",
+    "image_intensity": "low",
+    "image_slots": [],
+    "export": {
+      "css_size": "600x800",
+      "png_size": "1200x1600",
+      "ratio": "3:4"
+    },
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "template-adaptation",
+      "attribution": "Adapted from the Geek Report deck grammar into a terminal-style Xiaohongshu cover."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "xhs-cover-story-field",
+    "name": "XHS Cover — Story Field",
+    "format": "xhs-cover",
+    "languages": [
+      "zh"
+    ],
+    "files": {
+      "zh": "assets/templates/xhs-cover-story-field/zh.html"
+    },
+    "best_for": [
+      "小红书封面",
+      "故事化案例封面",
+      "项目复盘封面",
+      "路线图封面",
+      "安静叙事封面"
+    ],
+    "avoid_for": [
+      "正文长图",
+      "高饱和活动海报",
+      "硬核像素技术封面"
+    ],
+    "style_tags": [
+      "小红书封面",
+      "story field",
+      "field report",
+      "route map",
+      "archival",
+      "quiet cover"
+    ],
+    "audience": [
+      "创意团队",
+      "项目负责人",
+      "品牌内容团队",
+      "内容编辑"
+    ],
+    "density": "medium",
+    "motion": "low",
+    "image_intensity": "low",
+    "image_slots": [],
+    "export": {
+      "css_size": "600x800",
+      "png_size": "1200x1600",
+      "ratio": "3:4"
+    },
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "template-adaptation",
+      "attribution": "Adapted from the Story Field deck grammar into a Xiaohongshu cover title card."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "xhs-cover-shiny-tiles",
+    "name": "XHS Cover — Shiny Tiles",
+    "format": "xhs-cover",
+    "languages": [
+      "zh"
+    ],
+    "files": {
+      "zh": "assets/templates/xhs-cover-shiny-tiles/zh.html"
+    },
+    "best_for": [
+      "小红书封面",
+      "玻璃质感封面",
+      "产品测评封面",
+      "AI 工具升级解读",
+      "暗色科技封面"
+    ],
+    "avoid_for": [
+      "正文长图",
+      "朴素纸感笔记",
+      "照片主导作品集封面"
+    ],
+    "style_tags": [
+      "小红书封面",
+      "shiny tiles",
+      "glass",
+      "dark polished",
+      "technical",
+      "product review cover"
+    ],
+    "audience": [
+      "AI 用户",
+      "产品团队",
+      "科技内容读者",
+      "创作者"
+    ],
+    "density": "medium",
+    "motion": "low",
+    "image_intensity": "low",
+    "image_slots": [],
+    "export": {
+      "css_size": "600x800",
+      "png_size": "1200x1600",
+      "ratio": "3:4"
+    },
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "template-adaptation",
+      "attribution": "Adapted from the Shiny Tiles deck grammar into a Xiaohongshu cover title card."
+    },
+    "agent_ready": true
+  }
+]

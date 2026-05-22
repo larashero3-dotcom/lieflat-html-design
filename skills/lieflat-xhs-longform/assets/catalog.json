@@ -1,0 +1,597 @@
+[
+  {
+    "id": "xhs-rain-notes",
+    "name": "XHS Longform — Rain Notes",
+    "format": "xhs-longform",
+    "languages": [
+      "zh"
+    ],
+    "files": {
+      "zh": "assets/templates/xhs-rain-notes/zh.html"
+    },
+    "best_for": [
+      "小红书长文",
+      "AI 产品测评",
+      "安静的使用手记",
+      "适合连续阅读的中文长图",
+      "柔和纸感排版"
+    ],
+    "avoid_for": [
+      "强商业发布",
+      "高能量潮流视觉",
+      "深色科技报告"
+    ],
+    "style_tags": [
+      "小红书长文",
+      "rain notes",
+      "paper",
+      "quiet",
+      "serif",
+      "soft mood"
+    ],
+    "audience": [
+      "小红书读者",
+      "AI 用户",
+      "内容创作者",
+      "设计团队"
+    ],
+    "density": "medium",
+    "motion": "low",
+    "image_intensity": "low",
+    "image_slots": [],
+    "export": {
+      "css_size": "600x1000",
+      "png_size": "1200x2000",
+      "ratio": "3:5"
+    },
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "template-adaptation",
+      "attribution": "Adapted from the Rain Notes deck grammar into a Xiaohongshu longform article card."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "xhs-sunrise",
+    "name": "XHS Longform — Sunrise",
+    "format": "xhs-longform",
+    "languages": [
+      "zh"
+    ],
+    "files": {
+      "zh": "assets/templates/xhs-sunrise/zh.html"
+    },
+    "best_for": [
+      "小红书长文",
+      "高级感测评",
+      "品牌手记",
+      "轻奢中文文章",
+      "保留 WebGL 晨光氛围的长图"
+    ],
+    "avoid_for": [
+      "密集技术表格",
+      "像 PPT 一样分页的内容",
+      "强像素或游戏风格"
+    ],
+    "style_tags": [
+      "小红书长文",
+      "luxury",
+      "sunrise",
+      "gold rule",
+      "serif",
+      "webgl",
+      "premium"
+    ],
+    "audience": [
+      "小红书读者",
+      "品牌团队",
+      "创意总监",
+      "高级感内容账号"
+    ],
+    "density": "medium",
+    "motion": "medium",
+    "image_intensity": "low",
+    "image_slots": [],
+    "export": {
+      "css_size": "600x1000",
+      "png_size": "1200x2000",
+      "ratio": "3:5"
+    },
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "template-adaptation",
+      "attribution": "Adapted from the Sunrise deck grammar into a continuous Xiaohongshu article card."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "xhs-clean-review",
+    "name": "XHS Longform — Clean Review",
+    "format": "xhs-longform",
+    "languages": [
+      "zh"
+    ],
+    "files": {
+      "zh": "assets/templates/xhs-clean-review/zh.html"
+    },
+    "best_for": [
+      "小红书长文",
+      "清晰产品测评",
+      "结论先行",
+      "对比分析",
+      "适合信息密度较高的中文长图"
+    ],
+    "avoid_for": [
+      "温柔散文",
+      "奢华品牌故事",
+      "复古像素游戏风"
+    ],
+    "style_tags": [
+      "小红书长文",
+      "clean review",
+      "bold header",
+      "red accent",
+      "structured",
+      "analysis"
+    ],
+    "audience": [
+      "小红书读者",
+      "产品用户",
+      "技术内容读者",
+      "决策者"
+    ],
+    "density": "medium-high",
+    "motion": "low",
+    "image_intensity": "low",
+    "image_slots": [],
+    "export": {
+      "css_size": "600x1000",
+      "png_size": "1200x2000",
+      "ratio": "3:5"
+    },
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "template-adaptation",
+      "attribution": "Adapted from the Clean Review deck grammar into a Xiaohongshu longform article card."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "xhs-editorial",
+    "name": "XHS Longform — Editorial",
+    "format": "xhs-longform",
+    "languages": [
+      "zh"
+    ],
+    "files": {
+      "zh": "assets/templates/xhs-editorial/zh.html"
+    },
+    "best_for": [
+      "小红书长文",
+      "杂志感长文",
+      "观点文章",
+      "品牌随笔",
+      "留白克制的中文长图"
+    ],
+    "avoid_for": [
+      "像素游戏风",
+      "终端技术风",
+      "高饱和潮流视觉"
+    ],
+    "style_tags": [
+      "小红书长文",
+      "editorial",
+      "magazine",
+      "serif",
+      "essay",
+      "refined"
+    ],
+    "audience": [
+      "小红书读者",
+      "创作者",
+      "品牌团队",
+      "内容编辑"
+    ],
+    "density": "medium",
+    "motion": "low",
+    "image_intensity": "low",
+    "image_slots": [],
+    "export": {
+      "css_size": "600x1000",
+      "png_size": "1200x2000",
+      "ratio": "3:5"
+    },
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "template-adaptation",
+      "attribution": "Adapted from the Editorial deck grammar into a Xiaohongshu longform article card."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "xhs-geek-report",
+    "name": "XHS Longform — Geek Report",
+    "format": "xhs-longform",
+    "languages": [
+      "zh"
+    ],
+    "files": {
+      "zh": "assets/templates/xhs-geek-report/zh.html"
+    },
+    "best_for": [
+      "小红书长文",
+      "技术测评",
+      "AI 工具报告",
+      "开发者内容",
+      "极客风中文长图"
+    ],
+    "avoid_for": [
+      "轻奢品牌故事",
+      "生活方式散文",
+      "图片主导作品集"
+    ],
+    "style_tags": [
+      "小红书长文",
+      "geek",
+      "terminal",
+      "technical",
+      "paper",
+      "developer report"
+    ],
+    "audience": [
+      "开发者",
+      "AI 用户",
+      "技术团队",
+      "小红书科技读者"
+    ],
+    "density": "medium-high",
+    "motion": "low",
+    "image_intensity": "low",
+    "image_slots": [],
+    "export": {
+      "css_size": "600x1000",
+      "png_size": "1200x2000",
+      "ratio": "3:5"
+    },
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "template-adaptation",
+      "attribution": "Adapted from the Geek Report deck grammar into a Xiaohongshu longform article card."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "xhs-terminal",
+    "name": "XHS Longform — Terminal",
+    "format": "xhs-longform",
+    "languages": [
+      "zh"
+    ],
+    "files": {
+      "zh": "assets/templates/xhs-terminal/zh.html"
+    },
+    "best_for": [
+      "小红书长文",
+      "终端风技术测评",
+      "AI 工具报告",
+      "开发者工作流复盘",
+      "任务执行叙事"
+    ],
+    "avoid_for": [
+      "轻奢品牌故事",
+      "生活方式散文",
+      "照片主导作品集"
+    ],
+    "style_tags": [
+      "小红书长文",
+      "terminal",
+      "geek report",
+      "paper output",
+      "monochrome",
+      "command line"
+    ],
+    "audience": [
+      "开发者",
+      "AI 用户",
+      "技术团队",
+      "小红书科技读者"
+    ],
+    "density": "medium-high",
+    "motion": "low",
+    "image_intensity": "low",
+    "image_slots": [],
+    "export": {
+      "css_size": "600x1000",
+      "png_size": "1200x2000",
+      "ratio": "3:5"
+    },
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "template-adaptation",
+      "attribution": "Adapted from the terminal-style Xiaohongshu cover grammar into a longform article card."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "xhs-dot-matrix-light",
+    "name": "XHS Longform — Dot Matrix Light",
+    "format": "xhs-longform",
+    "languages": [
+      "zh"
+    ],
+    "files": {
+      "zh": "assets/templates/xhs-dot-matrix-light/zh.html"
+    },
+    "best_for": [
+      "小红书长文",
+      "AI 系统观察",
+      "模型测评",
+      "信号感分析",
+      "浅色技术长图"
+    ],
+    "avoid_for": [
+      "温柔纸感笔记",
+      "高奢品牌视觉",
+      "复古游戏界面"
+    ],
+    "style_tags": [
+      "小红书长文",
+      "dot matrix",
+      "light mode",
+      "signal",
+      "data visual",
+      "technical"
+    ],
+    "audience": [
+      "AI 团队",
+      "产品团队",
+      "技术读者",
+      "小红书科技内容读者"
+    ],
+    "density": "medium-high",
+    "motion": "medium",
+    "image_intensity": "low",
+    "image_slots": [],
+    "export": {
+      "css_size": "600x1000",
+      "png_size": "1200x2000",
+      "ratio": "3:5"
+    },
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "template-adaptation",
+      "attribution": "Adapted from the Dot Matrix light deck grammar into a Xiaohongshu longform article card."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "xhs-consulting-report",
+    "name": "XHS Longform — Consulting Report",
+    "format": "xhs-longform",
+    "languages": [
+      "zh"
+    ],
+    "files": {
+      "zh": "assets/templates/xhs-consulting-report/zh.html"
+    },
+    "best_for": [
+      "小红书长文",
+      "行业研究",
+      "咨询报告摘要",
+      "策略分析",
+      "高信任中文长图"
+    ],
+    "avoid_for": [
+      "潮流娱乐内容",
+      "Y2K 视觉",
+      "温柔手账风"
+    ],
+    "style_tags": [
+      "小红书长文",
+      "consulting",
+      "executive summary",
+      "report",
+      "strategy",
+      "high trust"
+    ],
+    "audience": [
+      "管理者",
+      "投资人",
+      "策略团队",
+      "商业内容读者"
+    ],
+    "density": "high",
+    "motion": "low",
+    "image_intensity": "low",
+    "image_slots": [],
+    "export": {
+      "css_size": "600x1000",
+      "png_size": "1200x2000",
+      "ratio": "3:5"
+    },
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "template-adaptation",
+      "attribution": "Adapted from the Consulting Report deck grammar into a Xiaohongshu longform article card."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "xhs-pixel-report",
+    "name": "XHS Longform — Pixel Report",
+    "format": "xhs-longform",
+    "languages": [
+      "zh"
+    ],
+    "files": {
+      "zh": "assets/templates/xhs-pixel-report/zh.html"
+    },
+    "best_for": [
+      "小红书长文",
+      "复古游戏风测评",
+      "技术教程",
+      "AI 工具拆解",
+      "像素中文长图"
+    ],
+    "avoid_for": [
+      "高级品牌营销",
+      "严肃机构报告",
+      "安静散文"
+    ],
+    "style_tags": [
+      "小红书长文",
+      "pixel UI",
+      "retro game",
+      "technical",
+      "HUD",
+      "structured"
+    ],
+    "audience": [
+      "开发者",
+      "AI 用户",
+      "游戏/像素风读者",
+      "技术创作者"
+    ],
+    "density": "high",
+    "motion": "low",
+    "image_intensity": "low",
+    "image_slots": [],
+    "export": {
+      "css_size": "600x1000",
+      "png_size": "1200x2000",
+      "ratio": "3:5"
+    },
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "template-adaptation",
+      "attribution": "Adapted from the Pixel Report deck grammar into a Xiaohongshu longform article card."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "xhs-shiny-tiles",
+    "name": "XHS Longform — Shiny Tiles",
+    "format": "xhs-longform",
+    "languages": [
+      "zh"
+    ],
+    "files": {
+      "zh": "assets/templates/xhs-shiny-tiles/zh.html"
+    },
+    "best_for": [
+      "小红书长文",
+      "高级黑科技测评",
+      "创意技术分析",
+      "系统能力解读",
+      "光泽感中文长图"
+    ],
+    "avoid_for": [
+      "极简白底报告",
+      "温柔雨天笔记",
+      "复古电脑叙事"
+    ],
+    "style_tags": [
+      "小红书长文",
+      "shiny tiles",
+      "glass",
+      "dark polished",
+      "technical",
+      "iridescent"
+    ],
+    "audience": [
+      "技术团队",
+      "设计团队",
+      "AI 用户",
+      "视觉内容读者"
+    ],
+    "density": "medium",
+    "motion": "medium",
+    "image_intensity": "low",
+    "image_slots": [],
+    "export": {
+      "css_size": "600x1000",
+      "png_size": "1200x2000",
+      "ratio": "3:5"
+    },
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "template-adaptation",
+      "attribution": "Adapted from the Shiny Tiles deck grammar into a Xiaohongshu longform article card."
+    },
+    "agent_ready": true
+  },
+  {
+    "id": "xhs-story-field",
+    "name": "XHS Longform — Story Field",
+    "format": "xhs-longform",
+    "languages": [
+      "zh"
+    ],
+    "files": {
+      "zh": "assets/templates/xhs-story-field/zh.html"
+    },
+    "best_for": [
+      "小红书长文",
+      "项目现场叙事",
+      "故事型测评",
+      "路线复盘",
+      "档案感中文长图"
+    ],
+    "avoid_for": [
+      "密集表格报告",
+      "高饱和 Y2K",
+      "纯代码教程"
+    ],
+    "style_tags": [
+      "小红书长文",
+      "story field",
+      "field report",
+      "archival",
+      "cinematic",
+      "grain"
+    ],
+    "audience": [
+      "小红书读者",
+      "创意团队",
+      "项目负责人",
+      "品牌内容团队"
+    ],
+    "density": "medium",
+    "motion": "low",
+    "image_intensity": "low",
+    "image_slots": [],
+    "export": {
+      "css_size": "600x1000",
+      "png_size": "1200x2000",
+      "ratio": "3:5"
+    },
+    "origin": {
+      "made_with": [
+        "Codex"
+      ],
+      "status": "template-adaptation",
+      "attribution": "Adapted from the Story Field deck grammar into a Xiaohongshu longform article card."
+    },
+    "agent_ready": true
+  }
+]

@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUMEN STUDIO — Studio Photo Deck (EN)</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
+:root {
+  --black: #000000;
+  --white: #FFFFFF;
+  --navy: #0A1628;
+  --navy-mid: #1B3A6B;
+  --blue-accent: #4A8FE7;
+  --ice: #E9EDF2;
+  --gray-800: #1A1E2A;
+  --gray-600: #484E5A;
+  --gray-400: #949DAE;
+  --gray-200: #DDE1E9;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+}
+
+body {
+  display: flex;
+  flex-direction: row;
+  width: max-content;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  color: var(--black);
+}
+
+.slide {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  min-width: 100vw;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  padding: clamp(32px, 4vh, 56px) clamp(40px, 5vw, 80px);
+}
+
+.bg-navy { background: var(--navy); color: var(--white); }
+.bg-ice { background: var(--ice); color: var(--black); }
+.bg-white { background: var(--white); color: var(--black); }
+.bg-dark { background: var(--gray-800); color: var(--white); }
+
+.headline {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+}
+
+.subhead {
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  font-size: clamp(11px, 1.1vw, 14px);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.page-marker {
+  position: absolute;
+  bottom: clamp(24px, 3vh, 40px);
+  left: clamp(40px, 5vw, 80px);
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  opacity: 0.5;
+}
+
+.brand-mark {
+  position: absolute;
+  bottom: clamp(24px, 3vh, 40px);
+  right: clamp(40px, 5vw, 80px);
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.4;
+}
+
+.blue-accent {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 5px;
+  height: 56px;
+  background: var(--blue-accent);
+}
+
+.blue-accent-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 56px;
+  background: var(--blue-accent);
+}
+
+/* === ABSTRACT PHOTO AREA ===
+   Replace .photo-block contents with a real <img> when finalizing.
+   This preview area uses gradients + abstract geometry to preserve
+   "big-photo" visual rhythm while staying brand-neutral. */
+.photo-block {
+  background: var(--gray-800);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+.photo-block-light {
+  background: var(--gray-200);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.photo-ph {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+.photo-ph::after {
+  content: attr(data-label);
+  position: absolute;
+  bottom: 14px;
+  left: 16px;
+  font-family: 'Inter', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  color: rgba(255,255,255,0.55);
+  text-transform: uppercase;
+  z-index: 3;
+}
+.photo-ph.dark::after { color: rgba(255,255,255,0.55); }
+.photo-ph.light::after { color: rgba(0,0,0,0.4); }
+
+.photo-ph .geom {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+/* gradient palettes */
+.ph-1 { background: linear-gradient(135deg, #1B3A6B 0%, #0A1628 60%, #000 100%); }
+.ph-2 { background: linear-gradient(160deg, #5A6B83 0%, #2A3550 50%, #0F1828 100%); }
+.ph-3 { background: linear-gradient(200deg, #8B9AAE 0%, #4A5A75 50%, #1F2C44 100%); }
+.ph-4 { background: linear-gradient(135deg, #DDE1E9 0%, #B4BCCB 50%, #7A8499 100%); }
+.ph-5 { background: linear-gradient(180deg, #C5CDD8 0%, #8C99AC 60%, #4A5567 100%); }
+.ph-6 { background: linear-gradient(140deg, #2C4061 0%, #143058 50%, #061429 100%); }
+.ph-7 { background: linear-gradient(170deg, #E0E4EB 0%, #A7B1C3 50%, #535E73 100%); }
+.ph-8 { background: linear-gradient(210deg, #1F3658 0%, #0E1F38 60%, #000814 100%); }
+
+/* abstract overlays */
+.geom-circle {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.18), transparent 70%);
+}
+.geom-line {
+  position: absolute;
+  background: rgba(255,255,255,0.12);
+}
+.geom-block {
+  position: absolute;
+  background: rgba(74,143,231,0.18);
+  mix-blend-mode: screen;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(16px, 2vw, 32px);
+  flex: 1;
+}
+.grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: clamp(16px, 2vw, 32px);
+  flex: 1;
+}
+.grid-4 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: clamp(12px, 1.5vw, 24px);
+  flex: 1;
+}
+.grid-asymmetric {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: clamp(24px, 3vw, 48px);
+  flex: 1;
+}
+.grid-asymmetric-r {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: clamp(24px, 3vw, 48px);
+  flex: 1;
+}
+
+.flex-col { display: flex; flex-direction: column; }
+.justify-between { justify-content: space-between; }
+.flex-1 { flex: 1; }
+.gap-md { gap: clamp(16px, 2vh, 32px); }
+
+.body-text {
+  font-size: clamp(12px, 1.1vw, 15px);
+  line-height: 1.7;
+  font-weight: 300;
+  color: inherit;
+  opacity: 0.8;
+  max-width: 480px;
+}
+.body-text-dark {
+  font-size: clamp(12px, 1.1vw, 15px);
+  line-height: 1.7;
+  font-weight: 300;
+  opacity: 0.65;
+}
+
+.label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.45;
+  margin-bottom: 8px;
+}
+
+.divider {
+  width: 40px;
+  height: 2px;
+  background: var(--blue-accent);
+  opacity: 0.8;
+}
+
+.nav-bar {
+  position: fixed; bottom: 0; left: 0;
+  width: 100vw; height: 3px;
+  background: rgba(0,0,0,0.08); z-index: 100;
+}
+.nav-progress {
+  height: 100%; background: var(--blue-accent);
+  transition: width 0.3s ease;
+}
+.nav-arrows {
+  position: fixed; bottom: 16px; right: 16px;
+  display: flex; gap: 6px; z-index: 100;
+}
+.nav-arrows button {
+  width: 30px; height: 30px;
+  border: 1px solid rgba(128,128,128,0.2);
+  background: rgba(255,255,255,0.92);
+  cursor: pointer; font-size: 13px;
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(6px);
+  border-radius: 2px;
+}
+.nav-arrows button:hover { background: var(--navy); color: var(--white); }
+
+.anim-fade {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.in-view .anim-fade { opacity: 1; transform: translateY(0); }
+.anim-fade-d2 { transition-delay: 0.2s; }
+.anim-fade-d4 { transition-delay: 0.4s; }
+
+@media (max-width: 768px) {
+  .grid-2, .grid-3, .grid-4, .grid-asymmetric, .grid-asymmetric-r {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- 01: COVER -->
+<section class="slide bg-navy in-view" id="s01">
+  <div class="blue-accent"></div>
+  <div class="flex-col justify-between flex-1">
+    <div class="subhead anim-fade" style="opacity:0.4;">Brand Presentation — 2026</div>
+    <div class="anim-fade anim-fade-d2">
+      <div class="headline" style="font-size: clamp(72px, 11vw, 180px); letter-spacing: -0.02em;">VER<br>TICA</div>
+      <div style="margin-top: clamp(16px, 2vh, 24px); display:flex; gap:32px; align-items:center;">
+        <div class="divider" style="width:60px;"></div>
+        <span class="subhead" style="opacity:0.5;">Equipment for the In-Between</span>
+      </div>
+    </div>
+    <div class="anim-fade anim-fade-d4" style="display:flex; justify-content:space-between; align-items:flex-end;">
+      <span class="subhead" style="opacity:0.35;">Field Studio · Engineered Apparel · 2026 Edition</span>
+      <span class="subhead" style="opacity:0.35;">lumen-studio.example</span>
+    </div>
+  </div>
+  <div class="page-marker" style="color:#fff;">01 / 12</div>
+  <div class="brand-mark" style="color:#fff;">LUMEN STUDIO</div>
+</section>
+
+<!-- 02: BRAND INTRO -->
+<section class="slide bg-white" id="s02">
+  <div class="blue-accent"></div>
+  <div class="grid-asymmetric flex-1">
+    <div class="photo-block anim-fade" style="min-height:100%;">
+      <div class="photo-ph ph-1 dark" data-label="Cover · Studio Portrait">
+        <div class="geom">
+          <div class="geom-circle" style="width:60%; height:60%; top:20%; left:20%;"></div>
+          <div class="geom-line" style="width:1px; height:100%; left:50%; top:0;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="flex-col justify-between anim-fade anim-fade-d2">
+      <div>
+        <div class="label">About</div>
+        <div class="headline" style="font-size: clamp(36px, 5vw, 72px); margin-bottom:clamp(16px,2vh,32px);">Hi, we're<br>LUMEN STUDIO.</div>
+        <p class="body-text">A small studio building tools and clothing for the spaces between commute and wilderness — the daily routes that don't fit either category.</p>
+        <p class="body-text" style="margin-top:16px;">Every piece is built for the in-between: from subway exit to ridgeline, from dawn shift to late night.</p>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:32px;">
+        <div>
+          <div style="font-size:clamp(28px,3vw,42px); font-weight:800; color:var(--navy-mid);">2021</div>
+          <div style="font-size:11px; opacity:0.45; margin-top:4px; letter-spacing:0.05em;">ESTABLISHED</div>
+        </div>
+        <div>
+          <div style="font-size:clamp(28px,3vw,42px); font-weight:800; color:var(--navy-mid);">Harbor</div>
+          <div style="font-size:11px; opacity:0.45; margin-top:4px; letter-spacing:0.05em;">HEADQUARTER</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-marker">02 / 12</div>
+  <div class="brand-mark">LUMEN STUDIO</div>
+</section>
+
+<!-- 03: PHILOSOPHY -->
+<section class="slide bg-navy" id="s03">
+  <div class="blue-accent-left"></div>
+  <div class="flex-col justify-between flex-1">
+    <div class="anim-fade"><div class="label" style="color:#fff;">Philosophy</div></div>
+    <div class="anim-fade anim-fade-d2" style="max-width:70%;">
+      <div class="headline" style="font-size: clamp(28px, 4vw, 56px); line-height:1.2;">
+        "Good gear doesn't send you to the wilderness — it brings wilderness-grade standards into every day."
+      </div>
+      <div class="divider" style="margin-top:clamp(24px,3vh,40px);"></div>
+      <p class="body-text" style="margin-top:16px; color:rgba(255,255,255,0.55);">We engineer the boring parts — seams, weight, water column, the way a zipper sounds at 5am — so the wearer can stop thinking about the gear and start thinking about the route.</p>
+    </div>
+    <div class="anim-fade anim-fade-d4" style="display:flex; gap:48px;">
+      <div>
+        <div style="font-size:10px; letter-spacing:0.1em; opacity:0.35; text-transform:uppercase;">Core</div>
+        <div style="font-size:13px; margin-top:6px;">Engineered Calm</div>
+      </div>
+      <div>
+        <div style="font-size:10px; letter-spacing:0.1em; opacity:0.35; text-transform:uppercase;">Design</div>
+        <div style="font-size:13px; margin-top:6px;">Light + Honest</div>
+      </div>
+      <div>
+        <div style="font-size:10px; letter-spacing:0.1em; opacity:0.35; text-transform:uppercase;">User</div>
+        <div style="font-size:13px; margin-top:6px;">In-Between Traveler</div>
+      </div>
+    </div>
+  </div>
+  <div class="page-marker" style="color:#fff;">03 / 12</div>
+  <div class="brand-mark" style="color:#fff;">LUMEN STUDIO</div>
+</section>
+
+<!-- 04: HERO PRODUCT -->
+<section class="slide bg-ice" id="s04">
+  <div class="blue-accent"></div>
+  <div class="grid-asymmetric-r flex-1">
+    <div class="flex-col justify-between anim-fade">
+      <div>
+        <div class="label">Hero Image</div>
+        <div class="headline" style="font-size: clamp(36px, 5vw, 72px);">Field<br>Outerwear</div>
+      </div>
+      <div class="flex-col gap-md" style="margin-top:32px;">
+        <p class="body-text-dark">Built around three numbers — weight, water column, and the time it takes to put on while walking. Everything else is negotiable.</p>
+        <div style="display:flex; gap:24px; margin-top:16px;">
+          <div style="border-left:2px solid var(--blue-accent); padding-left:12px;">
+            <div style="font-size:13px; font-weight:600;">Ultralight Build</div>
+            <div style="font-size:11px; opacity:0.5; margin-top:2px;">Under 240g/m²</div>
+          </div>
+          <div style="border-left:2px solid var(--gray-200); padding-left:12px;">
+            <div style="font-size:13px; font-weight:600;">Quiet Design</div>
+            <div style="font-size:11px; opacity:0.5; margin-top:2px;">No fuss</div>
+          </div>
+          <div style="border-left:2px solid var(--gray-200); padding-left:12px;">
+            <div style="font-size:13px; font-weight:600;">Daily Defense</div>
+            <div style="font-size:11px; opacity:0.5; margin-top:2px;">Wearable every day</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="photo-block anim-fade anim-fade-d2" style="min-height:100%;">
+      <div class="photo-ph ph-2 dark" data-label="Hero · Garment Front">
+        <div class="geom">
+          <div class="geom-block" style="width:40%; height:80%; top:10%; left:30%;"></div>
+          <div class="geom-line" style="width:100%; height:1px; top:50%; left:0;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-marker">04 / 12</div>
+  <div class="brand-mark">LUMEN STUDIO</div>
+</section>
+
+<!-- 05: POPULAR STYLES -->
+<section class="slide bg-white" id="s05">
+  <div class="blue-accent"></div>
+  <div class="flex-col flex-1">
+    <div class="anim-fade" style="display:flex; justify-content:space-between; align-items:flex-start;">
+      <div>
+        <div class="label">Collection</div>
+        <div class="headline" style="font-size: clamp(36px, 5vw, 72px);">Core Styles</div>
+      </div>
+      <div class="subhead" style="opacity:0.35; margin-top:8px;">In Season</div>
+    </div>
+    <div class="grid-4 anim-fade anim-fade-d2" style="margin-top:clamp(24px,3vh,40px); flex:1;">
+      <div class="flex-col" style="border:1px solid var(--gray-200); overflow:hidden;">
+        <div class="photo-block" style="flex:1; min-height:220px;">
+          <div class="photo-ph ph-3 dark" data-label="Style 01">
+            <div class="geom"><div class="geom-circle" style="width:50%; height:50%; top:25%; left:25%;"></div></div>
+          </div>
+        </div>
+        <div style="padding:clamp(12px,1.5vw,20px);">
+          <div style="font-weight:600; font-size:12px; color:var(--navy-mid);">FIELD-01</div>
+          <div style="font-size:11px; opacity:0.6; margin-top:4px;">Ultralight softshell</div>
+        </div>
+      </div>
+      <div class="flex-col" style="border:1px solid var(--gray-200); overflow:hidden;">
+        <div class="photo-block" style="flex:1; min-height:220px;">
+          <div class="photo-ph ph-1 dark" data-label="Style 02">
+            <div class="geom"><div class="geom-block" style="width:60%; height:30%; top:35%; left:20%;"></div></div>
+          </div>
+        </div>
+        <div style="padding:clamp(12px,1.5vw,20px);">
+          <div style="font-weight:600; font-size:12px; color:var(--navy-mid);">FIELD-02</div>
+          <div style="font-size:11px; opacity:0.6; margin-top:4px;">Hooded windbreaker</div>
+        </div>
+      </div>
+      <div class="flex-col" style="border:1px solid var(--gray-200); overflow:hidden;">
+        <div class="photo-block" style="flex:1; min-height:220px;">
+          <div class="photo-ph ph-6 dark" data-label="Style 03">
+            <div class="geom"><div class="geom-line" style="width:1px; height:60%; top:20%; left:50%;"></div></div>
+          </div>
+        </div>
+        <div style="padding:clamp(12px,1.5vw,20px);">
+          <div style="font-weight:600; font-size:12px; color:var(--navy-mid);">RIDGE-01</div>
+          <div style="font-size:11px; opacity:0.6; margin-top:4px;">Daily defense jacket</div>
+        </div>
+      </div>
+      <div class="flex-col" style="border:1px solid var(--gray-200); overflow:hidden;">
+        <div class="photo-block" style="flex:1; min-height:220px;">
+          <div class="photo-ph ph-2 dark" data-label="Style 04">
+            <div class="geom"><div class="geom-circle" style="width:30%; height:30%; top:40%; left:60%;"></div></div>
+          </div>
+        </div>
+        <div style="padding:clamp(12px,1.5vw,20px);">
+          <div style="font-weight:600; font-size:12px; color:var(--navy-mid);">RIDGE-02</div>
+          <div style="font-size:11px; opacity:0.6; margin-top:4px;">Minimal trench</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-marker">05 / 12</div>
+  <div class="brand-mark">LUMEN STUDIO</div>
+</section>
+
+<!-- 06: PRODUCT SHOWCASE -->
+<section class="slide bg-dark" id="s06">
+  <div class="blue-accent-left"></div>
+  <div class="flex-col flex-1">
+    <div class="anim-fade">
+      <div class="label" style="color:#fff;">Signature</div>
+      <div class="headline" style="font-size: clamp(36px, 5vw, 72px); margin-bottom:clamp(24px,3vh,40px);">Product Line</div>
+    </div>
+    <div class="grid-3 anim-fade anim-fade-d2" style="flex:1;">
+      <div class="flex-col" style="border:1px solid rgba(255,255,255,0.08); overflow:hidden;">
+        <div class="photo-block" style="flex:1; min-height:240px;">
+          <div class="photo-ph ph-8 dark" data-label="Studio Shot">
+            <div class="geom"><div class="geom-block" style="width:50%; height:70%; top:15%; left:25%;"></div></div>
+          </div>
+        </div>
+        <div style="padding:clamp(14px,1.8vw,24px);">
+          <div style="font-weight:600; font-size:13px;">LUMEN STUDIO L1 Puffer</div>
+          <div style="font-size:11px; opacity:0.45; margin-top:4px;">Ultralight insulated puffer</div>
+          <div style="font-size:10px; opacity:0.3; margin-top:10px; line-height:1.6;">Tiered warmth system<br>Ultralight construction<br>Urban-leaning cut</div>
+        </div>
+      </div>
+      <div class="flex-col" style="border:1px solid rgba(255,255,255,0.08); overflow:hidden;">
+        <div class="photo-block" style="flex:1; min-height:240px;">
+          <div class="photo-ph ph-6 dark" data-label="Studio Shot">
+            <div class="geom"><div class="geom-circle" style="width:55%; height:55%; top:22%; left:22%;"></div></div>
+          </div>
+        </div>
+        <div style="padding:clamp(14px,1.8vw,24px);">
+          <div style="font-weight:600; font-size:13px;">LUMEN STUDIO Shell</div>
+          <div style="font-size:11px; opacity:0.45; margin-top:4px;">Stowaway-hood softshell</div>
+          <div style="font-size:10px; opacity:0.3; margin-top:10px; line-height:1.6;">In-house wind-resistant finish<br>Hidden hood design<br>Ultralight build</div>
+        </div>
+      </div>
+      <div class="flex-col" style="border:1px solid rgba(255,255,255,0.08); overflow:hidden;">
+        <div class="photo-block" style="flex:1; min-height:240px;">
+          <div class="photo-ph ph-1 dark" data-label="Studio Shot">
+            <div class="geom"><div class="geom-line" style="width:100%; height:1px; top:60%; left:0;"></div></div>
+          </div>
+        </div>
+        <div style="padding:clamp(14px,1.8vw,24px);">
+          <div style="font-weight:600; font-size:13px;">LUMEN STUDIO Parka</div>
+          <div style="font-size:11px; opacity:0.45; margin-top:4px;">Ultralight parka</div>
+          <div style="font-size:10px; opacity:0.3; margin-top:10px; line-height:1.6;">Long-cut silhouette<br>Tiered thermal control<br>City &amp; field dual-use</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-marker" style="color:#fff;">06 / 12</div>
+  <div class="brand-mark" style="color:#fff;">LUMEN STUDIO</div>
+</section>
+
+<!-- 07: EDITORIAL -->
+<section class="slide bg-ice" id="s07">
+  <div class="blue-accent"></div>
+  <div class="flex-col flex-1">
+    <div class="anim-fade" style="display:flex; justify-content:space-between; align-items:flex-start;">
+      <div>
+        <div class="label">Lookbook</div>
+        <div class="headline" style="font-size: clamp(36px, 5vw, 72px);">Editorial</div>
+      </div>
+      <div class="subhead" style="opacity:0.3;">SS26</div>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr 1.4fr 1fr; grid-template-rows:1fr 1fr; gap:clamp(8px,1vw,14px); flex:1; margin-top:clamp(16px,2vh,28px);" class="anim-fade anim-fade-d2">
+      <div class="photo-block" style="grid-row:1/3;">
+        <div class="photo-ph ph-3 dark" data-label="Editorial · Lead">
+          <div class="geom"><div class="geom-block" style="width:60%; height:80%; top:10%; left:20%;"></div></div>
+        </div>
+      </div>
+      <div class="photo-block">
+        <div class="photo-ph ph-4 light" data-label="Detail"></div>
+      </div>
+      <div class="photo-block">
+        <div class="photo-ph ph-2 dark" data-label="Model A">
+          <div class="geom"><div class="geom-circle" style="width:60%; height:60%; top:20%; left:20%;"></div></div>
+        </div>
+      </div>
+      <div class="photo-block">
+        <div class="photo-ph ph-7 light" data-label="Model B"></div>
+      </div>
+      <div class="photo-block">
+        <div class="photo-ph ph-1 dark" data-label="Model C">
+          <div class="geom"><div class="geom-line" style="width:100%; height:1px; top:50%; left:0;"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-marker">07 / 12</div>
+  <div class="brand-mark">LUMEN STUDIO</div>
+</section>
+
+<!-- 08: PRODUCT DETAIL -->
+<section class="slide bg-white" id="s08">
+  <div class="blue-accent"></div>
+  <div class="grid-asymmetric flex-1">
+    <div class="flex-col anim-fade" style="min-height:100%;">
+      <div class="photo-block" style="flex:2; margin-bottom:clamp(8px,1vh,14px);">
+        <div class="photo-ph ph-6 dark" data-label="Garment · Front Detail">
+          <div class="geom"><div class="geom-block" style="width:30%; height:60%; top:20%; left:35%;"></div></div>
+        </div>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:clamp(8px,1vw,14px); flex:1;">
+        <div class="photo-block">
+          <div class="photo-ph ph-2 dark" data-label="Macro · Seam"></div>
+        </div>
+        <div class="photo-block">
+          <div class="photo-ph ph-8 dark" data-label="Macro · Hood"></div>
+        </div>
+      </div>
+    </div>
+    <div class="flex-col justify-between anim-fade anim-fade-d2">
+      <div>
+        <div class="label">Detail</div>
+        <div class="headline" style="font-size: clamp(36px, 5vw, 72px);">Fabric &<br>Construction</div>
+      </div>
+      <div class="flex-col gap-md" style="margin-top:32px;">
+        <div style="border-left:2px solid var(--blue-accent); padding-left:16px;">
+          <div style="font-weight:600; font-size:13px;">Fabric System</div>
+          <p class="body-text-dark" style="font-size:12px; margin-top:4px;">Three-layer construction: wind-resistant abrasion-grade outer, PU breathable membrane, soft-fleece backer. Total weight kept under 240g/m².</p>
+        </div>
+        <div style="border-left:2px solid var(--gray-200); padding-left:16px;">
+          <div style="font-weight:600; font-size:13px;">Thermal Tiers</div>
+          <p class="body-text-dark" style="font-size:12px; margin-top:4px;">An in-house three-level warmth system maps fill density to ambient temperature. No more guessing on grams.</p>
+        </div>
+        <div style="border-left:2px solid var(--gray-200); padding-left:16px;">
+          <div style="font-weight:600; font-size:13px;">Cut &amp; Construction</div>
+          <p class="body-text-dark" style="font-size:12px; margin-top:4px;">Three-dimensional pattern frees range of motion while keeping the wind seal — engineered for the full commute-to-trail span.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-marker">08 / 12</div>
+  <div class="brand-mark">LUMEN STUDIO</div>
+</section>
+
+<!-- 09: MORE PRODUCTS -->
+<section class="slide bg-navy" id="s09">
+  <div class="blue-accent-left"></div>
+  <div class="flex-col flex-1">
+    <div class="anim-fade">
+      <div class="label" style="color:#fff;">Extended</div>
+      <div class="headline" style="font-size: clamp(36px, 5vw, 72px); margin-bottom:clamp(24px,3vh,40px);">More Styles</div>
+    </div>
+    <div class="grid-3 anim-fade anim-fade-d2" style="flex:1;">
+      <div class="photo-block" style="position:relative;">
+        <div class="photo-ph ph-2 dark" data-label="">
+          <div class="geom"><div class="geom-block" style="width:50%; height:70%; top:15%; left:25%;"></div></div>
+        </div>
+        <div style="position:absolute; bottom:16px; left:16px; z-index: 4;">
+          <div style="font-size:12px; font-weight:600; color:#fff;">LUMEN STUDIO L1 Puffer</div>
+          <div style="font-size:10px; opacity:0.6; color:#fff; margin-top:2px;">Ultralight insulated puffer</div>
+        </div>
+      </div>
+      <div class="photo-block" style="position:relative;">
+        <div class="photo-ph ph-8 dark" data-label="">
+          <div class="geom"><div class="geom-circle" style="width:50%; height:50%; top:25%; left:25%;"></div></div>
+        </div>
+        <div style="position:absolute; bottom:16px; left:16px; z-index: 4;">
+          <div style="font-size:12px; font-weight:600; color:#fff;">LUMEN STUDIO Parka 03</div>
+          <div style="font-size:10px; opacity:0.6; color:#fff; margin-top:2px;">Ultralight parka, third edition</div>
+        </div>
+      </div>
+      <div class="photo-block" style="position:relative;">
+        <div class="photo-ph ph-1 dark" data-label="">
+          <div class="geom"><div class="geom-line" style="width:1px; height:100%; left:50%; top:0;"></div></div>
+        </div>
+        <div style="position:absolute; bottom:16px; left:16px; z-index: 4;">
+          <div style="font-size:12px; font-weight:600; color:#fff;">LUMEN STUDIO Daily™</div>
+          <div style="font-size:10px; opacity:0.6; color:#fff; margin-top:2px;">Lightweight daily jacket</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-marker" style="color:#fff;">09 / 12</div>
+  <div class="brand-mark" style="color:#fff;">LUMEN STUDIO</div>
+</section>
+
+<!-- 10: MODEL EDITORIAL -->
+<section class="slide bg-white" id="s10">
+  <div class="blue-accent"></div>
+  <div class="grid-2 flex-1">
+    <div class="photo-block anim-fade" style="min-height:100%;">
+      <div class="photo-ph ph-3 dark" data-label="Campaign · Lead Visual">
+        <div class="geom">
+          <div class="geom-circle" style="width:50%; height:50%; top:25%; left:25%;"></div>
+          <div class="geom-line" style="width:1px; height:100%; left:50%; top:0;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="flex-col justify-between anim-fade anim-fade-d2">
+      <div>
+        <div class="label">Campaign</div>
+        <div class="headline" style="font-size: clamp(36px, 5vw, 72px);">In-Between<br>Traveler</div>
+        <p class="body-text" style="margin-top:clamp(16px,2vh,28px); color:var(--gray-600);">LUMEN STUDIO belongs to the people who keep moving between the city and the outside. One coat, from the subway exit to the foot of the trail — without an awkward switch.</p>
+      </div>
+      <div class="photo-block anim-fade" style="flex:0.6; margin-top:24px;">
+        <div class="photo-ph ph-7 light" data-label="Detail · Closure"></div>
+      </div>
+    </div>
+  </div>
+  <div class="page-marker">10 / 12</div>
+  <div class="brand-mark">LUMEN STUDIO</div>
+</section>
+
+<!-- 11: STORE -->
+<section class="slide bg-ice" id="s11">
+  <div class="blue-accent"></div>
+  <div class="grid-asymmetric flex-1">
+    <div class="photo-block anim-fade" style="min-height:100%;">
+      <div class="photo-ph ph-5 dark" data-label="Flagship · Interior">
+        <div class="geom">
+          <div class="geom-line" style="width:100%; height:1px; top:33%; left:0;"></div>
+          <div class="geom-line" style="width:100%; height:1px; top:66%; left:0;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="flex-col justify-between anim-fade anim-fade-d2">
+      <div>
+        <div class="label">Visit</div>
+        <div class="headline" style="font-size: clamp(36px, 5vw, 72px);">Studio<br>Locator</div>
+      </div>
+      <div class="flex-col gap-md" style="margin-top:32px;">
+        <div>
+          <div style="font-weight:600; font-size:14px;">Harbor Studio</div>
+          <p class="body-text-dark" style="margin-top:4px; font-size:12px;">Harbor Bay Central Plaza, Building B</p>
+        </div>
+        <div style="margin-top:16px; padding-top:16px; border-top:1px solid rgba(0,0,0,0.08);">
+          <div style="font-size:10px; opacity:0.4; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:12px;">Channels</div>
+          <div style="display:flex; gap:20px; font-size:12px; opacity:0.6;">
+            <span>Newsletter</span>
+            <span>Studio Visit</span>
+            <span>Members</span>
+            <span>Online</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-marker">11 / 12</div>
+  <div class="brand-mark">LUMEN STUDIO</div>
+</section>
+
+<!-- 12: CLOSING -->
+<section class="slide bg-navy" id="s12">
+  <div class="blue-accent-left"></div>
+  <div class="flex-col justify-between flex-1">
+    <div class="subhead anim-fade" style="opacity:0.35;">Thank You</div>
+    <div class="anim-fade anim-fade-d2" style="max-width:60%;">
+      <div class="headline" style="font-size: clamp(48px, 8vw, 120px);">Find<br>Your<br>Line.</div>
+      <div class="divider" style="margin-top:clamp(20px,2.5vh,36px); width:60px;"></div>
+      <p class="body-text" style="margin-top:16px; color:rgba(255,255,255,0.45);">Build a kit that disappears, so the route can show up.</p>
+    </div>
+    <div class="anim-fade anim-fade-d4" style="display:grid; grid-template-columns:repeat(3,auto); gap:clamp(32px,4vw,64px); justify-content:start;">
+      <div>
+        <div style="font-size:10px; letter-spacing:0.1em; opacity:0.3; text-transform:uppercase; margin-bottom:6px;">Website</div>
+        <div style="font-size:13px;">lumen-studio.example</div>
+      </div>
+      <div>
+        <div style="font-size:10px; letter-spacing:0.1em; opacity:0.3; text-transform:uppercase; margin-bottom:6px;">Newsletter</div>
+        <div style="font-size:13px;">field [at] lumen-studio.example</div>
+      </div>
+      <div>
+        <div style="font-size:10px; letter-spacing:0.1em; opacity:0.3; text-transform:uppercase; margin-bottom:6px;">Studio</div>
+        <div style="font-size:13px;">By appointment</div>
+      </div>
+    </div>
+  </div>
+  <div class="page-marker" style="color:#fff;">12 / 12</div>
+  <div class="brand-mark" style="color:#fff;">LUMEN STUDIO</div>
+</section>
+
+<div class="nav-bar"><div class="nav-progress" id="navProgress"></div></div>
+<div class="nav-arrows">
+  <button id="prevBtn">&#8592;</button>
+  <button id="nextBtn">&#8594;</button>
+</div>
+
+<script>
+(function() {
+  const html = document.documentElement;
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+
+  function goTo(idx) {
+    idx = Math.max(0, Math.min(total - 1, idx));
+    html.scrollTo({ left: idx * window.innerWidth, behavior: 'smooth' });
+    current = idx;
+    updateProgress();
+  }
+  function updateProgress() {
+    const pct = ((current + 1) / total) * 100;
+    document.getElementById('navProgress').style.width = pct + '%';
+  }
+  document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+  document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); goTo(current + 1); }
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   { e.preventDefault(); goTo(current - 1); }
+  });
+  let wheelCooldown = false;
+  document.addEventListener('wheel', function(e) {
+    if (wheelCooldown) return;
+    if (Math.abs(e.deltaY) > 20) {
+      wheelCooldown = true;
+      goTo(current + (e.deltaY > 0 ? 1 : -1));
+      setTimeout(() => { wheelCooldown = false; }, 800);
+    }
+  }, { passive: true });
+  let st;
+  html.addEventListener('scroll', function() {
+    clearTimeout(st);
+    st = setTimeout(function() {
+      const idx = Math.round(html.scrollLeft / window.innerWidth);
+      if (idx !== current) { current = idx; updateProgress(); }
+    }, 50);
+  });
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        const idx = Array.from(slides).indexOf(entry.target);
+        if (idx !== -1) { current = idx; updateProgress(); }
+      } else {
+        entry.target.classList.remove('in-view');
+      }
+    });
+  }, { threshold: 0.5 });
+  slides.forEach(s => observer.observe(s));
+  updateProgress();
+  setTimeout(() => slides[0].classList.add('in-view'), 100);
+})();
+</script>
+</body>
+</html>

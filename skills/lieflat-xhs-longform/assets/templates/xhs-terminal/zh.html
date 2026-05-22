@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content="Lieflat XHS Longform" />
+<meta name="template-origin" content="Lieflat XHS Longform template">
+<title>Terminal 小红书长文模板</title>
+<style>
+  :root {
+    --frame: #252524;
+    --paper: #e8e6e2;
+    --paper-hot: #f4f2ee;
+    --ink: #2d2d2c;
+    --soft: rgba(45,45,44,.62);
+    --faint: rgba(45,45,44,.38);
+    --line: rgba(45,45,44,.16);
+    --line-strong: rgba(45,45,44,.34);
+    --terminal: #202020;
+    --terminal-hot: #f0eee9;
+    --mono: "SFMono-Regular", Consolas, Menlo, Monaco, "Courier New", "PingFang SC", "Microsoft YaHei", monospace;
+    --sans: "Arial Black", "Helvetica Neue", Arial, "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+    --body: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { min-height: 100%; }
+
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    background:
+      radial-gradient(circle at 50% 44%, rgba(232,230,226,.07), transparent 46%),
+      repeating-linear-gradient(0deg, rgba(232,230,226,.025) 0 1px, transparent 1px 4px),
+      #111;
+    color: var(--ink);
+    font-family: var(--mono);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .card {
+    position: relative;
+    width: 600px;
+    height: 1000px;
+    max-width: calc(100vw - 24px);
+    overflow: hidden;
+    border-radius: 8px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.065), transparent 18%),
+      repeating-linear-gradient(0deg, rgba(232,230,226,.025) 0 1px, transparent 1px 4px),
+      radial-gradient(circle at 50% 42%, rgba(232,230,226,.07), transparent 46%),
+      radial-gradient(circle at 50% 118%, rgba(0,0,0,.52), transparent 48%),
+      var(--frame);
+    box-shadow:
+      0 30px 86px rgba(0,0,0,.54),
+      inset 0 1px 0 rgba(255,255,255,.08);
+    isolation: isolate;
+  }
+
+  .paper {
+    position: absolute;
+    inset: 38px 32px 42px;
+    overflow: hidden;
+    border: 1px solid rgba(47,47,47,.22);
+    border-radius: 7px;
+    background:
+      radial-gradient(circle at 17% 6%, rgba(255,255,255,.72), transparent 30%),
+      radial-gradient(circle at 90% 72%, rgba(210,208,202,.34), transparent 32%),
+      linear-gradient(180deg, var(--paper-hot), var(--paper) 58%, #dedbd5);
+    box-shadow:
+      0 24px 60px rgba(0,0,0,.38),
+      inset 0 0 56px rgba(0,0,0,.09),
+      inset 0 1px 0 rgba(255,255,255,.78);
+  }
+
+  .paper::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: .11;
+    background: repeating-linear-gradient(0deg, rgba(47,47,47,.05) 0 1px, transparent 1px 5px);
+  }
+
+  .article {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    overflow-y: auto;
+    padding: 30px 30px 34px;
+  }
+
+  .article::-webkit-scrollbar { width: 8px; }
+  .article::-webkit-scrollbar-track { background: rgba(47,47,47,.06); }
+  .article::-webkit-scrollbar-thumb { background: rgba(47,47,47,.28); border-radius: 6px; }
+
+  .top {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 18px;
+    margin-bottom: 44px;
+    color: var(--soft);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.45;
+  }
+
+  .top small {
+    display: block;
+    margin-top: 2px;
+    font-size: 10px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  .date {
+    text-align: right;
+    letter-spacing: .04em;
+  }
+
+  .intro {
+    margin-bottom: 18px;
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 25px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: .02em;
+  }
+
+  .intro span {
+    margin-left: 22px;
+  }
+
+  h1 {
+    max-width: 470px;
+    margin-bottom: 24px;
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 48px;
+    font-weight: 900;
+    line-height: 1.12;
+    letter-spacing: 0;
+  }
+
+  .terminal {
+    margin: 0 0 28px;
+    padding: 16px 17px;
+    border-radius: 3px;
+    background: var(--terminal);
+    color: var(--terminal-hot);
+    box-shadow:
+      0 16px 28px rgba(0,0,0,.18),
+      inset 0 1px 0 rgba(255,255,255,.06);
+  }
+
+  .terminal p {
+    margin: 0;
+    color: var(--terminal-hot);
+    font-family: var(--mono);
+    font-size: 15px;
+    line-height: 1.76;
+    font-weight: 400;
+  }
+
+  .terminal b {
+    color: #f0eee9;
+    font-family: var(--sans);
+    font-weight: 900;
+  }
+
+  .meta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: 24px 0 30px;
+    border-top: 1px solid var(--line-strong);
+    border-bottom: 1px solid var(--line-strong);
+  }
+
+  .meta div {
+    padding: 12px 10px;
+    border-right: 1px solid var(--line);
+  }
+
+  .meta div:last-child { border-right: 0; }
+
+  .meta span {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--soft);
+    font-size: 9px;
+    letter-spacing: .08em;
+  }
+
+  .meta strong {
+    display: block;
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 19px;
+    line-height: 1.08;
+  }
+
+  h2 {
+    margin: 34px 0 12px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line-strong);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 25px;
+    font-weight: 900;
+    line-height: 1.34;
+    letter-spacing: 0;
+  }
+
+  p {
+    margin-bottom: 18px;
+    color: #383736;
+    font-family: var(--body);
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 1.78;
+    letter-spacing: 0;
+  }
+
+  .mono-p {
+    color: var(--soft);
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.72;
+  }
+
+  .steps {
+    display: grid;
+    gap: 9px;
+    margin: 22px 0 28px;
+  }
+
+  .step {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    gap: 12px;
+    align-items: start;
+    padding: 12px;
+    border: 1px solid var(--line);
+    background: rgba(255,255,255,.18);
+  }
+
+  .step span {
+    color: var(--soft);
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .06em;
+  }
+
+  .step b {
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.36;
+  }
+
+  code {
+    display: block;
+    margin: 24px 0;
+    padding: 15px 16px;
+    white-space: pre-wrap;
+    border-radius: 3px;
+    background: var(--terminal);
+    color: var(--terminal-hot);
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.68;
+  }
+
+  .verdict {
+    margin: 28px 0;
+    padding: 18px;
+    border: 2px solid var(--ink);
+    background: rgba(47,47,47,.06);
+  }
+
+  .verdict p {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.64;
+  }
+
+  .footer {
+    margin-top: 38px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line-strong);
+    color: var(--soft);
+    font-family: var(--mono);
+    font-size: 11px;
+    line-height: 1.7;
+  }
+
+  .frame-notes {
+    position: absolute;
+    left: 22px;
+    right: 22px;
+    bottom: 19px;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    color: rgba(232,230,226,.62);
+    font-size: 12px;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 650px) {
+    body { padding: 10px; }
+    .card { width: 100%; height: auto; min-height: 80vh; aspect-ratio: auto; }
+    .paper { position: relative; inset: auto; margin: 18px; min-height: calc(80vh - 36px); }
+    .article { height: auto; min-height: calc(80vh - 36px); overflow: visible; padding: 24px; }
+    h1 { font-size: 38px; }
+    p { font-size: 20px; }
+    .meta { grid-template-columns: 1fr; }
+    .meta div { border-right: 0; border-bottom: 1px solid var(--line); }
+    .meta div:last-child { border-bottom: 0; }
+    .step { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <main class="card" aria-label="Terminal 小红书长文">
+    <section class="paper">
+      <article class="article">
+        <header class="top">
+          <div>技术长文<small>GEEK RPT / TERMINAL</small></div>
+          <div class="date">2026.05<br>No.07</div>
+        </header>
+
+        <p class="intro">CODEX <span>测评:</span></p>
+        <h1>从写提示词，到任务执行。</h1>
+
+        <section class="terminal" aria-label="终端摘要">
+          <p><b>$ task</b> 把一个抽象需求变成可交付文件：读模板、写长文、跑预览、修版式。<br><b>$ result</b> 它不只是“会写”，更像会执行一轮工程流程。</p>
+        </section>
+
+        <section class="meta" aria-label="测评指标">
+          <div><span>CONTEXT</span><strong>读懂项目</strong></div>
+          <div><span>EXEC</span><strong>落到文件</strong></div>
+          <div><span>QA</span><strong>跑完检查</strong></div>
+        </section>
+
+        <p>这套终端风长文适合写 AI 工具、开发者工作流、本地自动化、技术产品测评。它的气质不是海报，而是一张被终端打印出来的工作记录。</p>
+
+        <h2>01 / 先看它怎么工作</h2>
+        <p>我最看重的不是模型会不会写一段漂亮解释，而是它能不能进入项目、读现有结构、做出克制改动，并在最后把结果验一遍。</p>
+        <p>这类任务很适合用终端风表达：每个段落都像一次命令输出，信息密度高，但不需要把页面塞成仪表盘。</p>
+
+        <h2>02 / 三个观察点</h2>
+        <div class="steps">
+          <div class="step"><span>STEP 01</span><b>读上下文：先看目录、模板、catalog 和 README，而不是直接开写。</b></div>
+          <div class="step"><span>STEP 02</span><b>改文件：保留原风格的边框、纸面、终端提示，不把它洗成普通长图。</b></div>
+          <div class="step"><span>STEP 03</span><b>做验收：导出 PNG、看截图、再判断字体、间距和首屏是否完整。</b></div>
+        </div>
+
+        <p>如果你在写小红书技术长文，这种结构很省力：标题负责抓人，终端摘要给结论，正文再展开判断依据。</p>
+
+        <code>recommended_prompt = """
+用 xhs-terminal 风格做一张小红书长文图。
+主题是一个 AI 工具测评。
+首屏必须露出标题、摘要和第一段正文。
+最后导出 1200x2000 PNG。
+"""</code>
+
+        <h2>03 / 适合什么内容</h2>
+        <p>它适合偏硬核但仍然要有人读完的内容：版本更新解读、工作流复盘、工具横评、技术教程、提示词方法论。</p>
+        <p class="mono-p">不适合纯情绪向笔记、图片主导作品集，或者需要很强生活方式氛围的软文。</p>
+
+        <h2>04 / 结论</h2>
+        <div class="verdict">
+          <p>把复杂工作讲清楚时，终端风不是装饰；它是一种“我真的跑过、查过、修过”的证据感。</p>
+        </div>
+
+        <p>这张模板的核心，就是把技术判断做成可读的长文，而不是把代码块堆成截图。</p>
+        <footer class="footer">Lieflat XHS Longform / XHS Terminal longform / 3:5 article card / export 1200 x 2000 PNG</footer>
+      </article>
+    </section>
+    <div class="frame-notes"><span>FRAME / TERMINAL</span><span>TTY SESSION</span></div>
+  </main>
+</body>
+</html>

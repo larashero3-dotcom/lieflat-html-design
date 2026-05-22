@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content="Lieflat XHS Cover" />
+<meta name="template-origin" content="Lieflat XHS Cover template">
+<title>Sunrise Codex 测评封面</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=EB+Garamond:wght@400;500&family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #2a1d14;
+  --ink-mid: rgba(42, 29, 20, 0.66);
+  --ink-faint: rgba(42, 29, 20, 0.46);
+  --line: rgba(42, 29, 20, 0.18);
+  --gold: #b48a4a;
+  --gold-soft: rgba(180, 138, 74, 0.55);
+  --paper: #ece2d8;
+  --serif: "Cormorant Garamond", "EB Garamond", "Noto Serif SC", "Songti SC", Georgia, serif;
+  --sans: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  background:
+    radial-gradient(900px 680px at 50% -8%, rgba(236, 226, 216, 0.22), transparent 64%),
+    linear-gradient(135deg, #2a211b, #4a3321 48%, #1b1410);
+  color: var(--ink);
+  font-family: var(--serif);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+p {
+  margin: 0;
+  letter-spacing: 0;
+}
+
+.card {
+  position: relative;
+  width: 600px;
+  height: 800px;
+  max-width: calc(100vw - 24px);
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--paper);
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.42),
+    0 10px 30px rgba(0, 10, 20, 0.3),
+    0 5px 15px rgba(0, 5, 15, 0.24);
+  isolation: isolate;
+}
+
+canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse at 15% 25%, rgba(232, 178, 140, 0.42) 0%, transparent 55%),
+    radial-gradient(ellipse at 82% 72%, rgba(206, 148, 158, 0.38) 0%, transparent 55%),
+    #ece2d8;
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+  opacity: 0.52;
+}
+
+.mast {
+  position: absolute;
+  z-index: 5;
+  left: 54px;
+  right: 54px;
+  top: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  color: var(--gold);
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.42em;
+}
+
+.mast span:last-child {
+  color: var(--ink-faint);
+  letter-spacing: 0.28em;
+}
+
+.hero {
+  position: absolute;
+  z-index: 5;
+  left: 54px;
+  right: 54px;
+  top: 212px;
+  text-align: center;
+}
+
+.label {
+  color: var(--gold);
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.52em;
+}
+
+.title {
+  margin-top: 26px;
+  color: var(--ink);
+  font-family: "Cormorant Garamond", "EB Garamond", "Noto Serif SC", "Songti SC", Georgia, serif;
+  font-size: 61px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 0.98;
+  letter-spacing: 0.008em;
+  font-synthesis: none;
+  font-variant-numeric: lining-nums tabular-nums;
+  font-feature-settings: "lnum" 1, "tnum" 1;
+}
+
+.title strong {
+  color: var(--gold);
+  font-weight: 300;
+  letter-spacing: 0.02em;
+}
+
+.gold-rule {
+  width: 72px;
+  height: 1px;
+  margin: 28px auto 22px;
+  background: var(--gold);
+}
+
+.tagline {
+  max-width: 470px;
+  margin: 0 auto;
+  color: var(--ink-mid);
+  font-size: 22px;
+  font-style: italic;
+  line-height: 1.62;
+}
+
+.panel {
+  position: absolute;
+  z-index: 5;
+  left: 76px;
+  right: 76px;
+  bottom: 112px;
+  padding: 18px 20px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  text-align: center;
+}
+
+.panel b {
+  display: block;
+  margin-bottom: 9px;
+  color: var(--gold);
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.36em;
+}
+
+.panel p {
+  color: var(--ink-mid);
+  font-family: var(--sans);
+  font-size: 18px;
+  line-height: 1.65;
+}
+
+.footer {
+  position: absolute;
+  z-index: 5;
+  left: 54px;
+  right: 54px;
+  bottom: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  color: var(--ink-faint);
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: 0.28em;
+}
+
+.footer::before,
+.footer::after {
+  content: "";
+  width: 44px;
+  height: 1px;
+  background: var(--gold-soft);
+}
+
+@media (max-width: 650px) {
+  body { padding: 10px; }
+  .card { width: 100%; height: auto; aspect-ratio: 3 / 4; }
+}
+</style>
+</head>
+<body>
+<main class="card" aria-label="Sunrise Codex 测评封面">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <header class="mast"><span>使用手记</span><span>交付收尾</span></header>
+  <section class="hero">
+    <p class="label">AI 工作流观察</p>
+    <h1 class="title">Codex<br><strong>最新版测评</strong></h1>
+    <div class="gold-rule"></div>
+    <p class="tagline">真正拉开差距的，不是它会不会写，而是能不能把一件事做到收尾。</p>
+  </section>
+  <section class="panel" aria-label="一句话结论">
+    <b>一句话结论</b>
+    <p>最值得测的不是生成能力，而是它能不能理解现场、持续修正、最后交到你手上。</p>
+  </section>
+  <footer class="footer">理解现场 · 持续修正 · 交付收尾</footer>
+</main>
+<script>
+(() => {
+  const canvas = document.getElementById("bg");
+  const gl = canvas.getContext("webgl", { antialias: true, alpha: false }) ||
+    canvas.getContext("experimental-webgl", { antialias: true, alpha: false });
+
+  if (!gl) {
+    return;
+  }
+
+  const vs = `
+    attribute vec2 a_pos;
+    void main() { gl_Position = vec4(a_pos, 0.0, 1.0); }
+  `;
+
+  const fs = `
+    precision highp float;
+    uniform vec2 u_res;
+    uniform float u_time;
+    uniform vec3 u_c1, u_c2, u_bg;
+
+    vec3 _m3(vec3 x){return x-floor(x*(1./289.))*289.;}
+    vec4 _m4(vec4 x){return x-floor(x*(1./289.))*289.;}
+    vec4 _p(vec4 x){return _m4(((x*34.)+1.)*x);}
+    vec4 _ti(vec4 r){return 1.79284291400159-0.85373472095314*r;}
+
+    float snoise(vec3 v){
+      const vec2 C=vec2(1./6.,1./3.);
+      const vec4 D=vec4(0.,.5,1.,2.);
+      vec3 i=floor(v+dot(v,C.yyy));
+      vec3 x0=v-i+dot(i,C.xxx);
+      vec3 g=step(x0.yzx,x0.xyz),l=1.-g;
+      vec3 i1=min(g.xyz,l.zxy),i2=max(g.xyz,l.zxy);
+      vec3 x1=x0-i1+C.x,x2=x0-i2+C.y,x3=x0-D.y;
+      i=_m3(i);
+      vec4 p=_p(_p(_p(i.z+vec4(0.,i1.z,i2.z,1.))+i.y+vec4(0.,i1.y,i2.y,1.))+i.x+vec4(0.,i1.x,i2.x,1.));
+      float n_=.142857142857;
+      vec3 ns=n_*D.wyz-D.xzx;
+      vec4 j=p-49.*floor(p*ns.z*ns.z);
+      vec4 x_=floor(j*ns.z),y_=floor(j-7.*x_);
+      vec4 x=x_*ns.x+ns.yyyy,y=y_*ns.x+ns.yyyy;
+      vec4 h=1.-abs(x)-abs(y);
+      vec4 b0=vec4(x.xy,y.xy),b1=vec4(x.zw,y.zw);
+      vec4 s0=floor(b0)*2.+1.,s1=floor(b1)*2.+1.;
+      vec4 sh=-step(h,vec4(0.));
+      vec4 a0=b0.xzyw+s0.xzyw*sh.xxyy,a1=b1.xzyw+s1.xzyw*sh.zzww;
+      vec3 p0=vec3(a0.xy,h.x),p1=vec3(a0.zw,h.y),p2=vec3(a1.xy,h.z),p3=vec3(a1.zw,h.w);
+      vec4 nr=_ti(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3)));
+      p0*=nr.x;p1*=nr.y;p2*=nr.z;p3*=nr.w;
+      vec4 m=max(.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.);
+      m=m*m;
+      return 42.*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));
+    }
+
+    void main(){
+      vec2 uv=gl_FragCoord.xy/u_res;
+      uv.y=1.-uv.y;
+      float n1=snoise(vec3(uv*1.7, u_time*.16));
+      float n2=snoise(vec3(uv*3.3+1.7, u_time*.11+4.5));
+      float n3=snoise(vec3(uv*6.8+3.2, u_time*.06+9.0));
+      float b=clamp(n1*.55+n2*.28+n3*.17,-.99,.99)*.5+.5;
+      float alpha=smoothstep(.32,.58,b);
+      vec3 nc=mix(u_c1/255.,u_c2/255.,smoothstep(.30,.70,b));
+      vec3 col=mix(u_bg/255.,nc,alpha*.30+.04);
+      float vg=1.-.12*length((uv-.5)*vec2(1.4,.9));
+      col*=vg;
+      gl_FragColor=vec4(col,1.);
+    }
+  `;
+
+  function shader(type, src) {
+    const sh = gl.createShader(type);
+    gl.shaderSource(sh, src);
+    gl.compileShader(sh);
+    return sh;
+  }
+
+  const program = gl.createProgram();
+  gl.attachShader(program, shader(gl.VERTEX_SHADER, vs));
+  gl.attachShader(program, shader(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(program);
+  gl.useProgram(program);
+
+  const buffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(program, "a_pos");
+  gl.enableVertexAttribArray(loc);
+  gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+  const uniforms = {
+    res: gl.getUniformLocation(program, "u_res"),
+    time: gl.getUniformLocation(program, "u_time"),
+    c1: gl.getUniformLocation(program, "u_c1"),
+    c2: gl.getUniformLocation(program, "u_c2"),
+    bg: gl.getUniformLocation(program, "u_bg")
+  };
+
+  const c1 = [228, 175, 138];
+  const c2 = [200, 152, 158];
+  const bg = [236, 226, 216];
+
+  function resize() {
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = Math.round(rect.width * dpr);
+    canvas.height = Math.round(rect.height * dpr);
+    gl.viewport(0, 0, canvas.width, canvas.height);
+  }
+
+  const t0 = performance.now();
+  function draw() {
+    const t = (performance.now() - t0) / 1000;
+    gl.uniform2f(uniforms.res, canvas.width, canvas.height);
+    gl.uniform1f(uniforms.time, t);
+    gl.uniform3fv(uniforms.c1, c1);
+    gl.uniform3fv(uniforms.c2, c2);
+    gl.uniform3fv(uniforms.bg, bg);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener("resize", resize);
+  resize();
+  requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>

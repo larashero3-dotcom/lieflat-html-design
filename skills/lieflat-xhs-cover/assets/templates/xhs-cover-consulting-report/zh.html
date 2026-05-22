@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content="Lieflat XHS Cover" />
+<meta name="template-origin" content="Lieflat XHS Cover template">
+<title>Consulting Report 封面</title>
+<style>
+:root {
+  --navy: #1b2a4a;
+  --dark: #151f35;
+  --cyan: #00a9f4;
+  --light-cyan: #4fc3f7;
+  --white: #fff;
+  --gray-100: #f5f5f5;
+  --gray-200: #e0e0e0;
+  --gray-400: #999;
+  --gray-600: #555;
+  --text: #1a1a1a;
+  --serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", Georgia, serif;
+  --sans: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", Arial, sans-serif;
+  --num: Georgia, "Times New Roman", serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  background: #eef0f3;
+  color: var(--text);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+p {
+  margin: 0;
+  letter-spacing: 0;
+}
+
+.card {
+  position: relative;
+  width: 600px;
+  height: 800px;
+  max-width: calc(100vw - 24px);
+  overflow: hidden;
+  border-radius: 6px;
+  color: var(--white);
+  background: var(--navy);
+  box-shadow: 0 24px 48px rgba(15, 25, 45, 0.28);
+  isolation: isolate;
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.top {
+  position: absolute;
+  z-index: 2;
+  top: 44px;
+  left: 46px;
+  right: 46px;
+  display: flex;
+  justify-content: space-between;
+  gap: 22px;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 12px;
+  line-height: 1.7;
+  letter-spacing: 0.08em;
+}
+
+.logo {
+  font-family: var(--serif);
+  font-size: 23px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0.04em;
+}
+
+.logo span {
+  display: block;
+  padding-left: 1em;
+  color: rgba(255, 255, 255, 0.78);
+  font-weight: 400;
+}
+
+.meta {
+  max-width: 190px;
+  text-align: right;
+}
+
+.body {
+  position: absolute;
+  z-index: 2;
+  left: 46px;
+  right: 46px;
+  top: 286px;
+}
+
+.label {
+  margin-bottom: 18px;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+}
+
+.title {
+  max-width: 450px;
+  font-family: var(--serif);
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 1.14;
+  letter-spacing: 0;
+}
+
+.sub {
+  max-width: 400px;
+  margin-top: 20px;
+  color: rgba(255, 255, 255, 0.82);
+  font-family: var(--serif);
+  font-size: 22px;
+  line-height: 1.48;
+}
+
+.footer {
+  position: absolute;
+  z-index: 2;
+  left: 46px;
+  right: 46px;
+  bottom: 44px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.28);
+  padding-top: 14px;
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 11px;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+}
+
+.firm {
+  font-family: var(--serif);
+  color: rgba(255, 255, 255, 0.68);
+  letter-spacing: 0.12em;
+}
+
+@media (max-width: 650px) {
+  body { padding: 10px; }
+  .card { width: 100%; height: auto; aspect-ratio: 3 / 4; }
+}
+</style>
+</head>
+<body>
+<main class="card" aria-label="Consulting Report 封面">
+  <header class="top">
+    <div class="logo">Codex<span>Workflow Intelligence</span></div>
+    <div class="meta">专题报告<br />2026 年 5 月</div>
+  </header>
+  <section class="body" aria-labelledby="cover-title">
+    <div class="label">EXECUTIVE BRIEF / AI WORKFLOW</div>
+    <h1 class="title" id="cover-title">从代码助手到工作流代理</h1>
+    <p class="sub">新版 Codex 的端到端任务推进能力观察</p>
+  </section>
+  <footer class="footer">
+    <span>AI 工作流 / 研究手记</span>
+    <span class="firm">示例文件 · 请替换内容</span>
+  </footer>
+</main>
+</body>
+</html>
