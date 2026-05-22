@@ -16,6 +16,93 @@
 - `lieflat-xhs-cover`：11 组小红书封面模板，默认中文，适合导出 `3:4` 首图
 - 每个生产 skill 都有自己的 `assets/catalog.json`、模板、风格理解文件和截图脚本
 
+## PPT 模板预览
+
+这组模板故意拉开了风格跨度：覆盖创作者身份系统、技术分析、咨询报告、安静编辑风、高级品牌营销、严肃评估，以及图片主导的作品集。
+
+GitHub README 会直接渲染仓库里的相对路径图片。下面这些预览图来自 `previews/zh/*.png`，提交到 GitHub 后就会像普通图片一样显示。
+
+### 技术型 / 系统
+
+<table>
+  <tr>
+    <td width="50%"><img src="./previews/zh/geek-report.png" alt="极客风格 Geek Report 预览"><br><strong>极客风格 · Geek Report</strong><br>极客气质、终端纸面、技术观点表达。</td>
+    <td width="50%"><img src="./previews/zh/pixel-report.png" alt="黑底闪光 Pixel Report 预览"><br><strong>黑底闪光 · Pixel Report</strong><br>暗色网格、像素 HUD、技术指标拆解。</td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="./previews/zh/dot-matrix-dark.png" alt="点阵编辑风 Dot Matrix 预览"><br><strong>点阵编辑风 · Dot Matrix</strong><br>点阵场、明暗变体、信号感表达。</td>
+    <td width="50%"><img src="./previews/zh/clean-review.png" alt="简约测评 Clean Review 预览"><br><strong>简约测评 · Clean Review</strong><br>极简克制、清晰对比、严肃分析。</td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="./previews/zh/shiny-tiles.png" alt="镭射网格 Shiny Tiles 预览"><br><strong>镭射网格 · Shiny Tiles</strong><br>黑底网格、银色玻璃卡、冷光技术视觉。</td>
+    <td width="50%"></td>
+  </tr>
+</table>
+
+### 高级感 / 编辑叙事
+
+<table>
+  <tr>
+    <td width="50%"><img src="./previews/zh/editorial.png" alt="杂志风 Editorial 预览"><br><strong>杂志风 · Editorial</strong><br>杂志式文章结构，留白克制。</td>
+    <td width="50%"><img src="./previews/zh/consulting-report.png" alt="咨询报告 Consulting Report 预览"><br><strong>咨询报告 · Consulting Report</strong><br>咨询报告、行业研究、高信任叙事。</td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="./previews/zh/sunrise.png" alt="日光 Sunrise 预览"><br><strong>日光 · Sunrise</strong><br>暖调留白、优雅标题、适合高级叙事。</td>
+    <td width="50%"><img src="./previews/zh/rain-notes.png" alt="雨天手记 Rain Notes 预览"><br><strong>雨天手记 · Rain Notes</strong><br>柔和纸感、安静动效、适合测评笔记。</td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="./previews/zh/story-field.png" alt="故事集 Story Field 预览"><br><strong>故事集 · Story Field</strong><br>纪实影像、档案气质、电影感横向叙事。</td>
+    <td width="50%"></td>
+  </tr>
+</table>
+
+### 表达型 / 创作者
+
+<table>
+  <tr>
+    <td width="50%"><img src="./previews/zh/y2k-brand.png" alt="Y2K 手册 Y2K Manual 预览"><br><strong>Y2K 手册 · Y2K Manual</strong><br>千禧网页、金属字、闪光、像素窗口。</td>
+    <td width="50%"><img src="./previews/zh/studio-photo.png" alt="作品集 Studio Photo 预览"><br><strong>作品集 · Studio Photo</strong><br>以物件和摄影为中心的作品集系统。</td>
+  </tr>
+</table>
+
+## 小红书封面模板
+
+小红书封面模板用于第一张图，不是长文阅读卡。这里展示 8 个常用方向，默认导出 `1200×1600` PNG。
+
+<table>
+  <tr>
+    <td width="25%"><img src="./previews/zh/xhs-cover-editorial.png" alt="小红书封面 杂志风 预览"><br><strong>杂志风</strong></td>
+    <td width="25%"><img src="./previews/zh/xhs-cover-geek-report.png" alt="小红书封面 极客风格 预览"><br><strong>极客风格</strong></td>
+    <td width="25%"><img src="./previews/zh/xhs-cover-consulting-report.png" alt="小红书封面 咨询报告 预览"><br><strong>咨询报告</strong></td>
+    <td width="25%"><img src="./previews/zh/xhs-cover-sunrise.png" alt="小红书封面 日光 预览"><br><strong>日光</strong></td>
+  </tr>
+  <tr>
+    <td width="25%"><img src="./previews/zh/xhs-cover-clean-review.png" alt="小红书封面 简约测评 预览"><br><strong>简约测评</strong></td>
+    <td width="25%"><img src="./previews/zh/xhs-cover-rain-notes.png" alt="小红书封面 雨天手记 预览"><br><strong>雨天手记</strong></td>
+    <td width="25%"><img src="./previews/zh/xhs-cover-pixel-report.png" alt="小红书封面 黑底闪光 预览"><br><strong>黑底闪光</strong></td>
+    <td width="25%"><img src="./previews/zh/xhs-cover-shiny-tiles.png" alt="小红书封面 镭射网格 预览"><br><strong>镭射网格</strong></td>
+  </tr>
+</table>
+
+## 小红书长文模板
+
+小红书长文模板会把视觉风格重新排成连续文章卡。这里展示 8 个常用方向，默认导出 `1200×2000` PNG。
+
+<table>
+  <tr>
+    <td width="25%"><img src="./previews/zh/xhs-editorial.png" alt="小红书长文 杂志风 预览"><br><strong>杂志风</strong></td>
+    <td width="25%"><img src="./previews/zh/xhs-geek-report.png" alt="小红书长文 极客风格 预览"><br><strong>极客风格</strong></td>
+    <td width="25%"><img src="./previews/zh/xhs-consulting-report.png" alt="小红书长文 咨询报告 预览"><br><strong>咨询报告</strong></td>
+    <td width="25%"><img src="./previews/zh/xhs-sunrise.png" alt="小红书长文 日光 预览"><br><strong>日光</strong></td>
+  </tr>
+  <tr>
+    <td width="25%"><img src="./previews/zh/xhs-clean-review.png" alt="小红书长文 简约测评 预览"><br><strong>简约测评</strong></td>
+    <td width="25%"><img src="./previews/zh/xhs-rain-notes.png" alt="小红书长文 雨天手记 预览"><br><strong>雨天手记</strong></td>
+    <td width="25%"><img src="./previews/zh/xhs-pixel-report.png" alt="小红书长文 黑底闪光 预览"><br><strong>黑底闪光</strong></td>
+    <td width="25%"><img src="./previews/zh/xhs-shiny-tiles.png" alt="小红书长文 镭射网格 预览"><br><strong>镭射网格</strong></td>
+  </tr>
+</table>
+
 ## Skill 结构
 
 | Skill | 用途 |
@@ -38,77 +125,6 @@
 | 项目复盘、田野报告、人物/地点故事 | 故事集、杂志风 | 叙事节奏更强，适合图文并行的长线表达 |
 
 如果不确定用哪个模板，直接让 Agent 使用 `lieflat-html-design` 总入口；如果已经知道交付形态，也可以直接点名 `lieflat-html-deck`、`lieflat-xhs-longform` 或 `lieflat-xhs-cover`。
-
-## PPT 模板预览
-
-这组模板故意拉开了风格跨度：覆盖创作者身份系统、技术分析、咨询报告、安静编辑风、高级品牌营销、严肃评估，以及图片主导的作品集。
-
-GitHub README 会直接渲染仓库里的相对路径图片。下面这些预览图来自 `previews/zh/*.png`，提交到 GitHub 后就会像普通图片一样显示。
-
-### 技术型 / 系统
-
-<table>
-  <tr>
-    <td width="33%"><img src="./previews/zh/geek-report.png" alt="极客风格 Geek Report 预览"><br><strong>极客风格 · Geek Report</strong><br>极客气质、终端纸面、技术观点表达。</td>
-    <td width="33%"><img src="./previews/zh/pixel-report.png" alt="黑底闪光 Pixel Report 预览"><br><strong>黑底闪光 · Pixel Report</strong><br>暗色网格、像素 HUD、技术指标拆解。</td>
-    <td width="33%"><img src="./previews/zh/dot-matrix-dark.png" alt="点阵编辑风 Dot Matrix 预览"><br><strong>点阵编辑风 · Dot Matrix</strong><br>点阵场、明暗变体、信号感表达。</td>
-  </tr>
-  <tr>
-    <td width="33%"><img src="./previews/zh/clean-review.png" alt="简约测评 Clean Review 预览"><br><strong>简约测评 · Clean Review</strong><br>极简克制、清晰对比、严肃分析。</td>
-    <td width="33%"><img src="./previews/zh/shiny-tiles.png" alt="镭射网格 Shiny Tiles 预览"><br><strong>镭射网格 · Shiny Tiles</strong><br>黑底网格、银色玻璃卡、冷光技术视觉。</td>
-    <td width="33%"></td>
-  </tr>
-</table>
-
-### 高级感 / 编辑叙事
-
-<table>
-  <tr>
-    <td width="33%"><img src="./previews/zh/editorial.png" alt="杂志风 Editorial 预览"><br><strong>杂志风 · Editorial</strong><br>杂志式文章结构，留白克制。</td>
-    <td width="33%"><img src="./previews/zh/consulting-report.png" alt="咨询报告 Consulting Report 预览"><br><strong>咨询报告 · Consulting Report</strong><br>咨询报告、行业研究、高信任叙事。</td>
-    <td width="33%"><img src="./previews/zh/sunrise.png" alt="日光 Sunrise 预览"><br><strong>日光 · Sunrise</strong><br>暖调留白、优雅标题、适合高级叙事。</td>
-  </tr>
-  <tr>
-    <td width="33%"><img src="./previews/zh/rain-notes.png" alt="雨天手记 Rain Notes 预览"><br><strong>雨天手记 · Rain Notes</strong><br>柔和纸感、安静动效、适合测评笔记。</td>
-    <td width="33%"><img src="./previews/zh/story-field.png" alt="故事集 Story Field 预览"><br><strong>故事集 · Story Field</strong><br>纪实影像、档案气质、电影感横向叙事。</td>
-    <td width="33%"></td>
-  </tr>
-</table>
-
-### 表达型 / 创作者
-
-<table>
-  <tr>
-    <td width="50%"><img src="./previews/zh/y2k-brand.png" alt="Y2K 手册 Y2K Manual 预览"><br><strong>Y2K 手册 · Y2K Manual</strong><br>千禧网页、金属字、闪光、像素窗口。</td>
-    <td width="50%"><img src="./previews/zh/studio-photo.png" alt="作品集 Studio Photo 预览"><br><strong>作品集 · Studio Photo</strong><br>以物件和摄影为中心的作品集系统。</td>
-  </tr>
-</table>
-
-## 小红书封面模板
-
-小红书封面模板用于第一张图，不是长文阅读卡。这里展示 4 个常用方向，默认导出 `1200×1600` PNG。
-
-<table>
-  <tr>
-    <td width="25%"><img src="./previews/zh/xhs-cover-editorial.png" alt="小红书封面 杂志风 预览"><br><strong>杂志风</strong></td>
-    <td width="25%"><img src="./previews/zh/xhs-cover-geek-report.png" alt="小红书封面 极客风格 预览"><br><strong>极客风格</strong></td>
-    <td width="25%"><img src="./previews/zh/xhs-cover-consulting-report.png" alt="小红书封面 咨询报告 预览"><br><strong>咨询报告</strong></td>
-    <td width="25%"><img src="./previews/zh/xhs-cover-sunrise.png" alt="小红书封面 日光 预览"><br><strong>日光</strong></td>
-  </tr>
-</table>
-
-## 小红书长文模板
-
-小红书长文模板会把视觉风格重新排成连续文章卡。这里展示 4 个常用方向，默认导出 `1200×2000` PNG。
-
-<table>
-  <tr>
-    <td width="25%"><img src="./previews/zh/xhs-editorial.png" alt="小红书长文 杂志风 预览"><br><strong>杂志风</strong></td>
-    <td width="25%"><img src="./previews/zh/xhs-geek-report.png" alt="小红书长文 极客风格 预览"><br><strong>极客风格</strong></td>
-    <td width="25%"><img src="./previews/zh/xhs-consulting-report.png" alt="小红书长文 咨询报告 预览"><br><strong>咨询报告</strong></td>
-    <td width="25%"><img src="./previews/zh/xhs-sunrise.png" alt="小红书长文 日光 预览"><br><strong>日光</strong></td>
-  </tr>
-</table>
 
 ## 安装
 

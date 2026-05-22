@@ -14,6 +14,93 @@ Chinese version: [README.md](./README.md).
 - `lieflat-xhs-cover`: 11 Chinese-first Xiaohongshu cover templates exported as `3:4` first-image PNG cards
 - Each production skill has its own `assets/catalog.json`, templates, style-understanding reference, and screenshot scripts
 
+## Presentation Template Gallery
+
+The pack is intentionally broad: it covers creator identity systems, technical analysis, consulting reports, quiet editorial design, premium brand campaigns, serious reviews, and image-led portfolios.
+
+GitHub README files render repository-relative image paths directly. The previews below come from `previews/en/*.png`.
+
+### Technical / Systems
+
+<table>
+  <tr>
+    <td width="50%"><img src="./previews/en/geek-report.png" alt="Geek Report preview"><br><strong>Geek Report</strong><br>Geek energy, terminal paper, technical point-of-view.</td>
+    <td width="50%"><img src="./previews/en/pixel-report.png" alt="Pixel Report preview"><br><strong>Pixel Report</strong><br>Dark grids, pixel HUDs, and technical metric breakdowns.</td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="./previews/en/dot-matrix-dark.png" alt="Dot Matrix preview"><br><strong>Dot Matrix</strong><br>Dot-matrix fields, dark/light variants, signal narratives.</td>
+    <td width="50%"><img src="./previews/en/clean-review.png" alt="Clean Review preview"><br><strong>Clean Review</strong><br>Minimal, clear contrast, serious analysis.</td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="./previews/en/shiny-tiles.png" alt="Shiny Tiles preview"><br><strong>Shiny Tiles</strong><br>Black grids, silver glass cards, and cold technical light.</td>
+    <td width="50%"></td>
+  </tr>
+</table>
+
+### Premium / Editorial
+
+<table>
+  <tr>
+    <td width="50%"><img src="./previews/en/editorial.png" alt="Editorial preview"><br><strong>Editorial</strong><br>Magazine-like essay structure with refined white space.</td>
+    <td width="50%"><img src="./previews/en/consulting-report.png" alt="Consulting Report preview"><br><strong>Consulting Report</strong><br>Consulting reports, industry research, high-trust narrative.</td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="./previews/en/sunrise.png" alt="Sunrise preview"><br><strong>Sunrise</strong><br>Warm whitespace, elegant titles, and premium narrative pacing.</td>
+    <td width="50%"><img src="./previews/en/rain-notes.png" alt="Rain Notes preview"><br><strong>Rain Notes</strong><br>Soft paper and quiet motion for review notes.</td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="./previews/en/story-field.png" alt="Story Field preview"><br><strong>Story Field</strong><br>Documentary imagery, archive mood, and cinematic horizontal narrative.</td>
+    <td width="50%"></td>
+  </tr>
+</table>
+
+### Expressive / Creator
+
+<table>
+  <tr>
+    <td width="50%"><img src="./previews/en/y2k-brand.png" alt="Y2K Brand Manual preview"><br><strong>Y2K Brand Manual</strong><br>Millennium web, chrome type, sparkles, pixel windows.</td>
+    <td width="50%"><img src="./previews/en/studio-photo.png" alt="Studio Photo preview"><br><strong>Studio Photo</strong><br>Object-led portfolio system for photography and product work.</td>
+  </tr>
+</table>
+
+## Xiaohongshu Cover Templates
+
+Xiaohongshu cover templates are first-image cards, not longform reading cards. Eight common directions are shown here, with default `1200×1600` PNG export.
+
+<table>
+  <tr>
+    <td width="25%"><img src="./previews/zh/xhs-cover-editorial.png" alt="XHS Cover Editorial preview"><br><strong>Editorial</strong></td>
+    <td width="25%"><img src="./previews/zh/xhs-cover-geek-report.png" alt="XHS Cover Geek Report preview"><br><strong>Geek Report</strong></td>
+    <td width="25%"><img src="./previews/zh/xhs-cover-consulting-report.png" alt="XHS Cover Consulting Report preview"><br><strong>Consulting</strong></td>
+    <td width="25%"><img src="./previews/zh/xhs-cover-sunrise.png" alt="XHS Cover Sunrise preview"><br><strong>Sunrise</strong></td>
+  </tr>
+  <tr>
+    <td width="25%"><img src="./previews/zh/xhs-cover-clean-review.png" alt="XHS Cover Clean Review preview"><br><strong>Clean Review</strong></td>
+    <td width="25%"><img src="./previews/zh/xhs-cover-rain-notes.png" alt="XHS Cover Rain Notes preview"><br><strong>Rain Notes</strong></td>
+    <td width="25%"><img src="./previews/zh/xhs-cover-pixel-report.png" alt="XHS Cover Pixel Report preview"><br><strong>Pixel Report</strong></td>
+    <td width="25%"><img src="./previews/zh/xhs-cover-shiny-tiles.png" alt="XHS Cover Shiny Tiles preview"><br><strong>Shiny Tiles</strong></td>
+  </tr>
+</table>
+
+## Xiaohongshu Longform Templates
+
+Xiaohongshu templates turn a visual style into a continuous article card. Eight common directions are shown here, with default `1200×2000` PNG export.
+
+<table>
+  <tr>
+    <td width="25%"><img src="./previews/zh/xhs-editorial.png" alt="XHS Editorial preview"><br><strong>Editorial</strong></td>
+    <td width="25%"><img src="./previews/zh/xhs-geek-report.png" alt="XHS Geek Report preview"><br><strong>Geek Report</strong></td>
+    <td width="25%"><img src="./previews/zh/xhs-consulting-report.png" alt="XHS Consulting Report preview"><br><strong>Consulting</strong></td>
+    <td width="25%"><img src="./previews/zh/xhs-sunrise.png" alt="XHS Sunrise preview"><br><strong>Sunrise</strong></td>
+  </tr>
+  <tr>
+    <td width="25%"><img src="./previews/zh/xhs-clean-review.png" alt="XHS Clean Review preview"><br><strong>Clean Review</strong></td>
+    <td width="25%"><img src="./previews/zh/xhs-rain-notes.png" alt="XHS Rain Notes preview"><br><strong>Rain Notes</strong></td>
+    <td width="25%"><img src="./previews/zh/xhs-pixel-report.png" alt="XHS Pixel Report preview"><br><strong>Pixel Report</strong></td>
+    <td width="25%"><img src="./previews/zh/xhs-shiny-tiles.png" alt="XHS Shiny Tiles preview"><br><strong>Shiny Tiles</strong></td>
+  </tr>
+</table>
+
 ## Skill Structure
 
 | Skill | Purpose |
@@ -36,77 +123,6 @@ Chinese version: [README.md](./README.md).
 | Project recaps, field reports, people/place stories | `story-field`, `editorial` | Stronger narrative pacing for long-form visual storytelling |
 
 When unsure, ask the agent to use `lieflat-html-design`. If you already know the delivery surface, name `lieflat-html-deck`, `lieflat-xhs-longform`, or `lieflat-xhs-cover` directly.
-
-## Presentation Template Gallery
-
-The pack is intentionally broad: it covers creator identity systems, technical analysis, consulting reports, quiet editorial design, premium brand campaigns, serious reviews, and image-led portfolios.
-
-GitHub README files render repository-relative image paths directly. The previews below come from `previews/en/*.png`.
-
-### Technical / Systems
-
-<table>
-  <tr>
-    <td width="33%"><img src="./previews/en/geek-report.png" alt="Geek Report preview"><br><strong>Geek Report</strong><br>Geek energy, terminal paper, technical point-of-view.</td>
-    <td width="33%"><img src="./previews/en/pixel-report.png" alt="Pixel Report preview"><br><strong>Pixel Report</strong><br>Dark grids, pixel HUDs, and technical metric breakdowns.</td>
-    <td width="33%"><img src="./previews/en/dot-matrix-dark.png" alt="Dot Matrix preview"><br><strong>Dot Matrix</strong><br>Dot-matrix fields, dark/light variants, signal narratives.</td>
-  </tr>
-  <tr>
-    <td width="33%"><img src="./previews/en/clean-review.png" alt="Clean Review preview"><br><strong>Clean Review</strong><br>Minimal, clear contrast, serious analysis.</td>
-    <td width="33%"><img src="./previews/en/shiny-tiles.png" alt="Shiny Tiles preview"><br><strong>Shiny Tiles</strong><br>Black grids, silver glass cards, and cold technical light.</td>
-    <td width="33%"></td>
-  </tr>
-</table>
-
-### Premium / Editorial
-
-<table>
-  <tr>
-    <td width="33%"><img src="./previews/en/editorial.png" alt="Editorial preview"><br><strong>Editorial</strong><br>Magazine-like essay structure with refined white space.</td>
-    <td width="33%"><img src="./previews/en/consulting-report.png" alt="Consulting Report preview"><br><strong>Consulting Report</strong><br>Consulting reports, industry research, high-trust narrative.</td>
-    <td width="33%"><img src="./previews/en/sunrise.png" alt="Sunrise preview"><br><strong>Sunrise</strong><br>Warm whitespace, elegant titles, and premium narrative pacing.</td>
-  </tr>
-  <tr>
-    <td width="33%"><img src="./previews/en/rain-notes.png" alt="Rain Notes preview"><br><strong>Rain Notes</strong><br>Soft paper and quiet motion for review notes.</td>
-    <td width="33%"><img src="./previews/en/story-field.png" alt="Story Field preview"><br><strong>Story Field</strong><br>Documentary imagery, archive mood, and cinematic horizontal narrative.</td>
-    <td width="33%"></td>
-  </tr>
-</table>
-
-### Expressive / Creator
-
-<table>
-  <tr>
-    <td width="50%"><img src="./previews/en/y2k-brand.png" alt="Y2K Brand Manual preview"><br><strong>Y2K Brand Manual</strong><br>Millennium web, chrome type, sparkles, pixel windows.</td>
-    <td width="50%"><img src="./previews/en/studio-photo.png" alt="Studio Photo preview"><br><strong>Studio Photo</strong><br>Object-led portfolio system for photography and product work.</td>
-  </tr>
-</table>
-
-## Xiaohongshu Cover Templates
-
-Xiaohongshu cover templates are first-image cards, not longform reading cards. Four common directions are shown here, with default `1200×1600` PNG export.
-
-<table>
-  <tr>
-    <td width="25%"><img src="./previews/zh/xhs-cover-editorial.png" alt="XHS Cover Editorial preview"><br><strong>Editorial</strong></td>
-    <td width="25%"><img src="./previews/zh/xhs-cover-geek-report.png" alt="XHS Cover Geek Report preview"><br><strong>Geek Report</strong></td>
-    <td width="25%"><img src="./previews/zh/xhs-cover-consulting-report.png" alt="XHS Cover Consulting Report preview"><br><strong>Consulting</strong></td>
-    <td width="25%"><img src="./previews/zh/xhs-cover-sunrise.png" alt="XHS Cover Sunrise preview"><br><strong>Sunrise</strong></td>
-  </tr>
-</table>
-
-## Xiaohongshu Longform Templates
-
-Xiaohongshu templates turn a visual style into a continuous article card. Four common directions are shown here, with default `1200×2000` PNG export.
-
-<table>
-  <tr>
-    <td width="25%"><img src="./previews/zh/xhs-editorial.png" alt="XHS Editorial preview"><br><strong>Editorial</strong></td>
-    <td width="25%"><img src="./previews/zh/xhs-geek-report.png" alt="XHS Geek Report preview"><br><strong>Geek Report</strong></td>
-    <td width="25%"><img src="./previews/zh/xhs-consulting-report.png" alt="XHS Consulting Report preview"><br><strong>Consulting</strong></td>
-    <td width="25%"><img src="./previews/zh/xhs-sunrise.png" alt="XHS Sunrise preview"><br><strong>Sunrise</strong></td>
-  </tr>
-</table>
 
 ## Install
 
