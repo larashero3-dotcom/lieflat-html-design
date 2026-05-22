@@ -1,73 +1,88 @@
 # Lieflat HTML Design
 
-给 Agent 用的 HTML 视觉设计 Skill 合集，按交付形态拆成横向 HTML 演示、小红书长文竖图和小红书封面首图。
+倾心打造的 HTML 视觉设计 Skill 合集💗 让你的 Agent 生成有设计感的 PPT、小红书长文竖图和小红书封面首图。
 
-这个仓库不只是放了一堆静态 HTML 文件，而是把一组单文件 HTML 视觉系统打包成可复用的 Agent Skills。Codex、Claude Code、Moxt 等工具可以读取对应 skill 的 catalog 和风格理解文件，按交付形态、主题、受众和输出格式选择视觉方向，整理内容结构，并用浏览器截图检查最终版面。
-
-内置 12 组风格差异明显的演示模板，每组都提供中文和英文版本：从 Y2K 品牌手册、技术分析，到咨询报告、雨天笔记、图片叙事都能覆盖。另有两类小红书模板：长文模板使用 `600×1000` CSS 卡片并导出 `1200×2000` 高清 PNG；封面模板使用 `600×800` CSS 卡片并导出 `1200×1600` 高清 PNG。
-
-英文版见 [README.en.md](./README.en.md)。
+12 组 PPT 模板、11 组小红书模板，从严肃技术分析、融资路演、咨询报告，到品牌手册、杂志风、webgl 设计，甚至还有 Y2K，让你的 html 告别千篇一律！
 
 ## 包含内容
 
-- 4 个可安装 skill：总入口、HTML deck、小红书长文、小红书封面
-- `lieflat-html-deck`：12 组 PPT / 演示视觉风格，每组都包含中文和英文版本
-- `lieflat-xhs-longform`：11 组小红书长文模板，默认中文，适合导出 `3:5` 竖图
-- `lieflat-xhs-cover`：11 组小红书封面模板，默认中文，适合导出 `3:4` 首图
-- 每个生产 skill 都有自己的 `assets/catalog.json`、模板、风格理解文件和截图脚本
+4 个可安装 skill：总入口、HTML deck、小红书长文、小红书封面
 
-## PPT 模板预览
+lieflat-html-deck：12 组 PPT / 演示视觉风格，每组都包含中文和英文版本
 
-这组模板故意拉开了风格跨度：覆盖创作者身份系统、技术分析、咨询报告、安静编辑风、高级品牌营销、严肃评估，以及图片主导的作品集。
+lieflat-xhs-longform：11 组小红书长文模板，默认中文，适合导出 3:5 竖图
 
-GitHub README 会直接渲染仓库里的相对路径图片。下面这些预览图来自 `previews/zh/*.png`，提交到 GitHub 后就会像普通图片一样显示。
+lieflat-xhs-cover：11 组小红书封面模板，默认中文，适合导出 3:4 首图
 
-### 技术型 / 系统
+每个生产 skill 都有自己的 assets/catalog.json、模板、风格理解文件和截图脚本
 
-<table>
-  <tr>
-    <td width="50%"><img src="./previews/zh/geek-report.png" alt="极客风格 Geek Report 预览"><br><strong>极客风格 · Geek Report</strong><br>极客气质、终端纸面、技术观点表达。</td>
-    <td width="50%"><img src="./previews/zh/pixel-report.png" alt="黑底闪光 Pixel Report 预览"><br><strong>黑底闪光 · Pixel Report</strong><br>暗色网格、像素 HUD、技术指标拆解。</td>
-  </tr>
-  <tr>
-    <td width="50%"><img src="./previews/zh/dot-matrix-dark.png" alt="点阵编辑风 Dot Matrix 预览"><br><strong>点阵编辑风 · Dot Matrix</strong><br>点阵场、明暗变体、信号感表达。</td>
-    <td width="50%"><img src="./previews/zh/clean-review.png" alt="简约测评 Clean Review 预览"><br><strong>简约测评 · Clean Review</strong><br>极简克制、清晰对比、严肃分析。</td>
-  </tr>
-  <tr>
-    <td width="50%"><img src="./previews/zh/shiny-tiles.png" alt="镭射网格 Shiny Tiles 预览"><br><strong>镭射网格 · Shiny Tiles</strong><br>黑底网格、银色玻璃卡、冷光技术视觉。</td>
-    <td width="50%"></td>
-  </tr>
-</table>
+## 模板示例
 
-### 高级感 / 编辑叙事
+### 第一类：你想展示一下审美能力
+
+| 模板 | 一句话 |
+| - | - |
+| **Editorial · 杂志风** | 杂志式标题、留白克制，看起来像经过排版的（其实也确实是） |
+| **Sunrise · 日光** | 暖色留白，适合写产品测评不想显得在恰饭 |
+| **Rain Notes · 雨天手记** | 纸感、安静、有点忧郁，适合写"我用了三个月的 XX" |
+| **Story Field · 故事集** | 故事视角，适合有图片的叙事，略显文艺（图片好不好看很影响效果） |
 
 <table>
   <tr>
-    <td width="50%"><img src="./previews/zh/editorial.png" alt="杂志风 Editorial 预览"><br><strong>杂志风 · Editorial</strong><br>杂志式文章结构，留白克制。</td>
-    <td width="50%"><img src="./previews/zh/consulting-report.png" alt="咨询报告 Consulting Report 预览"><br><strong>咨询报告 · Consulting Report</strong><br>咨询报告、行业研究、高信任叙事。</td>
+    <td width="50%"><img src="./previews/zh/editorial.png" alt="杂志风 Editorial 预览"><br><strong>杂志风 · Editorial</strong></td>
+    <td width="50%"><img src="./previews/zh/sunrise.png" alt="日光 Sunrise 预览"><br><strong>日光 · Sunrise</strong></td>
   </tr>
   <tr>
-    <td width="50%"><img src="./previews/zh/sunrise.png" alt="日光 Sunrise 预览"><br><strong>日光 · Sunrise</strong><br>暖调留白、优雅标题、适合高级叙事。</td>
-    <td width="50%"><img src="./previews/zh/rain-notes.png" alt="雨天手记 Rain Notes 预览"><br><strong>雨天手记 · Rain Notes</strong><br>柔和纸感、安静动效、适合测评笔记。</td>
-  </tr>
-  <tr>
-    <td width="50%"><img src="./previews/zh/story-field.png" alt="故事集 Story Field 预览"><br><strong>故事集 · Story Field</strong><br>纪实影像、档案气质、电影感横向叙事。</td>
-    <td width="50%"></td>
+    <td width="50%"><img src="./previews/zh/rain-notes.png" alt="雨天手记 Rain Notes 预览"><br><strong>雨天手记 · Rain Notes</strong></td>
+    <td width="50%"><img src="./previews/zh/story-field.png" alt="故事集 Story Field 预览"><br><strong>故事集 · Story Field</strong></td>
   </tr>
 </table>
 
-### 表达型 / 创作者
+### 第二类：你要发的是硬核分析，不是表演
+
+| 模板 | 一句话 |
+| - | - |
+| **Geek Report · 极客风格** | 终端纸面感。写技术观点不油腻 |
+| **Pixel Report · 黑底闪光** | 暗色网格 + 像素 HUD，技术指标拆解 |
+| **Dot Matrix · 点阵编辑风** | 点阵场，明暗变体，信号感拉满 |
+| **Clean Review · 简约测评** | 很极简，很现代，很清晰，startup 做做 deck 很适合 |
+| **Shiny Tiles · 镭射网格** | 黑底银色玻璃卡，冷光科技感。 |
+| **Consulting Report · 咨询报告** | 高信任叙事。看起来很贵，其实不要钱 |
 
 <table>
   <tr>
-    <td width="50%"><img src="./previews/zh/y2k-brand.png" alt="Y2K 手册 Y2K Manual 预览"><br><strong>Y2K 手册 · Y2K Manual</strong><br>千禧网页、金属字、闪光、像素窗口。</td>
-    <td width="50%"><img src="./previews/zh/studio-photo.png" alt="作品集 Studio Photo 预览"><br><strong>作品集 · Studio Photo</strong><br>以物件和摄影为中心的作品集系统。</td>
+    <td width="50%"><img src="./previews/zh/geek-report.png" alt="极客风格 Geek Report 预览"><br><strong>极客风格 · Geek Report</strong></td>
+    <td width="50%"><img src="./previews/zh/pixel-report.png" alt="黑底闪光 Pixel Report 预览"><br><strong>黑底闪光 · Pixel Report</strong></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="./previews/zh/dot-matrix-dark.png" alt="点阵编辑风 Dot Matrix 预览"><br><strong>点阵编辑风 · Dot Matrix</strong></td>
+    <td width="50%"><img src="./previews/zh/clean-review.png" alt="简约测评 Clean Review 预览"><br><strong>简约测评 · Clean Review</strong></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="./previews/zh/shiny-tiles.png" alt="镭射网格 Shiny Tiles 预览"><br><strong>镭射网格 · Shiny Tiles</strong></td>
+    <td width="50%"><img src="./previews/zh/consulting-report.png" alt="咨询报告 Consulting Report 预览"><br><strong>咨询报告 · Consulting Report</strong></td>
   </tr>
 </table>
+
+### 第三类：整点薯条！
+
+| 模板 | 一句话 |
+| - | - |
+| **Y2K Manual · Y2K 手册** | 千禧网页、金属字、像素窗口。看到这个还在皱眉的，咱俩可能不是一代人 |
+| **Studio Photo · 作品集** | 你图片多、图片足够酷的话用这个，照片少强行用就很尴尬 |
+
+<table>
+  <tr>
+    <td width="50%"><img src="./previews/zh/y2k-brand.png" alt="Y2K 手册 Y2K Manual 预览"><br><strong>Y2K 手册 · Y2K Manual</strong></td>
+    <td width="50%"><img src="./previews/zh/studio-photo.png" alt="作品集 Studio Photo 预览"><br><strong>作品集 · Studio Photo</strong></td>
+  </tr>
+</table>
+
+每一套都中英双语。是的我知道这很卷。
 
 ## 小红书封面模板
 
-小红书封面模板用于第一张图，不是长文阅读卡。这里展示 8 个常用方向，默认导出 `1200×1600` PNG。
+根据以上 12 种风格，我又做了小红书排版！除了最后两种真的不适合作为小红书排版的风格，其他 10 种都根据小红书重新调试了，而且还加了一种 terminal 的风格。最后不只输出 html 文件，还会贴心地帮你截好图，拿着图直接发布！
 
 <table>
   <tr>
@@ -82,11 +97,17 @@ GitHub README 会直接渲染仓库里的相对路径图片。下面这些预览
     <td width="25%"><img src="./previews/zh/xhs-cover-pixel-report.png" alt="小红书封面 黑底闪光 预览"><br><strong>黑底闪光</strong></td>
     <td width="25%"><img src="./previews/zh/xhs-cover-shiny-tiles.png" alt="小红书封面 镭射网格 预览"><br><strong>镭射网格</strong></td>
   </tr>
+  <tr>
+    <td width="25%"><img src="./previews/zh/xhs-cover-dot-matrix.png" alt="小红书封面 点阵编辑风 预览"><br><strong>点阵编辑风</strong></td>
+    <td width="25%"><img src="./previews/zh/xhs-cover-terminal.png" alt="小红书封面 终端风 预览"><br><strong>终端风</strong></td>
+    <td width="25%"><img src="./previews/zh/xhs-cover-story-field.png" alt="小红书封面 故事集 预览"><br><strong>故事集</strong></td>
+    <td width="25%"></td>
+  </tr>
 </table>
 
 ## 小红书长文模板
 
-小红书长文模板会把视觉风格重新排成连续文章卡。这里展示 8 个常用方向，默认导出 `1200×2000` PNG。
+同上，也是有 11 种风格，agent 会根据生成 html 帮你贴心生成1200×2000 PNG，直接发布！
 
 <table>
   <tr>
@@ -101,30 +122,13 @@ GitHub README 会直接渲染仓库里的相对路径图片。下面这些预览
     <td width="25%"><img src="./previews/zh/xhs-pixel-report.png" alt="小红书长文 黑底闪光 预览"><br><strong>黑底闪光</strong></td>
     <td width="25%"><img src="./previews/zh/xhs-shiny-tiles.png" alt="小红书长文 镭射网格 预览"><br><strong>镭射网格</strong></td>
   </tr>
+  <tr>
+    <td width="25%"><img src="./previews/zh/xhs-dot-matrix-light.png" alt="小红书长文 点阵浅色 预览"><br><strong>点阵浅色</strong></td>
+    <td width="25%"><img src="./previews/zh/xhs-terminal.png" alt="小红书长文 终端风 预览"><br><strong>终端风</strong></td>
+    <td width="25%"><img src="./previews/zh/xhs-story-field.png" alt="小红书长文 故事集 预览"><br><strong>故事集</strong></td>
+    <td width="25%"></td>
+  </tr>
 </table>
-
-## Skill 结构
-
-| Skill | 用途 |
-|------|------|
-| `lieflat-html-design` | 总入口：判断用户需要 deck、长文图还是封面图 |
-| `lieflat-html-deck` | 横向 HTML 演示，内含 12 组 PPT 风格 |
-| `lieflat-xhs-longform` | 小红书长文竖图，内含 11 组长文风格 |
-| `lieflat-xhs-cover` | 小红书封面首图，内含 11 组封面风格 |
-
-## 使用场景及推荐模板
-
-| 场景 | 推荐模板 | 适合原因 |
-|------|----------|----------|
-| 公司战略、行业研究、投资人叙事 | 咨询报告、简约测评 | 信息可信、结构清晰，适合严肃观点和决策材料 |
-| AI 系统、模型简报、技术趋势分析 | 点阵编辑风、极客风格、黑底闪光 | 技术感强，能承载指标、流程、系统性判断 |
-| 产品测评、竞品对比、工具观察 | 简约测评、雨天手记、极客风格 | 适合优缺点拆解、体验笔记和克制表达 |
-| 创作者品牌、社交账号、互联网文化 | Y2K 手册、杂志风 | 更有个性，适合身份系统、栏目包装和社区表达 |
-| 品牌营销、生活方式、精品活动 | 日光、杂志风 | 氛围更温暖，适合高级感叙事和轻商业提案 |
-| 摄影作品集、产品视觉、客户案例 | 作品集、故事集 | 以图片为中心，适合真实素材和项目故事 |
-| 项目复盘、田野报告、人物/地点故事 | 故事集、杂志风 | 叙事节奏更强，适合图文并行的长线表达 |
-
-如果不确定用哪个模板，直接让 Agent 使用 `lieflat-html-design` 总入口；如果已经知道交付形态，也可以直接点名 `lieflat-html-deck`、`lieflat-xhs-longform` 或 `lieflat-xhs-cover`。
 
 ## 安装
 
@@ -141,15 +145,6 @@ https://github.com/larashero3-dotcom/lieflat-html-design
 - lieflat-html-deck/SKILL.md
 - lieflat-xhs-longform/SKILL.md
 - lieflat-xhs-cover/SKILL.md
-```
-
-已经安装过的话，把这段话发给 Agent 更新：
-
-```text
-帮我更新 Lieflat HTML Design：
-https://github.com/larashero3-dotcom/lieflat-html-design
-
-请进入本地安装目录执行 git pull，或重新复制最新的 4 个 skills，然后告诉我当前 commit。
 ```
 
 ### 手动安装
