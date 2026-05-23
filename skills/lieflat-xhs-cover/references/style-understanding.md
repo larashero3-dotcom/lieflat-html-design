@@ -11,6 +11,12 @@ Cover cards are for the first glance. They should make a clear promise, not pres
 - No continuous body paragraphs.
 - No dense charts unless the chart is the hook.
 
+## Editorial Cover Guardrails
+
+- For `xhs-cover-editorial`, black reverse-title blocks must not touch the glyphs. Give the black block enough horizontal and vertical padding, and add clear separation from the line above.
+- If only the final title line is reversed, treat it as a separate line or inline-block with its own `line-height`, padding, and `margin-top`; do not let it inherit a tight title line-height that makes the black area visually eat into white characters.
+- Keep at least a small cream gutter around the reverse block. If the block touches the previous line, either lower the block, reduce title size slightly, or split the title into fewer, more breathable lines.
+
 ## Style Families
 
 | 中文名 | Template ID | Use When | Cover Rhythm |
@@ -30,4 +36,3 @@ Cover cards are for the first glance. They should make a clear promise, not pres
 ## Thumbnail Check
 
 Before delivery, zoom out or screenshot at small size. The title should still be readable, and the visual anchor should not compete with the words.
-
