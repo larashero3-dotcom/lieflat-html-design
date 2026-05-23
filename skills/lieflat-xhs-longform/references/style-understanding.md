@@ -12,6 +12,14 @@ Longform cards are for reading and saving. They should not behave like covers, p
 - No dense appendix tables.
 - No decorative screenshot slots unless they support the article.
 
+## Template Isolation
+
+- Each longform style is a complete reading system, not a skin. When creating a different style, begin from that style's own starter file and rebuild the article inside it.
+- Do not paste layout blocks from one template into another, such as Clean Review scorecards inside Rain Notes, Terminal chrome inside Editorial, Pixel HUD panels inside Sunrise, or Shiny Tiles glass cards inside Story Field.
+- Do not reuse a previously edited longform card as the base for another style. This often leaves old class names, spacing assumptions, decorative layers, and responsive rules that make the new style look broken.
+- Borrow only the content structure: title, sections, bullets, examples, or conclusion. Re-express that structure using the target template's native modules, typography, spacing, borders, materials, and reading rhythm.
+- Before export, scan the HTML/CSS for leftover source-template class names or motifs. If they remain, restart from the target starter rather than patching around them.
+
 ## Style Families
 
 | 中文名 | Template ID | Use When | Reading Rhythm |
@@ -34,4 +42,3 @@ Longform cards are for reading and saving. They should not behave like covers, p
 - Do not keep demo badges if the article does not need them.
 - Do not overfill the card; cut copy before shrinking body text too far.
 - Do not use a cover-style title-only layout for longform reading.
-

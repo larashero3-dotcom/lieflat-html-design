@@ -24,6 +24,7 @@ Use `assets/templates/<template-id>/zh.html` as a starter. Copy it into the user
 - Default to Chinese visible copy unless the user explicitly requests another language.
 - Do not write `小红书封面` as visible copy unless the user explicitly asks for that label.
 - Preserve the chosen style's atmosphere while keeping the cover simple.
+- Do not mix template systems. If switching from one cover style to another, start again from the new style's starter HTML instead of carrying over the previous template's DOM, class names, layout modules, CSS variables, or decorative blocks.
 
 ## Canvas And Export
 
@@ -43,7 +44,7 @@ node scripts/capture-xhs-card.mjs --html <path-to-html> --out <path-to-cover.png
 
 1. Read `assets/catalog.json` and `references/style-understanding.md`.
 2. Select one cover style.
-3. Copy the chosen starter into the project.
+3. Copy the chosen starter into the project. For each alternate style or revision that changes style family, copy a fresh starter for that target style.
 4. Rewrite the user's topic into a compact cover title and optional subtitle.
 5. Replace title, metadata, footer, labels, and visual hook.
 6. Remove article paragraphs or demo-only blocks.
@@ -56,4 +57,3 @@ node scripts/list-templates.mjs
 node scripts/create-design.mjs --template xhs-cover-dot-matrix --lang zh --out output/xhs-cover-demo.html
 node scripts/capture-xhs-card.mjs --html output/xhs-cover-demo.html --out output/xhs-cover-demo.png
 ```
-

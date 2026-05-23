@@ -24,6 +24,7 @@ Use `assets/templates/<template-id>/zh.html` as a starter. Copy it into the user
 - Do not mechanically preserve decorative blocks from the demo. Keep only the structures that help the article read better.
 - Preserve the chosen style's palette, type rhythm, ornaments, and atmosphere.
 - Do not invent claims, numbers, product facts, or quotes.
+- Do not mix template systems. If switching from one longform style to another, start again from the new style's starter HTML instead of carrying over the previous template's DOM, class names, layout modules, CSS variables, or decorative blocks.
 
 ## Canvas And Export
 
@@ -49,7 +50,7 @@ node scripts/capture-xhs-carousel.mjs --html <path-to-html> --out-dir <folder>
 
 1. Read `assets/catalog.json` and `references/style-understanding.md`.
 2. Select one longform style.
-3. Copy the chosen starter into the project.
+3. Copy the chosen starter into the project. For each alternate style or revision that changes style family, copy a fresh starter for that target style.
 4. Rewrite the source into a compact article structure.
 5. Replace title, subtitle, sections, body, labels, metadata, and footer.
 6. Remove unneeded badges, charts, or ornamental panels if they interrupt reading.
@@ -63,4 +64,3 @@ node scripts/create-design.mjs --template xhs-sunrise --lang zh --out output/xhs
 node scripts/capture-xhs-card.mjs --html output/xhs-demo.html --out output/xhs-demo-card.png
 node scripts/capture-xhs-carousel.mjs --html output/xhs-demo.html --out-dir output/xhs-carousel
 ```
-
