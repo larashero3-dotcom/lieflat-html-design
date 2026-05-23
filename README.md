@@ -29,28 +29,12 @@ lieflat-xhs-cover：11 组小红书封面模板，默认中文，适合导出 3:
 
 <table>
   <tr>
-    <td width="25%"><img src="./previews/zh/editorial-slide-01.png" alt="杂志风 Editorial 第 1 页预览"><br><strong>杂志风 · Editorial</strong></td>
-    <td width="25%"><img src="./previews/zh/editorial-slide-02.png" alt="杂志风 Editorial 第 2 页预览"></td>
-    <td width="25%"><img src="./previews/zh/editorial-slide-03.png" alt="杂志风 Editorial 第 3 页预览"></td>
-    <td width="25%"><img src="./previews/zh/editorial-slide-04.png" alt="杂志风 Editorial 第 4 页预览"></td>
+    <td width="50%"><img src="./previews/zh/editorial.png" alt="杂志风 Editorial 预览"><br><strong>杂志风 · Editorial</strong></td>
+    <td width="50%"><img src="./previews/zh/sunrise.png" alt="日光 Sunrise 预览"><br><strong>日光 · Sunrise</strong></td>
   </tr>
   <tr>
-    <td width="25%"><img src="./previews/zh/sunrise-slide-01.png" alt="日光 Sunrise 第 1 页预览"><br><strong>日光 · Sunrise</strong></td>
-    <td width="25%"><img src="./previews/zh/sunrise-slide-02.png" alt="日光 Sunrise 第 2 页预览"></td>
-    <td width="25%"><img src="./previews/zh/sunrise-slide-03.png" alt="日光 Sunrise 第 3 页预览"></td>
-    <td width="25%"><img src="./previews/zh/sunrise-slide-04.png" alt="日光 Sunrise 第 4 页预览"></td>
-  </tr>
-  <tr>
-    <td width="25%"><img src="./previews/zh/rain-notes-slide-01.png" alt="雨天手记 Rain Notes 第 1 页预览"><br><strong>雨天手记 · Rain Notes</strong></td>
-    <td width="25%"><img src="./previews/zh/rain-notes-slide-02.png" alt="雨天手记 Rain Notes 第 2 页预览"></td>
-    <td width="25%"><img src="./previews/zh/rain-notes-slide-03.png" alt="雨天手记 Rain Notes 第 3 页预览"></td>
-    <td width="25%"><img src="./previews/zh/rain-notes-slide-04.png" alt="雨天手记 Rain Notes 第 4 页预览"></td>
-  </tr>
-  <tr>
-    <td width="25%"><img src="./previews/zh/story-field-slide-01.png" alt="故事集 Story Field 第 1 页预览"><br><strong>故事集 · Story Field</strong></td>
-    <td width="25%"><img src="./previews/zh/story-field-slide-02.png" alt="故事集 Story Field 第 2 页预览"></td>
-    <td width="25%"><img src="./previews/zh/story-field-slide-03.png" alt="故事集 Story Field 第 3 页预览"></td>
-    <td width="25%"><img src="./previews/zh/story-field-slide-04.png" alt="故事集 Story Field 第 4 页预览"></td>
+    <td width="50%"><img src="./previews/zh/rain-notes.png" alt="雨天手记 Rain Notes 预览"><br><strong>雨天手记 · Rain Notes</strong></td>
+    <td width="50%"><img src="./previews/zh/story-field.png" alt="故事集 Story Field 预览"><br><strong>故事集 · Story Field</strong></td>
   </tr>
 </table>
 
