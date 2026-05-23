@@ -23,18 +23,34 @@ lieflat-xhs-cover：11 组小红书封面模板，默认中文，适合导出 3:
 | 模板 | 一句话 |
 | - | - |
 | **Editorial · 杂志风** | 杂志式标题、留白克制，看起来像经过排版的（其实也确实是） |
-| **Sunrise · 日光** | 暖色留白，适合写产品测评不想显得在恰饭 |
+| **Sunrise · 日光** | 暖色留白，给分析一点温度 |
 | **Rain Notes · 雨天手记** | 纸感、安静、有点忧郁，适合写"我用了三个月的 XX" |
 | **Story Field · 故事集** | 故事视角，适合有图片的叙事，略显文艺（图片好不好看很影响效果） |
 
 <table>
   <tr>
-    <td width="50%"><img src="./previews/zh/editorial.png" alt="杂志风 Editorial 预览"><br><strong>杂志风 · Editorial</strong></td>
-    <td width="50%"><img src="./previews/zh/sunrise.png" alt="日光 Sunrise 预览"><br><strong>日光 · Sunrise</strong></td>
+    <td width="25%"><img src="./previews/zh/editorial-slide-01.png" alt="杂志风 Editorial 第 1 页预览"><br><strong>杂志风 · Editorial</strong></td>
+    <td width="25%"><img src="./previews/zh/editorial-slide-02.png" alt="杂志风 Editorial 第 2 页预览"></td>
+    <td width="25%"><img src="./previews/zh/editorial-slide-03.png" alt="杂志风 Editorial 第 3 页预览"></td>
+    <td width="25%"><img src="./previews/zh/editorial-slide-04.png" alt="杂志风 Editorial 第 4 页预览"></td>
   </tr>
   <tr>
-    <td width="50%"><img src="./previews/zh/rain-notes.png" alt="雨天手记 Rain Notes 预览"><br><strong>雨天手记 · Rain Notes</strong></td>
-    <td width="50%"><img src="./previews/zh/story-field.png" alt="故事集 Story Field 预览"><br><strong>故事集 · Story Field</strong></td>
+    <td width="25%"><img src="./previews/zh/sunrise-slide-01.png" alt="日光 Sunrise 第 1 页预览"><br><strong>日光 · Sunrise</strong></td>
+    <td width="25%"><img src="./previews/zh/sunrise-slide-02.png" alt="日光 Sunrise 第 2 页预览"></td>
+    <td width="25%"><img src="./previews/zh/sunrise-slide-03.png" alt="日光 Sunrise 第 3 页预览"></td>
+    <td width="25%"><img src="./previews/zh/sunrise-slide-04.png" alt="日光 Sunrise 第 4 页预览"></td>
+  </tr>
+  <tr>
+    <td width="25%"><img src="./previews/zh/rain-notes-slide-01.png" alt="雨天手记 Rain Notes 第 1 页预览"><br><strong>雨天手记 · Rain Notes</strong></td>
+    <td width="25%"><img src="./previews/zh/rain-notes-slide-02.png" alt="雨天手记 Rain Notes 第 2 页预览"></td>
+    <td width="25%"><img src="./previews/zh/rain-notes-slide-03.png" alt="雨天手记 Rain Notes 第 3 页预览"></td>
+    <td width="25%"><img src="./previews/zh/rain-notes-slide-04.png" alt="雨天手记 Rain Notes 第 4 页预览"></td>
+  </tr>
+  <tr>
+    <td width="25%"><img src="./previews/zh/story-field-slide-01.png" alt="故事集 Story Field 第 1 页预览"><br><strong>故事集 · Story Field</strong></td>
+    <td width="25%"><img src="./previews/zh/story-field-slide-02.png" alt="故事集 Story Field 第 2 页预览"></td>
+    <td width="25%"><img src="./previews/zh/story-field-slide-03.png" alt="故事集 Story Field 第 3 页预览"></td>
+    <td width="25%"><img src="./previews/zh/story-field-slide-04.png" alt="故事集 Story Field 第 4 页预览"></td>
   </tr>
 </table>
 
@@ -47,7 +63,7 @@ lieflat-xhs-cover：11 组小红书封面模板，默认中文，适合导出 3:
 | **Dot Matrix · 点阵编辑风** | 点阵场，明暗变体，信号感拉满 |
 | **Clean Review · 简约测评** | 很极简，很现代，很清晰，startup 做做 deck 很适合 |
 | **Shiny Tiles · 镭射网格** | 黑底银色玻璃卡，冷光科技感。 |
-| **Consulting Report · 咨询报告** | 高信任叙事。看起来很贵，其实不要钱 |
+| **Consulting Report · 咨询报告** | 图表和证据多的市场/行业研究。看起来很贵，其实不要钱 |
 
 <table>
   <tr>
@@ -221,11 +237,13 @@ Agent 会先路由到对应 skill，再读取该 skill 的 `assets/catalog.json`
 
 ```text
 用点阵编辑风，做一份中文技术分析 PPT。
-用咨询报告风格，做一份 AI Agent 行业研究。
+用咨询报告风格，做一份图表较多的 AI Agent 行业研究。
 用故事集风格，做一份图片叙事型项目复盘。
 ```
 
 可选演示模板包括：Y2K 手册、镭射网格、作品集、极客风格、黑底闪光、点阵编辑风、简约测评、杂志风、咨询报告、日光、雨天手记、故事集。
+
+咨询报告风格只建议用于图表、表格、指标、市场/行业证据比较多的调研分析、竞品分析、投资人/管理层汇报。文字多、观点多但证据图表少的内容，优先考虑杂志风、简约测评、极客风格、雨天手记或日光。
 
 小红书长文模板包括：雨天手记、杂志风、极客风格、终端风、点阵浅色、简约测评、黑底闪光、故事集、镭射网格、日光、咨询报告。
 

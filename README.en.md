@@ -42,7 +42,7 @@ GitHub README files render repository-relative image paths directly. The preview
 <table>
   <tr>
     <td width="50%"><img src="./previews/en/editorial.png" alt="Editorial preview"><br><strong>Editorial</strong><br>Magazine-like essay structure with refined white space.</td>
-    <td width="50%"><img src="./previews/en/consulting-report.png" alt="Consulting Report preview"><br><strong>Consulting Report</strong><br>Consulting reports, industry research, high-trust narrative.</td>
+    <td width="50%"><img src="./previews/en/consulting-report.png" alt="Consulting Report preview"><br><strong>Consulting Report</strong><br>Chart-heavy market and industry research with high-trust structure.</td>
   </tr>
   <tr>
     <td width="50%"><img src="./previews/en/sunrise.png" alt="Sunrise preview"><br><strong>Sunrise</strong><br>Warm whitespace, elegant titles, and premium narrative pacing.</td>
@@ -114,7 +114,7 @@ Xiaohongshu templates turn a visual style into a continuous article card. Eight 
 
 | Use case | Recommended templates | Why |
 |----------|-----------------------|-----|
-| Company strategy, industry research, investor narrative | `consulting-report`, `clean-review` | High-trust structure for serious arguments and decision material |
+| Chart-heavy market research, industry analysis, investor narrative | `consulting-report`, `clean-review` | High-trust structure for data-backed arguments and decision material |
 | AI systems, model briefings, technical trend analysis | `dot-matrix`, `geek-report`, `pixel-report` | Strong technical language for metrics, flows, and systems thinking |
 | Product reviews, competitive analysis, tool notes | `clean-review`, `rain-notes`, `geek-report` | Good for pros/cons, experience notes, and restrained evaluation |
 | Creator brands, social accounts, internet culture | `y2k-brand`, `editorial` | More personality for identity systems, content packaging, and community-facing work |
@@ -224,11 +224,13 @@ If you already know the visual direction, name the style directly:
 
 ```text
 Use dot-matrix for a technical analysis deck.
-Use consulting-report for an AI Agent industry report.
+Use consulting-report for a chart-heavy AI Agent industry report.
 Use story-field for an image-led project recap.
 ```
 
 Available presentation styles: Y2K Brand Manual, Shiny Tiles, Studio Photo, Geek Report, Pixel Report, Dot Matrix, Clean Review, Editorial, Consulting Report, Sunrise, Rain Notes, and Story Field.
+
+Use Consulting Report only when the deck has substantial charts, tables, metrics, market or industry evidence, competitor comparisons, or investor/business analysis. For text-heavy strategy essays, opinion decks, teaching material, or internal memos with few data exhibits, prefer Editorial, Clean Review, Geek Report, Rain Notes, or Sunrise.
 
 Xiaohongshu longform styles: Rain Notes, Editorial, Geek Report, Terminal, Dot Matrix Light, Clean Review, Pixel Report, Story Field, Shiny Tiles, Sunrise, and Consulting Report.
 

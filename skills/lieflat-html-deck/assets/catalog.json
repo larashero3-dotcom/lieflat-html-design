@@ -375,13 +375,17 @@
       "zh": "assets/templates/consulting-report/zh.html"
     },
     "best_for": [
-      "consulting report",
-      "industry research",
-      "strategy narrative",
-      "institutional presentation",
-      "investor-facing story"
+      "chart-heavy consulting report",
+      "market research with real data",
+      "industry analysis",
+      "competitive landscape",
+      "investor-facing business analysis",
+      "market sizing or trend report"
     ],
     "avoid_for": [
+      "mostly text narrative",
+      "strategy essay without charts or market evidence",
+      "internal memo with few data exhibits",
       "playful meme culture",
       "retro phone theme",
       "Y2K creator identity"
@@ -389,6 +393,9 @@
     "style_tags": [
       "consulting",
       "industry research",
+      "market analysis",
+      "charts",
+      "business evidence",
       "serious",
       "premium",
       "dark",
@@ -400,7 +407,7 @@
       "enterprise buyers",
       "strategy teams"
     ],
-    "density": "medium-high",
+    "density": "chart-heavy medium-high",
     "motion": "low",
     "image_intensity": "low",
     "image_slots": [],

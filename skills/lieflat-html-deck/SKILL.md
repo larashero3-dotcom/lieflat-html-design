@@ -45,6 +45,8 @@ If the user names a Chinese style, map it directly:
 
 If the user says `点阵编辑风` without specifying light or dark, choose `dot-matrix-dark` for technical drama and `dot-matrix-light` for report-like clarity.
 
+Use `consulting-report` only when the deck is genuinely chart/data-heavy and centered on market, industry, competitive, investor, or business analysis. If the content is mostly text, opinion, narrative, or a strategy memo without substantial charts/tables/evidence blocks, choose a better fit such as `editorial`, `clean-review`, `geek-report`, `rain-notes`, or `sunrise`.
+
 If no style is specified, pick by audience, topic, image availability, density, and tone. State the choice briefly, then proceed.
 
 ## Workflow
@@ -77,4 +79,3 @@ node scripts/audit-assets.mjs assets/templates
 node scripts/capture-template-previews.mjs --lang zh --out ../../previews/zh
 node scripts/capture-screenshots.mjs --url http://localhost:8765/output/editorial-demo.html --count 8 --out screenshots
 ```
-
