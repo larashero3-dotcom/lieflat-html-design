@@ -2,8 +2,6 @@
 
 An HTML visual design skill collection for agents, organized by delivery surface: horizontal HTML decks, Xiaohongshu longform article cards, and Xiaohongshu cover cards.
 
-This template collection was created by me together with Moxt and Codex: I led the visual direction, content judgment, and final review, while Moxt and Codex helped generate templates, iterate styles, and organize the implementation.
-
 This repository packages a curated set of single-file HTML visual systems into reusable Agent Skills. Codex, Claude Code, Moxt, and other agent workspaces can read each skill's catalog and style-understanding references to choose the right delivery surface, select a visual direction, adapt copy and structure, and verify outputs with browser screenshots.
 
 Chinese version: [README.md](./README.md).
