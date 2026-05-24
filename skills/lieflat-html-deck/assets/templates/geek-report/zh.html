@@ -384,6 +384,7 @@
       grid-column: 1 / 17;
       align-self: start;
       padding-top: clamp(26px, 4.8vh, 48px);
+      max-width: min(900px, 68vw);
     }
 
     .cover-title .heading-lg {
@@ -391,9 +392,12 @@
     }
 
     .zh-cover-kicker {
-      max-width: none;
-      white-space: nowrap;
-      word-break: keep-all;
+      max-width: min(860px, 64vw);
+      white-space: normal;
+      word-break: normal;
+      overflow-wrap: break-word;
+      text-wrap: balance;
+      font-variant-east-asian: normal;
     }
 
     .zh-cover-kicker .latin-code {
@@ -405,10 +409,13 @@
     }
 
     .zh-cover-main {
-      max-width: none;
+      max-width: min(880px, 64vw);
       font-size: clamp(44px, 6vw, 64px);
-      white-space: nowrap;
-      word-break: keep-all;
+      white-space: normal;
+      word-break: normal;
+      overflow-wrap: break-word;
+      text-wrap: balance;
+      font-variant-east-asian: normal;
     }
 
     .cover-continue {

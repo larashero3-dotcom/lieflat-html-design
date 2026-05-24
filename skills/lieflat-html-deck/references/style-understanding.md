@@ -39,6 +39,14 @@ The starter HTML files are references, not fixed fill-in forms. Use the user's c
 | 作品集 | `studio-photo` | Product photography, visual identity, object-led portfolios | Studio framing, approved images, gallery pacing, client-ready polish | Abstract text-only analysis |
 | 故事集 | `story-field` | Cinematic narratives, field reports, project dossiers, place/person stories | Documentary imagery, archive mood, horizontal cinema rhythm | Topics without images unless redesigned toward text/evidence panels |
 
+## Geek Report Guardrails
+
+- `geek-report` cover titles must wrap inside the slide. Never use `white-space: nowrap` or `word-break: keep-all` on the main cover title or kicker.
+- Prefer explicit semantic line breaks (`<br>`) for long cover titles so each line reads like a deliberate technical headline, not an accidental browser wrap.
+- Long Chinese/English mixed titles should be split into 2-4 intentional lines, or constrained with `max-width`, `overflow-wrap: break-word`, and `text-wrap: balance`.
+- If the title includes long technical tokens such as `RAG.AI`, model names, API names, or repository names, keep them readable but allow the surrounding Chinese title to wrap. Do not let one token force the whole headline into a single horizontal line.
+- Before delivery, preview the cover at desktop width and confirm no title text touches or exits the slide edge.
+
 ## Consistency Rules
 
 - Keep one primary style recognizable from the first slide to the last.

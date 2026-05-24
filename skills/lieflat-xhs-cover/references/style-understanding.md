@@ -31,6 +31,13 @@ Cover cards are for the first glance. They should make a clear promise, not pres
 - Keep strong vertical or horizontal divider lines inside metadata bands, borders, or empty background zones. If a line crosses content, shorten it, move it behind a low-contrast background area, or remove it.
 - At thumbnail size, decorative grid lines should read as texture, not as accidental strokes, cursor artifacts, or broken glyphs.
 
+## Geek Report Cover Guardrails
+
+- For `xhs-cover-geek-report`, the title must wrap inside the card. Never force the main title into a single line with `white-space: nowrap` or `word-break: keep-all`.
+- Prefer explicit semantic line breaks (`<br>`) for long cover titles so each line reads like a deliberate technical headline, not an accidental browser wrap.
+- Long Chinese/English mixed titles should be split into 2-4 intentional lines, or constrained with `max-width`, `overflow-wrap: break-word`, and `text-wrap: balance`.
+- If the title includes long technical tokens such as `RAG.AI`, model names, API names, or repository names, keep them readable but allow the surrounding Chinese title to wrap. Do not let one token force the whole headline out of the card.
+
 ## Style Families
 
 | 中文名 | Template ID | Use When | Cover Rhythm |
