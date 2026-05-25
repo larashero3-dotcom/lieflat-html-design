@@ -162,6 +162,7 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-height: 0;
   overflow: hidden;
 }
 
@@ -226,12 +227,23 @@ body {
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
   gap: clamp(20px, 3vw, 48px);
   flex: 1;
-  align-items: start;
+  height: 100%;
+  min-height: 0;
+  align-items: stretch;
+}
+
+.chart-panel,
+.bar-panel {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .chart-panel svg {
+  flex: 1;
   width: 100%;
-  max-height: min(52vh, 420px);
+  height: 100%;
+  max-height: none;
 }
 
 .chart-label {
@@ -248,10 +260,15 @@ body {
   line-height: 1.85;
   color: var(--text);
   columns: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(10px, 1.4vh, 16px);
 }
 
 .text-panel p {
-  margin-bottom: clamp(8px, 1vh, 14px);
+  margin-bottom: 0;
 }
 
 .text-panel strong {
@@ -265,27 +282,36 @@ body {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
   gap: clamp(16px, 2.5vw, 40px);
   flex: 1;
-  align-items: start;
+  height: 100%;
+  min-height: 0;
+  align-items: stretch;
 }
 
 .bar-panel svg {
+  flex: 1;
   width: 100%;
-  max-height: min(55vh, 440px);
+  height: 100%;
+  max-height: none;
 }
 
 /* === Heatmap === */
 .heatmap-layout {
   display: grid;
-  grid-template-columns: auto 1fr;
-  gap: clamp(16px, 2vw, 32px);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 64px);
   flex: 1;
-  align-items: start;
+  height: 100%;
+  min-height: 0;
+  align-items: stretch;
 }
 
 .heatmap-table {
   border-collapse: collapse;
   font-family: var(--font-sans);
   font-size: clamp(10px, 0.95vw, 12px);
+  height: 100%;
+  width: 100%;
+  table-layout: fixed;
 }
 
 .heatmap-table th {
@@ -295,6 +321,16 @@ body {
   border-bottom: 1px solid var(--gray-200);
   white-space: nowrap;
   line-height: 1.5;
+}
+
+.heatmap-table th:first-child,
+.heatmap-table td:first-child {
+  width: 54%;
+}
+
+.heatmap-table th:not(:first-child),
+.heatmap-table td:not(:first-child) {
+  text-align: center;
 }
 
 .heatmap-table td {
@@ -321,10 +357,21 @@ body {
   font-size: clamp(10px, 1.05vw, 13px);
   line-height: 1.85;
   color: var(--text);
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.heatmap-bullets ul {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(6px, 0.9vh, 12px);
 }
 
 .heatmap-bullets li {
-  margin-bottom: clamp(4px, 0.5vh, 8px);
+  margin-bottom: 0;
   padding-left: 2px;
   list-style: none;
   position: relative;
@@ -390,6 +437,8 @@ body {
 @media (max-width: 900px) {
   .chart-text-layout, .bar-layout, .heatmap-layout { grid-template-columns: 1fr; }
   .text-panel { columns: 1; }
+  .chart-text-layout, .bar-layout, .heatmap-layout { height: auto; }
+  .text-panel, .heatmap-bullets ul { justify-content: flex-start; }
   .cover-body { max-width: 90%; }
 }
 
