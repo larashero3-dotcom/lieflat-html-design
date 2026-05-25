@@ -23,6 +23,7 @@ Use `assets/templates/<template-id>/zh.html` as a starter. Copy it into the user
 - One visual anchor is enough. Do not fill the cover with body paragraphs.
 - Default to Chinese visible copy unless the user explicitly requests another language.
 - Do not write `小红书封面` as visible copy unless the user explicitly asks for that label.
+- Treat `xhs-cover-story-field` as a low-frequency style. Do not choose it by default for ordinary AI/product/brand covers, hot takes, tutorials, or generic post openers. Use it only when the user explicitly asks for Story Field / 故事集, or when the cover needs an archival, cinematic, route-map, place/person, or project-field-report mood.
 - Preserve the chosen style's atmosphere while keeping the cover simple.
 - Do not mix template systems. If switching from one cover style to another, start again from the new style's starter HTML instead of carrying over the previous template's DOM, class names, layout modules, CSS variables, or decorative blocks.
 

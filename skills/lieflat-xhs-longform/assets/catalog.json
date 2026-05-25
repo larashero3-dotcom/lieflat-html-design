@@ -551,13 +551,19 @@
       "zh": "assets/templates/xhs-story-field/zh.html"
     },
     "best_for": [
-      "小红书长文",
+      "低频选择：不要作为默认小红书长文风格",
       "项目现场叙事",
       "故事型测评",
       "路线复盘",
-      "档案感中文长图"
+      "档案感中文长图",
+      "用户明确要求故事集 / Story Field"
     ],
     "avoid_for": [
+      "普通 AI 笔记",
+      "一般产品测评",
+      "技术教程",
+      "列表型干货",
+      "泛用小红书长文默认风格",
       "密集表格报告",
       "高饱和 Y2K",
       "纯代码教程"
@@ -579,6 +585,8 @@
     "density": "medium",
     "motion": "low",
     "image_intensity": "low",
+    "selection_priority": "low",
+    "selection_notes": "Use sparingly. Choose only for archival, cinematic, story-led field reports or explicit Story Field requests; avoid as the default longform style.",
     "image_slots": [],
     "export": {
       "css_size": "600x1000",

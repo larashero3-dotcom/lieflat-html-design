@@ -22,6 +22,8 @@ Longform cards are for reading and saving. They should not behave like covers, p
 
 ## Style Families
 
+Selection bias: use `xhs-story-field` sparingly. It is a specialty narrative style, not a general-purpose longform default. Prefer Rain Notes, Clean Review, Editorial, Dot Matrix Light, Consulting Report, Geek Report, Terminal, Pixel Report, Sunrise, or Shiny Tiles unless the brief clearly asks for archival / cinematic / field-report storytelling or the user names Story Field directly.
+
 | 中文名 | Template ID | Use When | Reading Rhythm |
 |---|---|---|---|
 | 雨天手记 | `xhs-rain-notes` | Quiet AI notes, reflective product reviews, calm essays | Soft paper, low-noise panels, gentle pacing |
@@ -34,7 +36,7 @@ Longform cards are for reading and saving. They should not behave like covers, p
 | 咨询报告 | `xhs-consulting-report` | Business analysis, strategy notes, industry reads | Clear sections, sober claims, consulting-like hierarchy |
 | 黑底闪光 | `xhs-pixel-report` | AI/model notes, metrics, structured technical takes | Dark grid, pixel HUD accents, short evidence blocks |
 | 镭射网格 | `xhs-shiny-tiles` | Polished technical or design-system notes | Cold glass/grid atmosphere, concise premium structure |
-| 故事集 | `xhs-story-field` | Field notes, project stories, image-supported narratives | Cinematic framing, archival mood, story-led paragraphs |
+| 故事集 | `xhs-story-field` | Low-frequency choice: use only for field notes, project stories, image-supported narratives, or explicit user request | Cinematic framing, archival mood, story-led paragraphs |
 
 ## Do Not
 

@@ -496,13 +496,19 @@
       "zh": "assets/templates/xhs-cover-story-field/zh.html"
     },
     "best_for": [
-      "小红书封面",
+      "低频选择：不要作为默认小红书封面风格",
       "故事化案例封面",
       "项目复盘封面",
       "路线图封面",
-      "安静叙事封面"
+      "安静叙事封面",
+      "用户明确要求故事集 / Story Field"
     ],
     "avoid_for": [
+      "普通 AI 产品封面",
+      "一般测评封面",
+      "教程封面",
+      "热点观点封面",
+      "泛用小红书封面默认风格",
       "正文长图",
       "高饱和活动海报",
       "硬核像素技术封面"
@@ -524,6 +530,8 @@
     "density": "medium",
     "motion": "low",
     "image_intensity": "low",
+    "selection_priority": "low",
+    "selection_notes": "Use sparingly. Choose only for archival, cinematic, route-map, place/person, or project field-report covers, or explicit Story Field requests; avoid as the default cover style.",
     "image_slots": [],
     "export": {
       "css_size": "600x800",

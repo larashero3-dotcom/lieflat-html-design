@@ -21,6 +21,7 @@ Use `assets/templates/<template-id>/zh.html` as a starter. Copy it into the user
 - Output should read as a continuous article card: title, short subtitle if needed, section heading, body, and compact footer.
 - Do not make it look like a PPT slide or a cover card.
 - Default to Chinese visible copy unless the user explicitly requests another language.
+- Treat `xhs-story-field` as a low-frequency style. Do not choose it by default for ordinary AI notes, product reviews, technical explainers, listicles, or general article cards. Use it only when the user explicitly asks for Story Field / 故事集, or when the source genuinely needs an archival, cinematic, project-field-report narrative with story-led paragraphs.
 - Do not mechanically preserve decorative blocks from the demo. Keep only the structures that help the article read better.
 - Preserve the chosen style's palette, type rhythm, ornaments, and atmosphere.
 - Do not invent claims, numbers, product facts, or quotes.

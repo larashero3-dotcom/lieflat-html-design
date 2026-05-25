@@ -40,6 +40,8 @@ Cover cards are for the first glance. They should make a clear promise, not pres
 
 ## Style Families
 
+Selection bias: use `xhs-cover-story-field` sparingly. It is a specialty narrative cover style, not a general-purpose first-image default. Prefer Clean Review, Editorial, Dot Matrix, Consulting Report, Rain Notes, Pixel Report, Sunrise, Geek Report, Terminal, or Shiny Tiles unless the brief clearly asks for archival / cinematic / route-map / field-report storytelling or the user names Story Field directly.
+
 | 中文名 | Template ID | Use When | Cover Rhythm |
 |---|---|---|---|
 | 简约测评 | `xhs-cover-clean-review` | Product verdicts, rankings, comparison posts | Clear title, rating/evaluation feel, restrained accent |
@@ -51,7 +53,7 @@ Cover cards are for the first glance. They should make a clear promise, not pres
 | 日光 | `xhs-cover-sunrise` | Premium brand reflections, lifestyle or philosophy hooks | Warm whitespace, elegant serif title, golden restraint |
 | 极客风格 | `xhs-cover-geek-report` | Developer-facing topics, tool notes, AI build logs | Terminal-paper energy, compact technical labels |
 | 终端风 | `xhs-cover-terminal` | Command-line, automation, hacker-ish topics | Monospace title, terminal framing, direct hook |
-| 故事集 | `xhs-cover-story-field` | Field reports, project stories, place/person narratives | Cinematic crop, archive mood, story promise |
+| 故事集 | `xhs-cover-story-field` | Low-frequency choice: use only for field reports, project stories, place/person narratives, or explicit user request | Cinematic crop, archive mood, story promise |
 | 镭射网格 | `xhs-cover-shiny-tiles` | Polished tech/design-system posts | Silver glass, dark grid, premium technical shine |
 
 ## Thumbnail Check
