@@ -20,6 +20,7 @@
       --ease-out: cubic-bezier(.25, 1, .5, 1);
       --body: Arial, sans-serif;
       --display: "Cormorant Garamond", "EB Garamond", "Times New Roman", serif;
+      --number: "Cormorant Garamond", "EB Garamond", "Times New Roman", Arial, sans-serif;
     }
 
     * {
@@ -130,6 +131,8 @@
       font-weight: 400;
       text-transform: uppercase;
       letter-spacing: -.064em;
+      font-variant-numeric: lining-nums proportional-nums;
+      font-feature-settings: "lnum" 1, "onum" 0, "pnum" 1;
     }
 
     .display {
@@ -360,11 +363,13 @@
     }
 
     .number {
-      font-family: var(--display);
+      font-family: var(--number);
       font-size: clamp(56px, 7.6vw, 110px);
       line-height: .84;
-      letter-spacing: -.064em;
+      letter-spacing: -.045em;
       text-transform: uppercase;
+      font-variant-numeric: lining-nums tabular-nums;
+      font-feature-settings: "lnum" 1, "onum" 0, "tnum" 1;
     }
 
     .number.small {
