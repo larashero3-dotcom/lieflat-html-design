@@ -134,7 +134,7 @@ lieflat-xhs-cover：11 组小红书封面模板，默认中文，适合导出 3:
 
 ### 无痛安装
 
-最简单的方式：把这个仓库链接丢给你的 Codex / Claude Code / Moxt / 其他本地 Agent，让它帮你安装。
+最简单的方式：把这个仓库链接丢给你的 Codex、Claude Code 或其他本地 Agent，让它帮你安装。
 
 ```text
 帮我安装 Lieflat HTML Design：
@@ -183,7 +183,7 @@ cp -R skills/lieflat-html-design skills/lieflat-html-deck skills/lieflat-xhs-lon
 
 ## 使用方式
 
-安装后，这组 skills 也可以在 Moxt.ai 等支持读取项目文件或自定义技能的 Agent 工作区中使用。
+安装后，这组 skills 也可以在其他支持读取项目文件或自定义技能的 Agent 工作区中使用。
 
 可以这样要求你的 Agent：
 

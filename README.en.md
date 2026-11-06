@@ -2,7 +2,7 @@
 
 An HTML visual design skill collection for agents, organized by delivery surface: horizontal HTML decks, Xiaohongshu longform article cards, and Xiaohongshu cover cards.
 
-This repository packages a curated set of single-file HTML visual systems into reusable Agent Skills. Codex, Claude Code, Moxt, and other agent workspaces can read each skill's catalog and style-understanding references to choose the right delivery surface, select a visual direction, adapt copy and structure, and verify outputs with browser screenshots.
+This repository packages a curated set of single-file HTML visual systems into reusable Agent Skills. Codex, Claude Code, and other agent workspaces can read each skill's catalog and style-understanding references to choose the right delivery surface, select a visual direction, adapt copy and structure, and verify outputs with browser screenshots.
 
 Chinese version: [README.md](./README.md).
 
@@ -128,7 +128,7 @@ When unsure, ask the agent to use `lieflat-html-design`. If you already know the
 
 ### Painless Install
 
-The easiest path: give this repository link to Codex, Claude Code, Moxt, or another local agent and ask it to install the skills for you.
+The easiest path: give this repository link to Codex, Claude Code, or another local agent and ask it to install the skills for you.
 
 ```text
 Install Lieflat HTML Design for me:
@@ -186,7 +186,7 @@ cp -R skills/lieflat-html-design skills/lieflat-html-deck skills/lieflat-xhs-lon
 
 ## Usage
 
-After installation, this skill collection can also be used in Moxt.ai and other agent workspaces that can read project files or custom skills.
+After installation, this skill collection can also be used in other agent workspaces that can read project files or custom skills.
 
 Ask your agent:
 
